@@ -82,13 +82,13 @@ export default function CommunitySummary() {
               value={monthlySummary.totalMeals}
               sub={`${monthlySummary.members?.reduce((s,m)=>s+m.totalLunch,0)||0}L + ${monthlySummary.members?.reduce((s,m)=>s+m.totalDinner,0)||0}D`}
               iconColor="bg-emerald-500/15 text-emerald-400" />
-            <MiniStatCard icon={TrendingDown} label="Grocery Cost" isDark={isDark}
-              value={`৳${(monthlySummary.groceryTotal||0).toFixed(0)}`}
-              sub={`Total expenses: ৳${(monthlySummary.totalExpense||0).toFixed(0)}`}
+            <MiniStatCard icon={TrendingDown} label="Total Expenses" isDark={isDark}
+              value={`৳${(monthlySummary.totalExpense||0).toFixed(0)}`}
+              sub={`Grocery cost: ৳${(monthlySummary.groceryTotal||0).toFixed(0)}`}
               iconColor="bg-red-500/15 text-red-400" />
             <MiniStatCard icon={BarChart3} label="Meal Rate" isDark={isDark}
               value={`৳${(monthlySummary.mealRate||0).toFixed(2)}`}
-              sub="per meal (grocery ÷ meals)"
+              sub="per meal (total expenses ÷ meals)"
               iconColor="bg-purple-500/15 text-purple-400" />
             <MiniStatCard icon={Wallet} label="Members" isDark={isDark}
               value={monthlySummary.members?.length || 0}
