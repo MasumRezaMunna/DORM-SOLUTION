@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Receipt, DoorOpen, UtensilsCrossed, Bell, TrendingDown } from 'lucide-react';
+import { Receipt, DoorOpen, UtensilsCrossed, TrendingDown } from 'lucide-react';
 import PageHeader from '../../components/shared/PageHeader';
 import StatCard from '../../components/shared/StatCard';
 import StatusBadge from '../../components/shared/StatusBadge';
@@ -78,7 +78,7 @@ export default function MemberDashboard() {
         {stats.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {/* Current Bill Details */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -112,35 +112,6 @@ export default function MemberDashboard() {
                 <span className={`text-sm ${textMuted}`}>Status</span>
                 <StatusBadge status={data.currentBill.status} />
               </div>
-            </div>
-          )}
-        </motion.div>
-
-        {/* Recent Notifications */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className={`rounded-2xl border p-5 ${cardBg}`}
-        >
-          <h3 className={`font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>Recent Notifications</h3>
-          {(data?.recentNotifications || []).length === 0 ? (
-            <div className={`text-center py-8 ${textMuted}`}>
-              <Bell className="w-8 h-8 mx-auto mb-2 opacity-40" />
-              <p className="text-sm">No notifications yet.</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {(data?.recentNotifications || []).slice(0, 4).map((n, i) => (
-                <div key={i} className={`py-2 border-b last:border-0 ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
-                  <div className="flex justify-between items-start mb-0.5">
-                    <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'} ${!n.isRead ? '' : 'opacity-80'}`}>{n.title}</p>
-                    {!n.isRead && <span className="w-2 h-2 rounded-full bg-purple-500 flex-shrink-0 mt-1" />}
-                  </div>
-                  <p className={`text-xs line-clamp-2 ${textMuted} ${!n.isRead ? '' : 'opacity-80'}`}>{n.message}</p>
-                  <p className={`text-[10px] uppercase font-medium tracking-wider mt-1.5 ${textMuted} opacity-60`}>{formatDate(n.createdAt)}</p>
-                </div>
-              ))}
             </div>
           )}
         </motion.div>

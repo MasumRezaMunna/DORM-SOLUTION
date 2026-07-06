@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import {
   LayoutDashboard, Users, DoorOpen, Receipt, Wallet,
   ShoppingBag, UtensilsCrossed, Bell, MessageSquareWarning,
-  PersonStanding, Settings, LogOut, Building2, ChevronRight, X, UserCircle
+  Settings, UserCircle, LogOut, Building2, ChevronRight, X
 } from 'lucide-react';
 
 const managerNav = [
@@ -17,20 +17,21 @@ const managerNav = [
   { label: 'Meals', icon: UtensilsCrossed, to: '/manager/meals' },
   { label: 'Notices', icon: Bell, to: '/manager/notices' },
   { label: 'Complaints', icon: MessageSquareWarning, to: '/manager/complaints' },
-  { label: 'Visitors', icon: PersonStanding, to: '/manager/visitors' },
-  { label: 'My Profile', icon: UserCircle, to: '/manager/profile' },
-  { label: 'Settings', icon: Settings, to: '/manager/settings' },
+  // Member-equivalent links for the manager
+  { label: '─── My Portal ───', icon: null, divider: true },
+  { label: 'My Bills', icon: Receipt, to: '/dashboard/bills' },
+  { label: 'My Meals', icon: UtensilsCrossed, to: '/dashboard/meals' },
+  { label: 'Notifications', icon: Bell, to: '/dashboard/notifications' },
+  { label: 'Community', icon: Users, to: '/dashboard/community' },
 ];
 
 const memberNav = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/dashboard' },
-  { label: 'My Profile', icon: UserCircle, to: '/dashboard/profile' },
-  { label: 'My Room', icon: DoorOpen, to: '/dashboard/room' },
   { label: 'My Bills', icon: Receipt, to: '/dashboard/bills' },
   { label: 'Meal Summary', icon: UtensilsCrossed, to: '/dashboard/meals' },
   { label: 'Notices', icon: Bell, to: '/dashboard/notices' },
   { label: 'Complaints', icon: MessageSquareWarning, to: '/dashboard/complaints' },
-  { label: 'Visitors', icon: PersonStanding, to: '/dashboard/visitors' },
+  { label: 'Notifications', icon: Bell, to: '/dashboard/notifications' },
   { label: 'Community', icon: Users, to: '/dashboard/community' },
 ];
 
@@ -86,36 +87,31 @@ export default function Sidebar({ mobileOpen, onClose }) {
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 overflow-y-auto space-y-0.5">
         {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.to === '/manager' || item.to === '/dashboard'}
-            onClick={onClose}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
-                isActive
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-900/40'
-                  : 'text-slate-400 hover:text-white hover:bg-white/5'
-              }`
-            }
-          >
-            <item.icon className="w-[18px] h-[18px] flex-shrink-0" />
-            <span className="flex-1">{item.label}</span>
-            <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-50 transition-opacity" />
-          </NavLink>
+          item.divider ? (
+            <div key={item.label} className="px-3 py-2 mt-2">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600">{item.label}</p>
+            </div>
+          ) : (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/manager' || item.to === '/dashboard'}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
+                  isActive
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-900/40'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`
+              }
+            >
+              <item.icon className="w-[18px] h-[18px] flex-shrink-0" />
+              <span className="flex-1">{item.label}</span>
+              <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-50 transition-opacity" />
+            </NavLink>
+          )
         ))}
       </nav>
-
-      {/* Logout */}
-      <div className="px-3 py-4 border-t border-white/10">
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all w-full"
-        >
-          <LogOut className="w-[18px] h-[18px]" />
-          Sign out
-        </button>
-      </div>
     </div>
   );
 

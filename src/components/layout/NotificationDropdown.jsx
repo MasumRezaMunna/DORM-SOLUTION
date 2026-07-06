@@ -139,6 +139,16 @@ export default function NotificationDropdown() {
                 </div>
               )}
             </div>
+
+            <div className={`p-3 border-t ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
+              <Link
+                to="/dashboard/notifications"
+                onClick={() => setIsOpen(false)}
+                className="block text-center text-xs font-semibold text-purple-500 hover:text-purple-600 transition-colors"
+              >
+                View all notifications →
+              </Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

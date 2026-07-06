@@ -100,6 +100,17 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, [token]);
 
+  // Listen for token invalidation fired by the axios 401 interceptor
+  useEffect(() => {
+    const handleAuthLogout = () => {
+      setToken(null);
+      setUser(null);
+      setIsPending(false);
+    };
+    window.addEventListener('auth:logout', handleAuthLogout);
+    return () => window.removeEventListener('auth:logout', handleAuthLogout);
+  }, []);
+
   const value = {
     user,
     token,

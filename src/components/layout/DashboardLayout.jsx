@@ -5,12 +5,12 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from './Sidebar';
 import NotificationDropdown from './NotificationDropdown';
+import UserDropdown from './UserDropdown';
 import { motion } from 'framer-motion';
 
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { isDark, toggleTheme } = useTheme();
-  const { user } = useAuth();
 
   return (
     <div className={`flex h-screen overflow-hidden ${isDark ? 'bg-slate-950' : 'bg-slate-100'}`}>
@@ -54,24 +54,8 @@ export default function DashboardLayout() {
             {/* Notifications */}
             <NotificationDropdown />
 
-            {/* User avatar */}
-            <div className="flex items-center gap-2 ml-1">
-              {user?.avatar ? (
-                <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover ring-2 ring-purple-500/40" />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold">
-                  {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                </div>
-              )}
-              <div className="hidden sm:block">
-                <p className={`text-sm font-semibold leading-none ${isDark ? 'text-white' : 'text-slate-800'}`}>
-                  {user?.name?.split(' ')[0] || 'User'}
-                </p>
-                <p className={`text-xs capitalize mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  {user?.role || 'member'}
-                </p>
-              </div>
-            </div>
+            {/* User Dropdown */}
+            <UserDropdown />
           </div>
         </header>
 

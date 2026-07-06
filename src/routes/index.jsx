@@ -33,6 +33,7 @@ import MyMealsPage from '../pages/member/MyMealsPage';
 // Shared pages
 import ProfilePage from '../pages/shared/ProfilePage';
 import CommunityPage from '../pages/member/CommunityPage';
+import NotificationsPage from '../pages/shared/NotificationsPage';
 
 // Not Found & Unauthorized
 const NotFound = () => (
@@ -94,7 +95,6 @@ const router = createBrowserRouter([
           { path: 'meals', element: <MealsPage /> },
           { path: 'notices', element: <NoticesPage /> },
           { path: 'complaints', element: <ComplaintsPage /> },
-          { path: 'visitors', element: <VisitorsPage /> },
           { path: 'settings', element: <SettingsPage /> },
           { path: 'profile', element: <ProfilePage /> },
         ],
@@ -116,7 +116,7 @@ const router = createBrowserRouter([
           { path: 'meals', element: <MyMealsPage /> },
           { path: 'notices', element: <NoticesPage /> },
           { path: 'complaints', element: <MyComplaintsPage /> },
-          { path: 'visitors', element: <VisitorsPage /> },
+          { path: 'notifications', element: <NotificationsPage /> },
           { path: 'community', element: <CommunityPage /> },
           { path: 'settings', element: <SettingsPage /> },
           { path: 'profile', element: <ProfilePage /> },

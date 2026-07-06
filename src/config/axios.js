@@ -26,13 +26,17 @@ api.interceptors.request.use(
 );
 
 // ─── Response Interceptor ────────────────────────────────────────────────────
-// Handle 401 globally — clear token and redirect to login
+// Handle 401 globally — clear token (but don't redirect; React Router handles it)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Only clear token on a genuine 401 from the server (invalid/expired JWT).
+    // Do NOT log out on network errors (error.response is undefined) or other
+    // status codes – those are handled per-request.
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      // Fire a custom event so AuthContext can react without a hard redirect
+      window.dispatchEvent(new Event('auth:logout'));
     }
     return Promise.reject(error);
   }
