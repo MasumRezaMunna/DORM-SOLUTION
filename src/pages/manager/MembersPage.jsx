@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { UserPlus, Search, MoreVertical, DoorOpen, Shield, ShieldAlert } from 'lucide-react';
+import { UserPlus, Search, MoreVertical, DoorOpen, Shield, ShieldAlert, CheckCircle, XCircle } from 'lucide-react';
 import PageHeader from '../../components/shared/PageHeader';
 import DataTable from '../../components/shared/DataTable';
 import StatusBadge from '../../components/shared/StatusBadge';
@@ -16,6 +16,7 @@ export default function MembersPage() {
   const { isDark } = useTheme();
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('members');
   const queryClient = useQueryClient();
 
   const [formData, setFormData] = useState({ userId: '', phone: '', nid: '', occupation: '' });
@@ -30,6 +31,27 @@ export default function MembersPage() {
     },
     onError: (err) => {
       toast.error(err.response?.data?.message || 'Failed to add member');
+    }
+  });
+
+  const statusMutation = useMutation({
+    mutationFn: ({ id, status }) => api.put(`/members/${id}`, { status }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
+      toast.success('Status updated!');
+    },
+    onError: () => toast.error('Failed to update status')
+  });
+
+  const approveMutation = useMutation({
+    mutationFn: (userId) => api.post('/members', { userId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
+      queryClient.invalidateQueries({ queryKey: ['pendingUsers'] });
+      toast.success('Member activated successfully!');
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.message || 'Failed to activate member');
     }
   });
 
@@ -52,10 +74,24 @@ export default function MembersPage() {
     placeholderData: [],
   });
 
+  const { data: pendingUsers = [], isLoading: isPendingLoading } = useQuery({
+    queryKey: ['pendingUsers'],
+    queryFn: async () => {
+      const { data } = await api.get('/users/pending');
+      return data.data || [];
+    },
+    placeholderData: [],
+  });
+
   const filtered = members.filter(m =>
     m.userId?.displayName?.toLowerCase().includes(search.toLowerCase()) ||
     m.userId?.email?.toLowerCase().includes(search.toLowerCase()) ||
     m.roomId?.roomNumber?.toString().includes(search)
+  );
+
+  const pendingFiltered = pendingUsers.filter(u => 
+    u.displayName?.toLowerCase().includes(search.toLowerCase()) ||
+    u.email?.toLowerCase().includes(search.toLowerCase())
   );
 
   const columns = [
@@ -115,11 +151,25 @@ export default function MembersPage() {
     {
       key: 'actions',
       label: '',
-      width: '100px',
+      width: '120px',
       render: (row) => {
         const isManager = row.userId?.role === 'manager';
+        const isActive = row.status === 'active';
         return (
           <div className="flex justify-end gap-2">
+            <button
+              onClick={() => {
+                if (window.confirm(`Mark ${row.userId?.displayName} as ${isActive ? 'Inactive' : 'Active'}?`)) {
+                  statusMutation.mutate({ id: row._id, status: isActive ? 'inactive' : 'active' });
+                }
+              }}
+              title={isActive ? "Deactivate Member" : "Activate Member"}
+              className={`p-1.5 rounded-lg transition-colors ${
+                isActive ? 'text-emerald-400 hover:bg-emerald-500/10' : 'text-slate-400 hover:bg-slate-500/10'
+              }`}
+            >
+              {isActive ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+            </button>
             <button
               onClick={() => {
                 if (window.confirm(`Change role of ${row.userId?.displayName} to ${isManager ? 'Member' : 'Manager'}?`)) {
@@ -140,6 +190,48 @@ export default function MembersPage() {
         );
       }
     },
+  ];
+
+  const pendingColumns = [
+    {
+      key: 'name',
+      label: 'User',
+      render: (row) => (
+        <div className="flex items-center gap-3">
+          {row.photoURL ? (
+            <img src={row.photoURL} alt={row.displayName} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
+          ) : (
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+              {getInitials(row.displayName || 'U')}
+            </div>
+          )}
+          <div>
+            <p className={`font-medium text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{row.displayName || 'Unknown'}</p>
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{row.email}</p>
+          </div>
+        </div>
+      )
+    },
+    {
+      key: 'actions',
+      label: '',
+      width: '120px',
+      render: (row) => (
+        <div className="flex justify-end">
+          <button
+            onClick={() => {
+              if (window.confirm(`Activate ${row.displayName} as a member?`)) {
+                approveMutation.mutate(row._id);
+              }
+            }}
+            disabled={approveMutation.isPending}
+            className="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 text-xs font-semibold transition-colors"
+          >
+            Activate
+          </button>
+        </div>
+      )
+    }
   ];
 
   return (
@@ -172,11 +264,34 @@ export default function MembersPage() {
         />
       </div>
 
+      {/* Tabs */}
+      <div className={`flex items-center gap-4 border-b ${isDark ? 'border-white/10' : 'border-slate-200'} mb-6`}>
+        <button 
+          onClick={() => setActiveTab('members')}
+          className={`pb-3 text-sm font-semibold border-b-2 transition-colors ${activeTab === 'members' ? 'border-purple-500 text-purple-500' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+        >
+          Active Members
+        </button>
+        <button 
+          onClick={() => setActiveTab('pending')}
+          className={`pb-3 text-sm font-semibold border-b-2 transition-colors flex items-center gap-2 ${activeTab === 'pending' ? 'border-purple-500 text-purple-500' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+        >
+          Pending Approvals
+          {pendingUsers.length > 0 && (
+            <span className="px-1.5 py-0.5 rounded-full bg-red-500/10 text-red-500 text-[10px] tabular-nums">{pendingUsers.length}</span>
+          )}
+        </button>
+      </div>
+
       <DataTable
-        columns={columns}
-        data={filtered}
-        loading={isLoading}
-        emptyMessage={search ? `No members matching "${search}"` : 'No members yet. Add your first member!'}
+        columns={activeTab === 'members' ? columns : pendingColumns}
+        data={activeTab === 'members' ? filtered : pendingFiltered}
+        loading={activeTab === 'members' ? isLoading : isPendingLoading}
+        emptyMessage={
+          search 
+            ? `No ${activeTab === 'members' ? 'members' : 'pending users'} matching "${search}"` 
+            : (activeTab === 'members' ? 'No members yet. Add your first member!' : 'No pending users awaiting approval.')
+        }
       />
 
       <Modal

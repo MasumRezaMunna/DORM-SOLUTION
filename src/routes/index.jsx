@@ -8,6 +8,7 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 
 // Public
 import LoginPage from '../pages/public/LoginPage';
+import PendingPage from '../pages/public/PendingPage';
 
 // Manager pages
 import ManagerDashboard from '../pages/manager/ManagerDashboard';
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
     children: [
       { path: '/login', element: <LoginPage /> },
     ],
+  },
+  {
+    path: '/pending',
+    element: <PendingPage />,
   },
 
   // Error routes
