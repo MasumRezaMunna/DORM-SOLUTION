@@ -26,13 +26,13 @@ export default function ManagerDashboard() {
     // Use demo data if backend is not connected yet
     placeholderData: {
       overview: {
-        totalMembers: 28,
-        activeMembers: 26,
-        occupiedRooms: 14,
-        totalRooms: 16,
-        monthlyIncome: 55000,
-        monthlyExpenses: 26000,
-        pendingBills: 6,
+        totalMembers: 0,
+        activeMembers: 0,
+        occupiedRooms: 0,
+        totalRooms: 0,
+        monthlyIncome: 0,
+        monthlyExpenses: 0,
+        pendingBills: 0,
       },
       recentPayments: [],
       recentComplaints: [],
