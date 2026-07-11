@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { UserPlus, Search, MoreVertical, DoorOpen, Shield, ShieldAlert, CheckCircle, XCircle } from 'lucide-react';
@@ -11,6 +11,63 @@ import { formatDate, getInitials } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
 import toast from 'react-hot-toast';
+
+const ActionMenu = ({ row, isDark, statusMutation, roleMutation }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
+  const isManager = row.userId?.role === 'manager';
+  const isActive = row.status === 'active';
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative flex justify-end" ref={menuRef}>
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className={`p-1.5 rounded-lg transition-colors ${isOpen ? (isDark ? 'bg-white/10 text-white' : 'bg-slate-200 text-slate-800') : (isDark ? 'hover:bg-white/10 text-slate-400' : 'hover:bg-slate-100 text-slate-500')}`}
+      >
+        <MoreVertical className="w-4 h-4" />
+      </button>
+      
+      {isOpen && (
+        <div className={`absolute right-0 top-full mt-1 w-48 rounded-xl border shadow-xl z-50 py-1 ${isDark ? 'bg-slate-800 border-white/10' : 'bg-white border-slate-100'}`}>
+          <button
+            onClick={() => {
+              setIsOpen(false);
+              if (window.confirm(`Mark ${row.userId?.displayName} as ${isActive ? 'Inactive' : 'Active'}?`)) {
+                statusMutation.mutate({ id: row._id, status: isActive ? 'inactive' : 'active' });
+              }
+            }}
+            className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition-colors ${isDark ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-slate-50 text-slate-700'}`}
+          >
+            {isActive ? <XCircle className="w-4 h-4 text-red-400" /> : <CheckCircle className="w-4 h-4 text-emerald-400" />}
+            {isActive ? 'Deactivate Member' : 'Activate Member'}
+          </button>
+          <button
+            onClick={() => {
+              setIsOpen(false);
+              if (window.confirm(`Change role of ${row.userId?.displayName} to ${isManager ? 'Member' : 'Manager'}?`)) {
+                roleMutation.mutate({ id: row.userId?._id, role: isManager ? 'member' : 'manager' });
+              }
+            }}
+            className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition-colors ${isDark ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-slate-50 text-slate-700'}`}
+          >
+            {isManager ? <ShieldAlert className="w-4 h-4 text-orange-400" /> : <Shield className="w-4 h-4 text-purple-400" />}
+            {isManager ? 'Demote to Member' : 'Promote to Manager'}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function MembersPage() {
   const { isDark } = useTheme();
@@ -151,44 +208,15 @@ export default function MembersPage() {
     {
       key: 'actions',
       label: '',
-      width: '120px',
-      render: (row) => {
-        const isManager = row.userId?.role === 'manager';
-        const isActive = row.status === 'active';
-        return (
-          <div className="flex justify-end gap-2">
-            <button
-              onClick={() => {
-                if (window.confirm(`Mark ${row.userId?.displayName} as ${isActive ? 'Inactive' : 'Active'}?`)) {
-                  statusMutation.mutate({ id: row._id, status: isActive ? 'inactive' : 'active' });
-                }
-              }}
-              title={isActive ? "Deactivate Member" : "Activate Member"}
-              className={`p-1.5 rounded-lg transition-colors ${
-                isActive ? 'text-emerald-400 hover:bg-emerald-500/10' : 'text-slate-400 hover:bg-slate-500/10'
-              }`}
-            >
-              {isActive ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
-            </button>
-            <button
-              onClick={() => {
-                if (window.confirm(`Change role of ${row.userId?.displayName} to ${isManager ? 'Member' : 'Manager'}?`)) {
-                  roleMutation.mutate({ id: row.userId?._id, role: isManager ? 'member' : 'manager' });
-                }
-              }}
-              title={isManager ? "Demote to Member" : "Promote to Manager"}
-              className={`p-1.5 rounded-lg transition-colors ${
-                isManager ? 'text-purple-400 hover:bg-purple-500/10' : 'text-slate-400 hover:bg-slate-500/10'
-              }`}
-            >
-              {isManager ? <ShieldAlert className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
-            </button>
-            <button className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-white/10 text-slate-400' : 'hover:bg-slate-100 text-slate-500'}`}>
-              <MoreVertical className="w-4 h-4" />
-            </button>
-          </div>
-        );
-      }
+      width: '60px',
+      render: (row) => (
+        <ActionMenu 
+          row={row} 
+          isDark={isDark} 
+          statusMutation={statusMutation} 
+          roleMutation={roleMutation} 
+        />
+      )
     },
   ];
 

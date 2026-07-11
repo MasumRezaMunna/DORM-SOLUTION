@@ -97,6 +97,7 @@ const router = createBrowserRouter([
           { path: 'complaints', element: <ComplaintsPage /> },
           { path: 'settings', element: <SettingsPage /> },
           { path: 'profile', element: <ProfilePage /> },
+          { path: 'notifications', element: <NotificationsPage /> },
         ],
       },
     ],

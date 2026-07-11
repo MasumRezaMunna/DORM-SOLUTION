@@ -27,7 +27,6 @@ export default function BillsPage() {
     memberId: '',
     month: currentMonth,
     year: currentYear,
-    rent: '',
     mealCost: '',
     dueDate: '',
   });
@@ -51,7 +50,6 @@ export default function BillsPage() {
         memberId: '',
         month: currentMonth,
         year: currentYear,
-        rent: '',
         mealCost: '',
         dueDate: '',
       });
@@ -71,7 +69,6 @@ export default function BillsPage() {
         memberId: '',
         month: currentMonth,
         year: currentYear,
-        rent: '',
         mealCost: '',
         dueDate: '',
       });
@@ -145,11 +142,6 @@ export default function BillsPage() {
       )
     },
     {
-      key: 'rent',
-      label: 'Rent',
-      render: (row) => <span className="text-sm">{formatCurrency(row.rent)}</span>
-    },
-    {
       key: 'meal',
       label: 'Meal',
       render: (row) => <span className="text-sm">{formatCurrency(row.mealCost)}</span>
@@ -204,7 +196,6 @@ export default function BillsPage() {
                 memberId: row.memberId?._id || '',
                 month: row.month,
                 year: row.year,
-                rent: row.rent || '',
                 mealCost: row.mealCost || '',
                 dueDate: row.dueDate ? row.dueDate.split('T')[0] : '',
               });
@@ -239,7 +230,7 @@ export default function BillsPage() {
             onClick={() => {
               setEditingId(null);
               setFormData({
-                memberId: '', month: currentMonth, year: currentYear, rent: '', mealCost: '', dueDate: ''
+                memberId: '', month: currentMonth, year: currentYear, mealCost: '', dueDate: ''
               });
               setIsModalOpen(true);
             }}
@@ -269,11 +260,10 @@ export default function BillsPage() {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
-                statusFilter === s
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${statusFilter === s
                   ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow'
                   : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
-              }`}
+                }`}
             >
               {s}
             </button>
@@ -330,9 +320,8 @@ export default function BillsPage() {
               required
               value={formData.memberId}
               onChange={e => setFormData({ ...formData, memberId: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
-                isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-              }`}
+              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                }`}
             >
               <option value="">-- Choose Member --</option>
               {!editingId && <option value="all" className="font-semibold text-purple-500">All Active Members (Bulk)</option>}
@@ -353,9 +342,8 @@ export default function BillsPage() {
                 required
                 value={formData.month}
                 onChange={e => setFormData({ ...formData, month: e.target.value })}
-                className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
-                  isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-                }`}
+                className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                  }`}
               />
             </div>
             <div>
@@ -365,40 +353,23 @@ export default function BillsPage() {
                 required
                 value={formData.year}
                 onChange={e => setFormData({ ...formData, year: e.target.value })}
-                className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
-                  isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-                }`}
+                className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                  }`}
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Rent Amount</label>
-              <input
-                type="number"
-                required
-                value={formData.rent}
-                onChange={e => setFormData({ ...formData, rent: e.target.value })}
-                className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
-                  isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+          <div>
+            <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Meal Amount</label>
+            <input
+              type="number"
+              required
+              value={formData.mealCost}
+              onChange={e => setFormData({ ...formData, mealCost: e.target.value })}
+              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
                 }`}
-                placeholder="e.g. 5000"
-              />
-            </div>
-            <div>
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Meal Amount</label>
-              <input
-                type="number"
-                required
-                value={formData.mealCost}
-                onChange={e => setFormData({ ...formData, mealCost: e.target.value })}
-                className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
-                  isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-                }`}
-                placeholder="e.g. 3000"
-              />
-            </div>
+              placeholder="e.g. 3000"
+            />
           </div>
 
           <div>
@@ -408,19 +379,17 @@ export default function BillsPage() {
               required
               value={formData.dueDate}
               onChange={e => setFormData({ ...formData, dueDate: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
-                isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-              }`}
+              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
+                }`}
             />
           </div>
-          
+
           <div className="pt-4 flex justify-end gap-3">
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                isDark ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${isDark ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
             >
               Cancel
             </button>

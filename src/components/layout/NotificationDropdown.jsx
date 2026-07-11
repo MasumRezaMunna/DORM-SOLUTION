@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Check, Trash2, Link as LinkIcon, Settings } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { formatRelativeTime } from '../../utils/helpers';
 import api from '../../config/axios';
 
@@ -11,8 +12,10 @@ export default function NotificationDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { isDark } = useTheme();
+  const { isManager } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const notifRoot = isManager ? '/manager/notifications' : '/dashboard/notifications';
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -47,13 +50,40 @@ export default function NotificationDropdown() {
     onSuccess: () => queryClient.invalidateQueries(['notifications']),
   });
 
+  const resolveLink = (link) => {
+    if (!link) return null;
+    
+    // The backend stores links like /member/bills
+    // We need to remap them to our actual frontend routes
+    let finalLink = link;
+    if (finalLink.startsWith('/member/')) {
+      finalLink = finalLink.replace('/member/', '/dashboard/');
+    }
+
+    if (isManager && finalLink.startsWith('/dashboard/')) {
+      // Remap to manager route if it exists, otherwise keep as-is
+      const sub = finalLink.replace('/dashboard/', '');
+      const managerRoutes = ['bills', 'payments', 'meals', 'notices', 'complaints', 'members', 'rooms', 'expenses', 'notifications', 'settings', 'profile'];
+      const segment = sub.split('/')[0];
+      
+      // If it's a room link, the manager route is /manager/rooms
+      if (segment === 'room') return '/manager/rooms';
+      
+      if (managerRoutes.includes(segment)) return finalLink.replace('/dashboard/', '/manager/');
+    }
+    
+    return finalLink;
+  };
+
   const handleNotificationClick = (n) => {
     if (!n.isRead) markReadMutation.mutate(n._id);
-    if (n.link) {
+    const dest = resolveLink(n.link);
+    if (dest) {
       setIsOpen(false);
-      navigate(n.link);
+      navigate(dest);
     }
   };
+
 
   const getIconColor = (type) => {
     switch (type) {
@@ -142,7 +172,7 @@ export default function NotificationDropdown() {
 
             <div className={`p-3 border-t ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
               <Link
-                to="/dashboard/notifications"
+                to={notifRoot}
                 onClick={() => setIsOpen(false)}
                 className="block text-center text-xs font-semibold text-purple-500 hover:text-purple-600 transition-colors"
               >

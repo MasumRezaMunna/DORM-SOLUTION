@@ -1,21 +1,27 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Menu, Sun, Moon, Bell } from 'lucide-react';
+import { Menu, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
-import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from './Sidebar';
 import NotificationDropdown from './NotificationDropdown';
 import UserDropdown from './UserDropdown';
 import { motion } from 'framer-motion';
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { isDark, toggleTheme } = useTheme();
 
   return (
     <div className={`flex h-screen overflow-hidden ${isDark ? 'bg-slate-950' : 'bg-slate-100'}`}>
       {/* Sidebar */}
-      <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <Sidebar
+        mobileOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed(prev => !prev)}
+      />
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -33,6 +39,17 @@ export default function DashboardLayout() {
             }`}
           >
             <Menu className="w-5 h-5" />
+          </button>
+
+          {/* Desktop collapse toggle */}
+          <button
+            onClick={() => setSidebarCollapsed(prev => !prev)}
+            className={`hidden lg:flex p-2 rounded-lg transition-colors ${
+              isDark ? 'text-slate-400 hover:bg-white/5' : 'text-slate-600 hover:bg-slate-100'
+            }`}
+            title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            {sidebarCollapsed ? <PanelLeftOpen className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
           </button>
 
           {/* Page title area (empty — pages set their own titles) */}
