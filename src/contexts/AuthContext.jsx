@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { signInWithPopup, signOut } from 'firebase/auth';
+import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { auth, googleProvider } from '../config/firebase';
 import api from '../config/axios';
 
@@ -71,23 +71,35 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // On mount (or token change), rehydrate user + pending status together
+  // Listen to Firebase Auth state changes
   useEffect(() => {
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchUser = async () => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       try {
-        const { data } = await api.get('/auth/me');
-        const userData = data.data;
-        // Resolve pending before rendering so children see a consistent state
-        const pending = await checkMemberPending(userData);
-        setUser(userData);
-        setIsPending(pending);
-      } catch {
-        // Token is invalid – force logout
+        if (firebaseUser) {
+          // Firebase thinks we are logged in.
+          // Get a fresh ID token and exchange it for a new backend JWT.
+          const idToken = await firebaseUser.getIdToken();
+          
+          const { data } = await api.post('/auth/google', { idToken });
+          const jwtToken = data.data.token;
+          const userData = data.data.user;
+
+          localStorage.setItem('token', jwtToken);
+          
+          const pending = await checkMemberPending(userData);
+          
+          setUser(userData);
+          setToken(jwtToken);
+          setIsPending(pending);
+        } else {
+          // No user in Firebase session
+          localStorage.removeItem('token');
+          setToken(null);
+          setUser(null);
+          setIsPending(false);
+        }
+      } catch (error) {
+        console.error('Auth state rehydration error:', error);
         localStorage.removeItem('token');
         setToken(null);
         setUser(null);
@@ -95,10 +107,10 @@ export const AuthProvider = ({ children }) => {
       } finally {
         setLoading(false);
       }
-    };
+    });
 
-    fetchUser();
-  }, [token]);
+    return () => unsubscribe();
+  }, []);
 
   // Listen for token invalidation fired by the axios 401 interceptor
   useEffect(() => {
@@ -106,6 +118,7 @@ export const AuthProvider = ({ children }) => {
       setToken(null);
       setUser(null);
       setIsPending(false);
+      signOut(auth).catch(() => {});
     };
     window.addEventListener('auth:logout', handleAuthLogout);
     return () => window.removeEventListener('auth:logout', handleAuthLogout);
