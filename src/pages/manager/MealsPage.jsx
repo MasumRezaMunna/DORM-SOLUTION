@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Save, Calendar, UtensilsCrossed, Sun, Moon, Users,
-  Minus, Plus, BarChart3, TrendingDown, Wallet, ChevronLeft, ChevronRight,
+  Minus, Plus, BarChart3, TrendingDown, Wallet, ChevronLeft, ChevronRight, Table,
 } from 'lucide-react';
 import PageHeader from '../../components/shared/PageHeader';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -162,7 +162,18 @@ export default function MealsPage() {
       const { data } = await api.get(`/meals/monthly-detail?month=${summaryMonth}&year=${summaryYear}`);
       return data.data;
     },
-    enabled: tab === 'summary',
+    enabled: tab === 'summary' || tab === 'breakdown',
+    staleTime: 30_000,
+  });
+
+  /* ── Detailed breakdown ─────────────────────────────────────────────── */
+  const { data: monthMeals = [], isLoading: monthMealsLoading } = useQuery({
+    queryKey: ['mealEntriesMonth', summaryMonth, summaryYear],
+    queryFn: async () => {
+      const { data } = await api.get(`/meals?month=${summaryMonth}&year=${summaryYear}&limit=2000`);
+      return data.data || [];
+    },
+    enabled: tab === 'breakdown',
     staleTime: 30_000,
   });
 
@@ -202,6 +213,7 @@ export default function MealsPage() {
         {[
           { key: 'daily',   icon: Calendar,  label: 'Daily Entry' },
           { key: 'summary', icon: BarChart3,  label: 'Monthly Summary' },
+          { key: 'breakdown', icon: Table, label: 'Detailed Breakdown' },
         ].map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -435,6 +447,109 @@ export default function MealsPage() {
               <div className={`text-center py-16 rounded-2xl border ${cardBg} ${textMuted}`}>
                 <BarChart3 className="w-8 h-8 mx-auto mb-2 opacity-40" />
                 <p className="text-sm">No data available for {MONTH_NAMES[summaryMonth-1]} {summaryYear}.</p>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* ══════════════════ DETAILED BREAKDOWN TAB ══════════════════ */}
+        {tab === 'breakdown' && (
+          <motion.div key="breakdown" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-5">
+            {/* Month navigator */}
+            <div className="flex items-center gap-3">
+              <button onClick={prevMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-white/10 hover:bg-white/5 text-slate-400' : 'border-slate-200 hover:bg-slate-50 text-slate-500'}`}><ChevronLeft className="w-4 h-4" /></button>
+              <span className={`text-sm font-semibold min-w-[110px] text-center ${isDark ? 'text-white' : 'text-slate-800'}`}>{MONTH_NAMES[summaryMonth - 1]} {summaryYear}</span>
+              <button onClick={nextMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-white/10 hover:bg-white/5 text-slate-400' : 'border-slate-200 hover:bg-slate-50 text-slate-500'}`}><ChevronRight className="w-4 h-4" /></button>
+            </div>
+
+            {monthMealsLoading || summaryLoading ? (
+              <div className={`h-96 rounded-2xl border ${cardBg} animate-pulse`} />
+            ) : (
+              <div className={`rounded-2xl border overflow-x-auto ${cardBg}`}>
+                <div className={`px-5 py-3.5 border-b ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
+                  <p className={`text-xs font-semibold uppercase tracking-wider ${textMuted}`}>Daily Meal Breakdown — {MONTH_NAMES[summaryMonth-1]} {summaryYear}</p>
+                </div>
+                <table className="w-full">
+                  <thead>
+                    <tr className={`text-[11px] uppercase tracking-wider ${textMuted} ${isDark ? 'border-white/5' : 'border-slate-100'} border-b`}>
+                      <th className="px-4 py-3 text-left font-medium sticky left-0 bg-inherit z-10">Date</th>
+                      {(monthlySummary?.members || []).map(m => (
+                        <th key={m.memberId} className="px-2 py-3 text-center font-medium min-w-[70px]">
+                          <div className="flex flex-col items-center gap-1">
+                            {m.photoURL
+                              ? <img src={m.photoURL} alt="" className="w-6 h-6 rounded-full object-cover" />
+                              : <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-[9px] font-bold">{getInitials(m.name)}</div>}
+                            <span className="truncate w-full">{m.name.split(' ')[0]}</span>
+                          </div>
+                        </th>
+                      ))}
+                      <th className="px-4 py-3 text-center font-medium bg-emerald-500/5 text-emerald-600 dark:text-emerald-400">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody className={`divide-y ${isDark ? 'divide-white/5' : 'divide-slate-100'}`}>
+                    {(() => {
+                      const daysInMonth = new Date(summaryYear, summaryMonth, 0).getDate();
+                      const rows = [];
+                      const monthTotals = {};
+                      let superTotal = 0;
+                      
+                      for (let d = 1; d <= daysInMonth; d++) {
+                        const dateStr = `${summaryYear}-${String(summaryMonth).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                        const dayMeals = monthMeals.filter(m => m.date.startsWith(dateStr));
+                        
+                        let dayTotal = 0;
+                        const memberCells = (monthlySummary?.members || []).map(m => {
+                          const meal = dayMeals.find(dm => (dm.memberId?._id || dm.memberId) === m.memberId);
+                          const count = meal ? meal.mealCount : 0;
+                          dayTotal += count;
+                          monthTotals[m.memberId] = (monthTotals[m.memberId] || 0) + count;
+                          return (
+                            <td key={m.memberId} className="px-2 py-2.5 text-center">
+                              {count > 0 ? (
+                                <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>{count}</span>
+                              ) : (
+                                <span className={`text-sm ${isDark ? 'text-slate-700' : 'text-slate-200'}`}>-</span>
+                              )}
+                            </td>
+                          );
+                        });
+                        
+                        superTotal += dayTotal;
+
+                        // Only show rows up to today if it's the current month, but user might want to see whole month.
+                        // Let's just show all days of the month.
+                        rows.push(
+                          <tr key={d} className={`transition-colors ${isDark ? 'hover:bg-white/[0.02]' : 'hover:bg-slate-50'}`}>
+                            <td className={`px-4 py-2.5 text-sm font-medium sticky left-0 ${isDark ? 'bg-slate-900 text-slate-300' : 'bg-white text-slate-600'}`}>
+                              {d} {MONTH_NAMES[summaryMonth-1]}
+                            </td>
+                            {memberCells}
+                            <td className="px-4 py-2.5 text-center bg-emerald-500/5">
+                              <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{dayTotal}</span>
+                            </td>
+                          </tr>
+                        );
+                      }
+                      
+                      // Push footer for totals
+                      rows.push(
+                        <tr key="totals" className={`border-t-2 font-bold ${isDark ? 'border-white/10 bg-white/[0.02]' : 'border-slate-200 bg-slate-50'}`}>
+                          <td className={`px-4 py-3 text-xs uppercase tracking-wider sticky left-0 ${isDark ? 'bg-slate-900 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>Totals</td>
+                          {(monthlySummary?.members || []).map(m => (
+                            <td key={m.memberId} className={`px-2 py-3 text-center text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                              {monthTotals[m.memberId] || 0}
+                            </td>
+                          ))}
+                          <td className="px-4 py-3 text-center bg-emerald-500/10">
+                            <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{superTotal}</span>
+                          </td>
+                        </tr>
+                      );
+
+                      return rows;
+                    })()}
+                  </tbody>
+                </table>
               </div>
             )}
           </motion.div>
