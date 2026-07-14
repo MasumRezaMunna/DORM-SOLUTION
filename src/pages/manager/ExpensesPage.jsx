@@ -25,7 +25,7 @@ export default function ExpensesPage() {
   const { data: expenses = [], isLoading } = useQuery({
     queryKey: [QUERY_KEYS.EXPENSES, summaryMonth, summaryYear, filterType],
     queryFn: async () => {
-      let url = `/expenses?month=${summaryMonth}&year=${summaryYear}`;
+      let url = `/expenses?month=${summaryMonth}&year=${summaryYear}&limit=200`;
       if (filterType !== 'All') url += `&expenseType=${filterType}`;
       const { data } = await api.get(url);
       return data.data || [];
