@@ -444,7 +444,7 @@ export default function MealsPage() {
                             <td className="px-3 py-3 text-right text-sm text-orange-400">৳{monthlySummary.members.reduce((s,m)=>s+(m.totalCost||m.mealCost),0).toFixed(0)}</td>
                             <td className={`px-3 py-3 text-right text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0).toFixed(0)}</td>
                             <td className="px-3 py-3 text-right">
-                              <BalanceBadge amount={monthlySummary.members.reduce((s,m)=>s+m.afterMeal,0)} />
+                              <BalanceBadge amount={monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0) - (monthlySummary.totalExpense||0)} />
                             </td>
                           </tr>
                         </tfoot>
