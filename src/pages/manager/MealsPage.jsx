@@ -439,9 +439,9 @@ export default function MealsPage() {
                           <td className="px-3 py-3 text-center text-sm text-amber-400">{monthlySummary.members.reduce((s,m)=>s+m.totalLunch,0)}</td>
                           <td className="px-3 py-3 text-center text-sm text-indigo-400">{monthlySummary.members.reduce((s,m)=>s+m.totalDinner,0)}</td>
                           <td className={`px-3 py-3 text-center text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{monthlySummary.totalMeals}</td>
-                            <td className="px-3 py-3 text-right text-sm text-red-400">৳{monthlySummary.members.reduce((s,m)=>s+m.mealCost,0).toFixed(0)}</td>
+                          <td className="px-3 py-3 text-right text-sm text-red-400">৳{monthlySummary.members.reduce((s,m)=>s+m.mealCost,0).toFixed(0)}</td>
                             <td className="px-3 py-3 text-right text-sm text-blue-400">৳{(monthlySummary.commonCostPerMember||0).toFixed(0)}<span className="text-xs text-slate-500 ml-1">/each</span></td>
-                            <td className="px-3 py-3 text-right text-sm text-orange-400">৳{monthlySummary.members.reduce((s,m)=>s+(m.totalCost||m.mealCost),0).toFixed(0)}</td>
+                            <td className="px-3 py-3 text-right text-sm text-orange-400">৳{(monthlySummary.totalExpense||0).toFixed(0)}</td>
                             <td className={`px-3 py-3 text-right text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0).toFixed(0)}</td>
                             <td className="px-3 py-3 text-right">
                               <BalanceBadge amount={monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0) - (monthlySummary.totalExpense||0)} />
