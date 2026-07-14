@@ -2,15 +2,17 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import {
   Users, DoorOpen, Receipt, TrendingUp, TrendingDown,
-  AlertCircle, Clock
+  AlertCircle, Clock, ShoppingCart
 } from 'lucide-react';
 import StatCard from '../../components/shared/StatCard';
 import PageHeader from '../../components/shared/PageHeader';
 import CommunitySummary from '../../components/shared/CommunitySummary';
+import WeeklyMealPlan from '../../components/shared/WeeklyMealPlan';
 import { useTheme } from '../../contexts/ThemeContext';
 import { formatCurrency, formatDate } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
+import { useMarketStats } from '../../features/market/hooks/useMarketSchedules';
 
 
 
@@ -32,12 +34,22 @@ export default function ManagerDashboard() {
         totalRooms: 0,
         monthlyIncome: 0,
         monthlyExpenses: 0,
-        pendingBills: 0,
       },
       recentPayments: [],
       recentComplaints: [],
     }
   });
+
+  const { data: marketStats, isLoading: marketLoading } = useMarketStats();
+
+  const dormIncome    = isLoading ? 0 : (data?.overview?.monthlyIncome ?? 0);
+  const dormExpenses  = isLoading ? 0 : (data?.overview?.monthlyExpenses ?? 0);
+  const dormRemaining = Math.max(0, dormIncome - dormExpenses);
+  const groceryCost   = isLoading ? 0 : (data?.overview?.groceryCost ?? 0);
+  const commonCost    = isLoading ? 0 : (data?.overview?.commonCost ?? 0);
+  const totalMeals    = isLoading ? 0 : (data?.overview?.totalMeals ?? 0);
+  const mealRate      = isLoading ? 0 : (data?.overview?.mealRate ?? 0);
+  const commonCostPerMember = isLoading ? 0 : (data?.overview?.commonCostPerMember ?? 0);
 
   const stats = [
     {
@@ -57,20 +69,79 @@ export default function ManagerDashboard() {
       changePositive: true,
     },
     {
-      title: 'Monthly Income',
-      value: isLoading ? '...' : formatCurrency(data?.overview?.monthlyIncome ?? 0),
-      icon: TrendingUp,
-      gradient: 'from-emerald-500 to-teal-600',
-      change: `Expenses: ${formatCurrency(data?.overview?.monthlyExpenses ?? 0)}`,
+      title: 'Grocery Expenses',
+      value: isLoading ? '...' : formatCurrency(groceryCost),
+      icon: ShoppingCart,
+      gradient: 'from-green-500 to-emerald-600',
+      change: `${totalMeals} total meals`,
       changePositive: true,
     },
     {
-      title: 'Pending Bills',
-      value: isLoading ? '...' : data?.overview?.pendingBills ?? 0,
+      title: 'Common Expenses',
+      value: isLoading ? '...' : formatCurrency(commonCost),
+      icon: TrendingUp,
+      gradient: 'from-blue-500 to-indigo-600',
+      change: `Divided among active members`,
+      changePositive: false,
+    },
+    {
+      title: 'Total Expenses',
+      value: isLoading ? '...' : formatCurrency(dormExpenses),
+      icon: TrendingUp,
+      gradient: 'from-pink-500 to-rose-600',
+      change: 'Grocery + Common Cost',
+      changeColor: 'text-rose-400',
+    },
+    {
+      title: 'Meal Rate',
+      value: isLoading ? '...' : formatCurrency(mealRate),
       icon: Receipt,
-      gradient: 'from-amber-500 to-orange-600',
-      change: data?.overview?.pendingBills > 0 ? 'Needs attention' : 'All cleared!',
-      changePositive: (data?.overview?.pendingBills ?? 0) === 0,
+      gradient: 'from-orange-500 to-amber-600',
+      change: 'Per meal calculation',
+      changeColor: 'text-emerald-400',
+    },
+    {
+      title: 'Common Cost / Member',
+      value: isLoading ? '...' : formatCurrency(commonCostPerMember),
+      icon: Users,
+      gradient: 'from-blue-500 to-cyan-600',
+      change: 'Equal share per member',
+      changeColor: 'text-emerald-400',
+    },
+    {
+      title: 'After Deduction (Balance)',
+      value: isLoading ? '...' : formatCurrency(data?.overview?.netBalance ?? 0),
+      icon: ShoppingCart,
+      gradient: 'from-emerald-500 to-teal-600',
+      change: 'Total Paid - Total Expenses',
+      changeColor: (data?.overview?.netBalance ?? 0) >= 0 ? 'text-emerald-400' : 'text-red-400',
+    }
+  ];
+
+  const marketCards = [
+    {
+      title: 'Total Schedules',
+      value: marketLoading ? '...' : marketStats?.total ?? 0,
+      icon: ShoppingCart,
+      gradient: 'from-purple-500 to-indigo-600',
+    },
+    {
+      title: 'Upcoming Teams',
+      value: marketLoading ? '...' : marketStats?.upcoming ?? 0,
+      icon: ShoppingCart,
+      gradient: 'from-blue-500 to-cyan-600',
+    },
+    {
+      title: 'Today\'s Team',
+      value: marketLoading ? '...' : marketStats?.today ?? 0,
+      icon: ShoppingCart,
+      gradient: 'from-emerald-500 to-teal-600',
+    },
+    {
+      title: 'Completed Teams',
+      value: marketLoading ? '...' : marketStats?.completed ?? 0,
+      icon: ShoppingCart,
+      gradient: 'from-slate-500 to-slate-700',
     },
   ];
 
@@ -90,6 +161,12 @@ export default function ManagerDashboard() {
       </div>
 
 
+
+      {/* Market Stats */}
+      <h3 className={`font-semibold text-lg mt-6 mb-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>Market Teams Overview</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {marketCards.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
+      </div>
 
       {/* Recent Activity */}
       <div className="grid grid-cols-1 gap-4">
@@ -121,6 +198,8 @@ export default function ManagerDashboard() {
           )}
         </motion.div>
       </div>
+
+      <WeeklyMealPlan isManager={true} />
 
       <CommunitySummary />
     </div>

@@ -8,7 +8,7 @@ import Modal from '../../components/shared/Modal';
 import { useTheme } from '../../contexts/ThemeContext';
 import { formatCurrency, formatDate, getMonthName } from '../../utils/helpers';
 import api from '../../config/axios';
-import { QUERY_KEYS, EXPENSE_CATEGORIES } from '../../utils/constants';
+import { QUERY_KEYS, EXPENSE_TYPES } from '../../utils/constants';
 import toast from 'react-hot-toast';
 
 export default function ExpensesPage() {
@@ -19,15 +19,26 @@ export default function ExpensesPage() {
   const [summaryYear,  setSummaryYear]  = useState(now.getFullYear());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [form, setForm] = useState({ description: '', amount: '', category: 'grocery', date: new Date().toISOString().split('T')[0], note: '' });
+  const [filterType, setFilterType] = useState('All');
+  const [form, setForm] = useState({ title: '', amount: '', expenseType: 'Grocery', date: new Date().toISOString().split('T')[0], notes: '' });
 
   const { data: expenses = [], isLoading } = useQuery({
-    queryKey: [QUERY_KEYS.EXPENSES, summaryMonth, summaryYear],
+    queryKey: [QUERY_KEYS.EXPENSES, summaryMonth, summaryYear, filterType],
     queryFn: async () => {
-      const { data } = await api.get(`/expenses?month=${summaryMonth}&year=${summaryYear}`);
+      let url = `/expenses?month=${summaryMonth}&year=${summaryYear}`;
+      if (filterType !== 'All') url += `&expenseType=${filterType}`;
+      const { data } = await api.get(url);
       return data.data || [];
     },
     placeholderData: [],
+  });
+
+  const { data: dashboardData } = useQuery({
+    queryKey: [QUERY_KEYS.DASHBOARD_MANAGER, summaryMonth, summaryYear],
+    queryFn: async () => {
+      const { data } = await api.get('/dashboard/manager');
+      return data.data?.overview || {};
+    },
   });
 
   const createMutation = useMutation({
@@ -36,8 +47,9 @@ export default function ExpensesPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.EXPENSES });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       setIsModalOpen(false);
-      setForm({ description: '', amount: '', category: 'grocery', date: new Date().toISOString().split('T')[0], note: '' });
+      setForm({ title: '', amount: '', expenseType: 'Grocery', date: new Date().toISOString().split('T')[0], notes: '' });
       toast.success('Expense added!');
     },
     onError: () => toast.error('Failed to add expense.'),
@@ -49,9 +61,10 @@ export default function ExpensesPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.EXPENSES });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       setIsModalOpen(false);
       setEditingId(null);
-      setForm({ description: '', amount: '', category: 'grocery', date: new Date().toISOString().split('T')[0], note: '' });
+      setForm({ title: '', amount: '', expenseType: 'Grocery', date: new Date().toISOString().split('T')[0], notes: '' });
       toast.success('Expense updated!');
     },
     onError: () => toast.error('Failed to update expense.'),
@@ -61,6 +74,7 @@ export default function ExpensesPage() {
     mutationFn: (id) => api.delete(`/expenses/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.EXPENSES });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       toast.success('Expense deleted!');
     },
     onError: () => toast.error('Failed to delete expense.'),
@@ -75,16 +89,20 @@ export default function ExpensesPage() {
 
   const columns = [
     {
-      key: 'description',
-      label: 'Description',
+      key: 'title',
+      label: 'Title',
       render: (row) => {
-        const cat = EXPENSE_CATEGORIES.find(c => c.value === row.category);
+        const cat = EXPENSE_TYPES.find(c => c.value === row.expenseType);
         return (
           <div className="flex items-center gap-3">
             <span className="text-xl leading-none">{cat?.icon || '📦'}</span>
             <div>
-              <p className={`font-medium text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{row.description}</p>
-              <p className={`text-xs capitalize ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{cat?.label || row.category}</p>
+              <p className={`font-medium text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{row.title}</p>
+              <span className={`inline-flex items-center mt-1 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wide uppercase ${
+                row.expenseType === 'Grocery' ? 'bg-green-500/10 text-green-500' : 'bg-blue-500/10 text-blue-500'
+              }`}>
+                {row.expenseType === 'Grocery' ? '🟢 ' : '🔵 '}{row.expenseType}
+              </span>
             </div>
           </div>
         );
@@ -101,9 +119,9 @@ export default function ExpensesPage() {
       render: (row) => <span className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{formatDate(row.date)}</span>
     },
     {
-      key: 'note',
-      label: 'Note',
-      render: (row) => <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{row.note || '—'}</span>
+      key: 'notes',
+      label: 'Notes',
+      render: (row) => <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{row.notes || '—'}</span>
     },
     {
       key: 'actions',
@@ -114,11 +132,11 @@ export default function ExpensesPage() {
             onClick={() => {
               setEditingId(row._id);
               setForm({
-                description: row.description,
+                title: row.title,
                 amount: row.amount || '',
-                category: row.category || 'grocery',
+                expenseType: row.expenseType || 'Grocery',
                 date: row.date ? row.date.split('T')[0] : '',
-                note: row.note || ''
+                notes: row.notes || ''
               });
               setIsModalOpen(true);
             }}
@@ -150,7 +168,7 @@ export default function ExpensesPage() {
             whileTap={{ scale: 0.98 }}
             onClick={() => {
               setEditingId(null);
-              setForm({ description: '', amount: '', category: 'grocery', date: new Date().toISOString().split('T')[0], note: '' });
+              setForm({ title: '', amount: '', expenseType: 'Grocery', date: new Date().toISOString().split('T')[0], notes: '' });
               setIsModalOpen(true);
             }}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg"
@@ -173,15 +191,32 @@ export default function ExpensesPage() {
         }} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-white/10 hover:bg-white/5 text-slate-400' : 'border-slate-200 hover:bg-slate-50 text-slate-500'}`}><ChevronRight className="w-4 h-4" /></button>
       </div>
 
-      {/* Summary */}
-      <div className={`flex items-center gap-4 px-5 py-4 rounded-2xl border ${cardBg}`}>
-        <div className="p-2.5 rounded-xl bg-red-500/10">
-          <ShoppingBag className="w-5 h-5 text-red-400" />
-        </div>
-        <div>
-          <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Expenses in {getMonthName(summaryMonth)}</p>
-          <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{formatCurrency(totalExpenses)}</p>
-        </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+        {[
+          { label: 'Total Expense', value: formatCurrency(dashboardData?.monthlyExpenses || 0), color: 'text-purple-400', bg: 'bg-purple-500/10' },
+          { label: 'Grocery Cost', value: formatCurrency(dashboardData?.groceryCost || 0), color: 'text-green-400', bg: 'bg-green-500/10' },
+          { label: 'Common Cost', value: formatCurrency(dashboardData?.commonCost || 0), color: 'text-blue-400', bg: 'bg-blue-500/10' },
+          { label: 'Total Meals', value: dashboardData?.totalMeals || 0, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+          { label: 'Meal Rate', value: formatCurrency(dashboardData?.mealRate || 0), color: 'text-rose-400', bg: 'bg-rose-500/10' },
+          { label: 'Common Cost / Member', value: formatCurrency(dashboardData?.commonCostPerMember || 0), color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+        ].map((card, idx) => (
+          <div key={idx} className={`p-4 rounded-2xl border ${cardBg}`}>
+            <p className={`text-xs font-medium mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{card.label}</p>
+            <p className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{card.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {['All', 'Grocery', 'Common'].map(type => (
+          <button 
+            key={type}
+            onClick={() => setFilterType(type)}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${filterType === type ? 'bg-purple-600 text-white' : isDark ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-white text-slate-500 hover:bg-slate-100 border border-slate-200'}`}
+          >
+            {type}
+          </button>
+        ))}
       </div>
 
       {/* Add Form */}
@@ -203,17 +238,17 @@ export default function ExpensesPage() {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Description</label>
-              <input required placeholder="e.g. Rice & Vegetables" value={form.description} onChange={e => setForm(p => ({...p, description: e.target.value}))} className={inputClass} />
+              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Title</label>
+              <input required placeholder="e.g. Rice & Vegetables" value={form.title} onChange={e => setForm(p => ({...p, title: e.target.value}))} className={inputClass} />
             </div>
             <div>
               <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Amount (৳)</label>
               <input type="number" required placeholder="Amount" value={form.amount} onChange={e => setForm(p => ({...p, amount: e.target.value}))} className={inputClass} />
             </div>
             <div>
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Category</label>
-              <select value={form.category} onChange={e => setForm(p => ({...p, category: e.target.value}))} className={`${inputClass}`}>
-                {EXPENSE_CATEGORIES.map(c => (
+              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Expense Type</label>
+              <select value={form.expenseType} onChange={e => setForm(p => ({...p, expenseType: e.target.value}))} className={`${inputClass}`}>
+                {EXPENSE_TYPES.map(c => (
                   <option key={c.value} value={c.value} className={isDark ? 'bg-slate-800' : 'bg-white'}>{c.icon} {c.label}</option>
                 ))}
               </select>
@@ -223,8 +258,8 @@ export default function ExpensesPage() {
               <input type="date" required value={form.date} onChange={e => setForm(p => ({...p, date: e.target.value}))} className={inputClass} />
             </div>
             <div className="sm:col-span-2">
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Note (Optional)</label>
-              <input placeholder="Additional details" value={form.note} onChange={e => setForm(p => ({...p, note: e.target.value}))} className={`${inputClass} w-full`} />
+              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Notes (Optional)</label>
+              <input placeholder="Additional details" value={form.notes} onChange={e => setForm(p => ({...p, notes: e.target.value}))} className={`${inputClass} w-full`} />
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-2">
@@ -232,7 +267,7 @@ export default function ExpensesPage() {
             <motion.button
               type="submit"
               whileTap={{ scale: 0.97 }}
-              disabled={!form.description || !form.amount || createMutation.isPending || updateMutation.isPending}
+              disabled={!form.title || !form.amount || createMutation.isPending || updateMutation.isPending}
               className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold disabled:opacity-50"
             >
               {createMutation.isPending || updateMutation.isPending ? 'Saving...' : (editingId ? 'Save Changes' : 'Save Expense')}

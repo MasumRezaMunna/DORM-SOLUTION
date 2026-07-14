@@ -14,7 +14,6 @@ import PendingPage from '../pages/public/PendingPage';
 import ManagerDashboard from '../pages/manager/ManagerDashboard';
 import MembersPage from '../pages/manager/MembersPage';
 import RoomsPage from '../pages/manager/RoomsPage';
-import BillsPage from '../pages/manager/BillsPage';
 import PaymentsPage from '../pages/manager/PaymentsPage';
 import ExpensesPage from '../pages/manager/ExpensesPage';
 import MealsPage from '../pages/manager/MealsPage';
@@ -22,13 +21,14 @@ import NoticesPage from '../pages/manager/NoticesPage';
 import ComplaintsPage from '../pages/manager/ComplaintsPage';
 import VisitorsPage from '../pages/manager/VisitorsPage';
 import SettingsPage from '../pages/manager/SettingsPage';
+import MarketTeamPage from '../pages/manager/MarketTeamPage';
 
 // Member pages
 import MemberDashboard from '../pages/member/MemberDashboard';
-import MyBillsPage from '../pages/member/MyBillsPage';
 import MyComplaintsPage from '../pages/member/MyComplaintsPage';
 import MyRoomPage from '../pages/member/MyRoomPage';
 import MyMealsPage from '../pages/member/MyMealsPage';
+import MarketSchedulePage from '../pages/member/MarketSchedulePage';
 
 // Shared pages
 import ProfilePage from '../pages/shared/ProfilePage';
@@ -89,12 +89,12 @@ const router = createBrowserRouter([
           { index: true, element: <ManagerDashboard /> },
           { path: 'members', element: <MembersPage /> },
           { path: 'rooms', element: <RoomsPage /> },
-          { path: 'bills', element: <BillsPage /> },
           { path: 'payments', element: <PaymentsPage /> },
           { path: 'expenses', element: <ExpensesPage /> },
           { path: 'meals', element: <MealsPage /> },
           { path: 'notices', element: <NoticesPage /> },
           { path: 'complaints', element: <ComplaintsPage /> },
+          { path: 'market', element: <MarketTeamPage /> },
           { path: 'settings', element: <SettingsPage /> },
           { path: 'profile', element: <ProfilePage /> },
           { path: 'notifications', element: <NotificationsPage /> },
@@ -113,9 +113,9 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <MemberDashboard /> },
           { path: 'room', element: <MyRoomPage /> },
-          { path: 'bills', element: <MyBillsPage /> },
           { path: 'meals', element: <MyMealsPage /> },
           { path: 'notices', element: <NoticesPage /> },
+          { path: 'market', element: <MarketSchedulePage /> },
           { path: 'complaints', element: <MyComplaintsPage /> },
           { path: 'notifications', element: <NotificationsPage /> },
           { path: 'community', element: <CommunityPage /> },

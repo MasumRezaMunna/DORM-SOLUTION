@@ -1,15 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Receipt, DoorOpen, UtensilsCrossed, TrendingDown } from 'lucide-react';
+import { Receipt, UtensilsCrossed, TrendingDown, TrendingUp, ShoppingCart, Calendar, Users } from 'lucide-react';
 import PageHeader from '../../components/shared/PageHeader';
 import StatCard from '../../components/shared/StatCard';
 import StatusBadge from '../../components/shared/StatusBadge';
 import CommunitySummary from '../../components/shared/CommunitySummary';
+import WeeklyMealPlan from '../../components/shared/WeeklyMealPlan';
 import { useTheme } from '../../contexts/ThemeContext';
 import { formatCurrency, formatDate, getMonthName } from '../../utils/helpers';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
+import { useMySchedules } from '../../features/market/hooks/useMarketSchedules';
 
 export default function MemberDashboard() {
   const { isDark } = useTheme();
@@ -29,37 +31,87 @@ export default function MemberDashboard() {
     }
   });
 
+  const { data: myMarketData, isLoading: marketLoading } = useMySchedules();
+  const mySummary = myMarketData?.summary || {};
+
+  const paidAmount     = data?.memberPaidThisMonth || 0;
+  
+  // Total expenses for the member this month
+  const mealThisMonth = data?.mealThisMonth ?? 0;
+  const mealRate = data?.mealRate ?? 0;
+  const foodCost = (mealThisMonth * mealRate);
+  const commonExpense = data?.commonCostPerMember ?? 0;
+  const totalPayable = foodCost + commonExpense;
+  
+  // Member's balance for this month
+  const myBalance = paidAmount - totalPayable;
+
   const stats = [
     {
-      title: 'Current Bill',
-      value: isLoading ? '...' : formatCurrency(data?.currentBill?.totalAmount || 0),
+      title: 'Total Meals',
+      value: isLoading ? '...' : mealThisMonth,
+      icon: UtensilsCrossed,
+      gradient: 'from-amber-500 to-orange-600',
+      change: 'Your meals this month',
+      changePositive: true,
+    },
+    {
+      title: 'Food Cost',
+      value: isLoading ? '...' : formatCurrency(foodCost),
+      icon: ShoppingCart,
+      gradient: 'from-green-500 to-emerald-600',
+      change: `At ${formatCurrency(mealRate)} per meal`,
+      changePositive: false,
+    },
+    {
+      title: 'Common Expense',
+      value: isLoading ? '...' : formatCurrency(commonExpense),
+      icon: Users,
+      gradient: 'from-blue-500 to-cyan-600',
+      change: 'Your share for the month',
+      changePositive: false,
+    },
+    {
+      title: 'Total Payable',
+      value: isLoading ? '...' : formatCurrency(totalPayable),
       icon: Receipt,
       gradient: 'from-purple-500 to-indigo-600',
-      change: data?.currentBill ? `Due: ${formatDate(data?.currentBill?.dueDate)}` : 'No active bill',
-      changePositive: !data?.currentBill,
+      change: 'Calculated for this month',
+      changePositive: false,
     },
     {
       title: 'Amount Paid',
-      value: isLoading ? '...' : formatCurrency(data?.currentBill?.paidAmount || 0),
-      icon: TrendingDown,
+      value: isLoading ? '...' : formatCurrency(paidAmount),
+      icon: TrendingUp,
       gradient: 'from-emerald-500 to-teal-600',
-      change: data?.currentBill?.status ? `Status: ${data?.currentBill?.status}` : '—',
-      changePositive: data?.currentBill?.status === 'paid',
+      change: 'Payments made this month',
+      changePositive: true,
     },
     {
-      title: 'My Room',
-      value: isLoading ? '...' : data?.room ? `Room ${data?.room?.roomNumber}` : 'Not Assigned',
-      icon: DoorOpen,
+      title: 'My Balance',
+      value: isLoading ? '...' : formatCurrency(Math.abs(myBalance)),
+      icon: ShoppingCart,
+      gradient: myBalance >= 0 ? 'from-emerald-500 to-teal-600' : 'from-red-500 to-rose-600',
+      change: myBalance >= 0 ? 'Advance' : 'Due',
+      changeColor: myBalance >= 0 ? 'text-emerald-400' : 'text-red-400',
+    },
+  ];
+
+  const marketStats = [
+    {
+      title: 'My Next Market Duty',
+      value: marketLoading ? '...' : mySummary.nextAssignedDate ? formatDate(mySummary.nextAssignedDate) : 'None Assigned',
+      icon: Calendar,
+      gradient: 'from-purple-500 to-indigo-600',
+      change: 'Check Market Schedule for details',
+      changePositive: true,
+    },
+    {
+      title: 'Total Market Duties',
+      value: marketLoading ? '...' : mySummary.totalDuties || 0,
+      icon: ShoppingCart,
       gradient: 'from-blue-500 to-cyan-600',
-      change: data?.room ? `${data?.room?.type || 'Standard'} · Floor ${data?.room?.floor || 1}` : '—',
-      changePositive: !!data?.room,
-    },
-    {
-      title: 'Meals This Month',
-      value: isLoading ? '...' : data?.mealThisMonth ?? 0,
-      icon: UtensilsCrossed,
-      gradient: 'from-amber-500 to-orange-600',
-      change: 'Total meals taken',
+      change: `Last duty: ${mySummary.lastMarketDate ? formatDate(mySummary.lastMarketDate) : 'Never'}`,
       changePositive: true,
     },
   ];
@@ -74,48 +126,16 @@ export default function MemberDashboard() {
         subtitle={`Welcome to 4/67 Home. Here's your summary.`}
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
         {stats.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
-        {/* Current Bill Details */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className={`rounded-2xl border p-5 ${cardBg}`}
-        >
-          <h3 className={`font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>Current Bill Breakdown</h3>
-          {!data?.currentBill ? (
-            <div className={`text-center py-8 ${textMuted}`}>
-              <Receipt className="w-8 h-8 mx-auto mb-2 opacity-40" />
-              <p className="text-sm">No bill generated yet.</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {[
-                { label: 'Rent', value: data.currentBill.rentAmount },
-                { label: 'Meal Charge', value: data.currentBill.mealAmount },
-                { label: 'Other Charges', value: data.currentBill.otherCharges },
-              ].map(item => item.value > 0 && (
-                <div key={item.label} className={`flex justify-between items-center py-2 border-b last:border-0 ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
-                  <span className={`text-sm ${textMuted}`}>{item.label}</span>
-                  <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{formatCurrency(item.value)}</span>
-                </div>
-              ))}
-              <div className={`flex justify-between items-center pt-2`}>
-                <span className={`font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Total</span>
-                <span className="font-bold text-purple-400 text-lg">{formatCurrency(data.currentBill.totalAmount)}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className={`text-sm ${textMuted}`}>Status</span>
-                <StatusBadge status={data.currentBill.status} />
-              </div>
-            </div>
-          )}
-        </motion.div>
+      <h3 className={`font-semibold text-lg mt-6 mb-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>Market Schedule Overview</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+        {marketStats.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
       </div>
+
+      <WeeklyMealPlan isManager={false} />
 
       <CommunitySummary />
     </div>

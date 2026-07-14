@@ -1,18 +1,15 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Plus, Search, Wallet, Receipt, User, Calendar, AlertCircle, Edit, Trash2 } from 'lucide-react';
+import { Plus, Search, Wallet, User, Edit, Trash2 } from 'lucide-react';
 import PageHeader from '../../components/shared/PageHeader';
 import DataTable from '../../components/shared/DataTable';
 import Modal from '../../components/shared/Modal';
-import StatusBadge from '../../components/shared/StatusBadge';
 import { useTheme } from '../../contexts/ThemeContext';
 import { formatCurrency, formatDate } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS, PAYMENT_METHODS } from '../../utils/constants';
 import toast from 'react-hot-toast';
-
-const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 export default function PaymentsPage() {
   const { isDark } = useTheme();
@@ -21,42 +18,27 @@ export default function PaymentsPage() {
   const [editingId, setEditingId] = useState(null);
   const queryClient = useQueryClient();
 
-  const emptyForm = { billId: '', amount: '', method: 'cash', transactionId: '', note: '' };
+  const emptyForm = { memberId: '', amount: '', method: 'cash', transactionId: '', note: '' };
   const [formData, setFormData] = useState(emptyForm);
 
-  // ── Fetch bills (all, not just unpaid — we filter client-side) ─────────
-  const { data: bills = [] } = useQuery({
-    queryKey: QUERY_KEYS.BILLS,
+  // ── Fetch Members ────────────────────────────────────────────────────────
+  const { data: members = [] } = useQuery({
+    queryKey: QUERY_KEYS.MEMBERS,
     queryFn: async () => {
-      const { data } = await api.get('/bills?limit=500');
+      const { data } = await api.get('/members');
       return data.data || [];
     },
     placeholderData: [],
   });
 
-  // Filter for unpaid or partially paid bills
-  const unpaidBills = bills.filter(b => b.status !== 'paid');
-
-  // Currently selected bill object (for info card)
-  const selectedBill = unpaidBills.find(b => b._id === formData.billId) || null;
-  const outstanding  = selectedBill ? (selectedBill.totalAmount - (selectedBill.paidAmount || 0)) : 0;
-
-  const handleBillSelect = (billId) => {
-    const bill = unpaidBills.find(b => b._id === billId);
-    setFormData(prev => ({
-      ...prev,
-      billId,
-      // auto-fill the full outstanding amount
-      amount: bill ? String(bill.totalAmount - (bill.paidAmount || 0)) : '',
-    }));
-  };
+  const activeMembers = members.filter(m => m.status === 'active');
 
   // ── Record payment mutation ────────────────────────────────────────────
   const addMutation = useMutation({
     mutationFn: (newPayment) => api.post('/payments', newPayment),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PAYMENTS });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.BILLS });
+      queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
       toast.success('Payment recorded successfully!');
       setIsModalOpen(false);
       setFormData(emptyForm);
@@ -70,7 +52,7 @@ export default function PaymentsPage() {
     mutationFn: (data) => api.put(`/payments/${editingId}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PAYMENTS });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.BILLS });
+      queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
       toast.success('Payment updated successfully!');
       setIsModalOpen(false);
       setEditingId(null);
@@ -85,7 +67,7 @@ export default function PaymentsPage() {
     mutationFn: (id) => api.delete(`/payments/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PAYMENTS });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.BILLS });
+      queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
       toast.success('Payment deleted successfully!');
     },
     onError: (err) => {
@@ -167,7 +149,7 @@ export default function PaymentsPage() {
             onClick={() => {
               setEditingId(row._id);
               setFormData({
-                billId: row.billId?._id || row.billId,
+                memberId: row.memberId?._id || row.memberId,
                 amount: row.amount || '',
                 method: row.method || 'cash',
                 transactionId: row.transactionId || '',
@@ -231,7 +213,6 @@ export default function PaymentsPage() {
         </div>
         <div className="ml-auto flex flex-col items-end gap-1">
           <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{payments.length} transactions</p>
-          <p className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{unpaidBills.length} unpaid bills</p>
         </div>
       </div>
 
@@ -261,87 +242,42 @@ export default function PaymentsPage() {
             e.preventDefault();
             const amt = Number(formData.amount);
             if (!amt || amt <= 0) return toast.error('Enter a valid amount');
+            if (!formData.memberId) return toast.error('Please select a member');
             
             if (editingId) {
               updateMutation.mutate({ ...formData, amount: amt });
             } else {
-              if (!selectedBill) return toast.error('Please select a bill');
               addMutation.mutate({
                 ...formData,
-                memberId: selectedBill.memberId?._id || selectedBill.memberId,
                 amount: amt,
               });
             }
           }}
           className="space-y-4"
         >
-          {/* Bill selector */}
+          {/* Member selector */}
           <div>
-            <label className={labelCls}>{editingId ? 'Bill (Fixed)' : 'Select Unpaid Bill'}</label>
+            <label className={labelCls}>Member</label>
             {editingId ? (
               <div className={`${inputCls} opacity-70 cursor-not-allowed`}>
-                Payment is locked to its original bill.
-              </div>
-            ) : unpaidBills.length === 0 ? (
-              <div className={`flex items-center gap-2 px-4 py-3 rounded-xl border ${isDark ? 'border-white/10 bg-slate-800 text-slate-400' : 'border-slate-200 bg-slate-50 text-slate-500'} text-sm`}>
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                No unpaid bills found. Create a bill first.
+                Payment is locked to its original member.
               </div>
             ) : (
               <select
                 required
-                value={formData.billId}
-                onChange={e => handleBillSelect(e.target.value)}
+                value={formData.memberId}
+                onChange={e => setFormData({ ...formData, memberId: e.target.value })}
                 className={inputCls}
               >
-                <option value="">-- Choose a Member's Bill --</option>
-                {unpaidBills.map(b => {
-                  const memberName = b.memberId?.userId?.displayName || 'Unknown Member';
-                  const period     = `${MONTH_NAMES[(b.month || 1) - 1]} ${b.year}`;
-                  const due        = b.totalAmount - (b.paidAmount || 0);
-                  return (
-                    <option key={b._id} value={b._id}>
-                      {memberName} — {period} — Due: ৳{due.toFixed(0)}
-                    </option>
-                  );
-                })}
+                <option value="">-- Choose a Member --</option>
+                {activeMembers.map(m => (
+                  <option key={m._id} value={m._id}>
+                    {m.userId?.displayName || 'Unknown Member'} {m.roomId ? `(Room ${m.roomId.roomNumber})` : ''}
+                  </option>
+                ))}
               </select>
             )}
           </div>
-
-          {/* Selected bill info card */}
-          {!editingId && selectedBill && (
-            <motion.div
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`rounded-xl border px-4 py-3 space-y-2 ${isDark ? 'bg-slate-800 border-white/10' : 'bg-slate-50 border-slate-200'}`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <User className="w-3.5 h-3.5 text-purple-400" />
-                  <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>
-                    {selectedBill.memberId?.userId?.displayName || 'Unknown'}
-                  </span>
-                </div>
-                <StatusBadge status={selectedBill.status} />
-              </div>
-              <div className="flex items-center gap-4 text-xs">
-                <div className="flex items-center gap-1 text-slate-400">
-                  <Calendar className="w-3 h-3" />
-                  <span>{MONTH_NAMES[(selectedBill.month || 1) - 1]} {selectedBill.year}</span>
-                </div>
-                <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                  Total: <strong className={isDark ? 'text-white' : 'text-slate-700'}>৳{selectedBill.totalAmount?.toFixed(0)}</strong>
-                </span>
-                <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                  Paid: <strong className="text-emerald-400">৳{(selectedBill.paidAmount || 0).toFixed(0)}</strong>
-                </span>
-                <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
-                  Due: <strong className="text-red-400">৳{outstanding.toFixed(0)}</strong>
-                </span>
-              </div>
-            </motion.div>
-          )}
 
           {/* Amount + Method */}
           <div className="grid grid-cols-2 gap-4">
@@ -356,11 +292,6 @@ export default function PaymentsPage() {
                 className={inputCls}
                 placeholder="e.g. 5000"
               />
-              {!editingId && selectedBill && (
-                <p className={`text-[11px] mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-                  Outstanding: ৳{outstanding.toFixed(0)}
-                </p>
-              )}
             </div>
             <div>
               <label className={labelCls}>Payment Method</label>
@@ -412,7 +343,7 @@ export default function PaymentsPage() {
             </button>
             <button
               type="submit"
-              disabled={addMutation.isPending || updateMutation.isPending || (!editingId && !formData.billId)}
+              disabled={addMutation.isPending || updateMutation.isPending || (!editingId && !formData.memberId)}
               className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-semibold shadow-lg disabled:opacity-50"
             >
               {addMutation.isPending || updateMutation.isPending ? 'Saving...' : (editingId ? 'Save Changes' : 'Record Payment')}

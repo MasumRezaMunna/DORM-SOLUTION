@@ -6,20 +6,20 @@ import {
   LayoutDashboard, Users, DoorOpen, Receipt, Wallet,
   ShoppingBag, UtensilsCrossed, Bell, MessageSquareWarning,
   Building2, ChevronRight, X, PanelLeftClose, PanelLeftOpen,
+  ShoppingCart,
 } from 'lucide-react';
 
 const managerNav = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/manager' },
   { label: 'Expenses', icon: ShoppingBag, to: '/manager/expenses' },
-  { label: 'Bills', icon: Receipt, to: '/manager/bills' },
   { label: 'Payments', icon: Wallet, to: '/manager/payments' },
   { label: 'Meals', icon: UtensilsCrossed, to: '/manager/meals' },
   { label: 'Notices', icon: Bell, to: '/manager/notices' },
+  { label: 'Market Team', icon: ShoppingCart, to: '/manager/market' },
   { label: 'Complaints', icon: MessageSquareWarning, to: '/manager/complaints' },
   { label: 'Members', icon: Users, to: '/manager/members' },
   { label: 'Rooms', icon: DoorOpen, to: '/manager/rooms' },
   { label: 'MY PORTAL', icon: null, divider: true },
-  { label: 'My Bills', icon: Receipt, to: '/dashboard/bills' },
   { label: 'My Meals', icon: UtensilsCrossed, to: '/dashboard/meals' },
   { label: 'Notifications', icon: Bell, to: '/manager/notifications' },
   { label: 'Community', icon: Users, to: '/dashboard/community' },
@@ -27,8 +27,8 @@ const managerNav = [
 
 const memberNav = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/dashboard' },
-  { label: 'My Bills', icon: Receipt, to: '/dashboard/bills' },
   { label: 'Meal Summary', icon: UtensilsCrossed, to: '/dashboard/meals' },
+  { label: 'Market Schedule', icon: ShoppingCart, to: '/dashboard/market' },
   { label: 'Notices', icon: Bell, to: '/dashboard/notices' },
   { label: 'Complaints', icon: MessageSquareWarning, to: '/dashboard/complaints' },
   { label: 'Notifications', icon: Bell, to: '/dashboard/notifications' },

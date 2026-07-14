@@ -88,7 +88,7 @@ export default function CommunitySummary() {
               iconColor="bg-red-500/15 text-red-400" />
             <MiniStatCard icon={BarChart3} label="Meal Rate" isDark={isDark}
               value={`৳${(monthlySummary.mealRate||0).toFixed(2)}`}
-              sub="per meal (total expenses ÷ meals)"
+              sub="per meal (grocery cost ÷ total meals)"
               iconColor="bg-purple-500/15 text-purple-400" />
             <MiniStatCard icon={Wallet} label="Members" isDark={isDark}
               value={monthlySummary.members?.length || 0}
@@ -110,6 +110,8 @@ export default function CommunitySummary() {
                     <th className="px-3 py-3 text-center font-medium">Dinner</th>
                     <th className="px-3 py-3 text-center font-medium">Total Meals</th>
                     <th className="px-3 py-3 text-right font-medium">Meal Cost</th>
+                    <th className="px-3 py-3 text-right font-medium">Common Cost</th>
+                    <th className="px-3 py-3 text-right font-medium">Total Cost</th>
                     <th className="px-3 py-3 text-right font-medium">Paid</th>
                     <th className="px-3 py-3 text-right font-medium">After Deduction</th>
                   </tr>
@@ -132,12 +134,14 @@ export default function CommunitySummary() {
                       <td className="px-3 py-3.5 text-center"><span className="text-sm font-semibold text-indigo-400 tabular-nums">{m.totalDinner}</span></td>
                       <td className="px-3 py-3.5 text-center"><span className={`text-sm font-bold tabular-nums ${isDark ? 'text-white' : 'text-slate-800'}`}>{m.totalMeals}</span></td>
                       <td className="px-3 py-3.5 text-right"><span className="text-sm font-semibold text-red-400 tabular-nums">৳{m.mealCost.toFixed(0)}</span></td>
+                      <td className="px-3 py-3.5 text-right"><span className="text-sm font-semibold text-blue-400 tabular-nums">৳{(m.commonCostPerMember||0).toFixed(0)}</span></td>
+                      <td className="px-3 py-3.5 text-right"><span className="text-sm font-bold text-orange-400 tabular-nums">৳{(m.totalCost||m.mealCost).toFixed(0)}</span></td>
                       <td className="px-3 py-3.5 text-right"><span className={`text-sm tabular-nums ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{m.paidAmount.toFixed(0)}</span></td>
                       <td className="px-3 py-3.5 text-right"><BalanceBadge amount={m.afterMeal} /></td>
                     </tr>
                   ))}
                   {(monthlySummary.members || []).length === 0 && (
-                    <tr><td colSpan={7} className={`text-center py-12 text-sm ${textMuted}`}>No meal data for this month.</td></tr>
+                    <tr><td colSpan={9} className={`text-center py-12 text-sm ${textMuted}`}>No meal data for this month.</td></tr>
                   )}
                 </tbody>
                 {(monthlySummary.members || []).length > 0 && (
@@ -148,6 +152,8 @@ export default function CommunitySummary() {
                       <td className="px-3 py-3 text-center text-sm text-indigo-400">{monthlySummary.members.reduce((s,m)=>s+m.totalDinner,0)}</td>
                       <td className={`px-3 py-3 text-center text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{monthlySummary.totalMeals}</td>
                       <td className="px-3 py-3 text-right text-sm text-red-400">৳{monthlySummary.members.reduce((s,m)=>s+m.mealCost,0).toFixed(0)}</td>
+                      <td className="px-3 py-3 text-right text-sm text-blue-400">৳{(monthlySummary.commonCostPerMember||0).toFixed(0)}<span className="text-xs text-slate-500 ml-1">/each</span></td>
+                      <td className="px-3 py-3 text-right text-sm text-orange-400">৳{monthlySummary.members.reduce((s,m)=>s+(m.totalCost||m.mealCost),0).toFixed(0)}</td>
                       <td className={`px-3 py-3 text-right text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0).toFixed(0)}</td>
                       <td className="px-3 py-3 text-right"><BalanceBadge amount={monthlySummary.members.reduce((s,m)=>s+m.afterMeal,0)} /></td>
                     </tr>

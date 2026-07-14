@@ -35,14 +35,10 @@ export const COMPLAINT_TYPES = [
   { value: 'other', label: 'Other' },
 ];
 
-// ─── Expense Categories ───────────────────────────────────────────────────────
-export const EXPENSE_CATEGORIES = [
-  { value: 'grocery', label: 'Grocery', icon: '🛒' },
-  { value: 'utility', label: 'Utility', icon: '💡' },
-  { value: 'maintenance', label: 'Maintenance', icon: '🔧' },
-  { value: 'salary', label: 'Salary', icon: '👷' },
-  { value: 'miscellaneous', label: 'Miscellaneous', icon: '📦' },
-  { value: 'other', label: 'Other', icon: '➕' },
+// ─── Expense Types ───────────────────────────────────────────────────────
+export const EXPENSE_TYPES = [
+  { value: 'Grocery', label: 'Grocery', icon: '🛒', color: 'green' },
+  { value: 'Common', label: 'Common', icon: '🏠', color: 'blue' },
 ];
 
 // ─── Months ───────────────────────────────────────────────────────────────────
@@ -108,4 +104,13 @@ export const QUERY_KEYS = {
   VISITORS: ['visitors'],
   NOTIFICATIONS: ['notifications'],
   SETTINGS: ['settings'],
+  // ─── Market Team ───────────────────────────────────────────────────────────
+  MARKET_SCHEDULES:  ['market-schedules'],
+  MARKET_SCHEDULE:   (id) => ['market-schedules', id],
+  MARKET_TODAY:      ['market-schedules', 'today'],
+  MARKET_UPCOMING:   ['market-schedules', 'upcoming'],
+  MARKET_HISTORY:    ['market-schedules', 'history'],
+  MARKET_ME:         ['market-schedules', 'me'],
+  MARKET_ROTATION:   ['market-schedules', 'rotation'],
+  MARKET_STATS:      ['market-schedules', 'stats'],
 };
