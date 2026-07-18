@@ -79,7 +79,7 @@ export default function PaymentsPage() {
   const { data: payments = [], isLoading } = useQuery({
     queryKey: QUERY_KEYS.PAYMENTS,
     queryFn: async () => {
-      const { data } = await api.get('/payments');
+      const { data } = await api.get('/payments?limit=200');
       return data.data || [];
     },
     placeholderData: [],

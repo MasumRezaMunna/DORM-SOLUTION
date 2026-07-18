@@ -20,6 +20,7 @@ const managerNav = [
   { label: 'Members', icon: Users, to: '/manager/members' },
   { label: 'Rooms', icon: DoorOpen, to: '/manager/rooms' },
   { label: 'MY PORTAL', icon: null, divider: true },
+  { label: 'My Dashboard', icon: LayoutDashboard, to: '/dashboard' },
   { label: 'My Meals', icon: UtensilsCrossed, to: '/dashboard/meals' },
   { label: 'Notifications', icon: Bell, to: '/manager/notifications' },
   { label: 'Community', icon: Users, to: '/dashboard/community' },
@@ -27,6 +28,7 @@ const managerNav = [
 
 const memberNav = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/dashboard' },
+  { label: 'Expenses', icon: ShoppingBag, to: '/dashboard/expenses' },
   { label: 'Meal Summary', icon: UtensilsCrossed, to: '/dashboard/meals' },
   { label: 'Market Schedule', icon: ShoppingCart, to: '/dashboard/market' },
   { label: 'Notices', icon: Bell, to: '/dashboard/notices' },

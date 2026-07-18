@@ -29,6 +29,7 @@ import MyComplaintsPage from '../pages/member/MyComplaintsPage';
 import MyRoomPage from '../pages/member/MyRoomPage';
 import MyMealsPage from '../pages/member/MyMealsPage';
 import MarketSchedulePage from '../pages/member/MarketSchedulePage';
+import MemberExpensesPage from '../pages/member/MemberExpensesPage';
 
 // Shared pages
 import ProfilePage from '../pages/shared/ProfilePage';
@@ -112,6 +113,7 @@ const router = createBrowserRouter([
         element: <DashboardLayout />,
         children: [
           { index: true, element: <MemberDashboard /> },
+          { path: 'expenses', element: <MemberExpensesPage /> },
           { path: 'room', element: <MyRoomPage /> },
           { path: 'meals', element: <MyMealsPage /> },
           { path: 'notices', element: <NoticesPage /> },
