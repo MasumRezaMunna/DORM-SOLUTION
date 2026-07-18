@@ -81,12 +81,12 @@ export default function MemberExpensesPage() {
     {
       key: "notes",
       label: "Notes",
-      render: (row) => <span className={"text-xs " + textMuted}>{row.notes || "—"}</span>,
+      render: (row) => <span className={"text-xs " + textMuted}>{row.notes || "-"}</span>,
     },
     {
       key: "addedBy",
       label: "Added By",
-      render: (row) => <span className={"text-xs " + textMuted}>{row.createdBy?.displayName || "—"}</span>,
+      render: (row) => <span className={"text-xs " + textMuted}>{row.createdBy?.displayName || "-"}</span>,
     },
   ];
 
