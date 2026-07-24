@@ -5,6 +5,7 @@ import { Calendar, Sun, Moon, Edit, Save, X } from 'lucide-react';
 import api from '../../config/axios';
 import { useTheme } from '../../contexts/ThemeContext';
 import toast from 'react-hot-toast';
+import { triggerConfetti } from '../../utils/confetti';
 
 export default function WeeklyMealPlan({ isManager = false }) {
   const { isDark } = useTheme();
@@ -28,6 +29,7 @@ export default function WeeklyMealPlan({ isManager = false }) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['weeklyMealPlan'] });
       toast.success('Weekly meal plan updated!');
+      triggerConfetti('meal');
       setIsEditing(false);
     },
     onError: (err) => {

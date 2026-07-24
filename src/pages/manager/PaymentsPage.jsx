@@ -10,6 +10,7 @@ import { formatCurrency, formatDate } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS, PAYMENT_METHODS } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import { triggerConfetti } from '../../utils/confetti';
 
 export default function PaymentsPage() {
   const { isDark } = useTheme();
@@ -40,6 +41,7 @@ export default function PaymentsPage() {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PAYMENTS });
       queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
       toast.success('Payment recorded successfully!');
+      triggerConfetti('payment');
       setIsModalOpen(false);
       setFormData(emptyForm);
     },

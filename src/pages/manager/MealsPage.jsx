@@ -11,6 +11,7 @@ import { formatDate, getInitials } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import { triggerConfetti } from '../../utils/confetti';
 
 /* ─── Meal +/- Counter ──────────────────────────────────────────────── */
 function MealCounter({ value, onChange, label, icon: Icon, color, disabled }) {
@@ -130,6 +131,7 @@ export default function MealsPage() {
     },
     onSuccess: () => {
       toast.success('Meal entries saved!');
+      triggerConfetti('meal');
       setInitialised(selectedDate); // prevent re-hydration overwriting fresh data
     },
     onError: () => toast.error('Failed to save meal entries.'),

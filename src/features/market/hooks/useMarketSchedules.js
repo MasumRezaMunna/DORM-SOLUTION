@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../../config/axios';
 import { QUERY_KEYS } from '../../../utils/constants';
 import toast from 'react-hot-toast';
+import { triggerConfetti } from '../../../utils/confetti';
 
 // ─── Manager Hooks ────────────────────────────────────────────────────────────
 
@@ -125,6 +126,7 @@ export const useCreateSchedule = () => {
       qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_UPCOMING });
       qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_ROTATION });
       toast.success('Market schedule created successfully! 🛒');
+      triggerConfetti('market');
     },
     onError: (err) => {
       toast.error(err?.response?.data?.message || 'Failed to create market schedule');

@@ -11,6 +11,7 @@ import { formatDate, getInitials } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import { triggerConfetti } from '../../utils/confetti';
 
 const ActionMenu = ({ row, isDark, statusMutation, roleMutation }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,6 +84,7 @@ export default function MembersPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
       toast.success('Member added successfully!');
+      triggerConfetti('member');
       setIsModalOpen(false);
       setFormData({ userId: '', phone: '', nid: '', occupation: '' });
     },
@@ -106,6 +108,7 @@ export default function MembersPage() {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
       queryClient.invalidateQueries({ queryKey: ['pendingUsers'] });
       toast.success('Member activated successfully!');
+      triggerConfetti('member');
     },
     onError: (err) => {
       toast.error(err.response?.data?.message || 'Failed to activate member');
