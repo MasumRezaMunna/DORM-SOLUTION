@@ -243,7 +243,7 @@ export default function ExpensesPage() {
             </div>
             <div>
               <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Amount (৳)</label>
-              <input type="number" required placeholder="Amount" value={form.amount} onChange={e => setForm(p => ({...p, amount: e.target.value}))} className={inputClass} />
+              <input type="number" step="any" required placeholder="Amount" value={form.amount} onChange={e => setForm(p => ({...p, amount: e.target.value}))} className={inputClass} />
             </div>
             <div>
               <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Expense Type</label>

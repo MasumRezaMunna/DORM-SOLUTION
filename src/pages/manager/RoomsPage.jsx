@@ -366,7 +366,7 @@ export default function RoomsPage() {
           <div>
             <label className={labelCls}>Rent per Seat (৳)</label>
             <input
-              type="number" required
+              type="number" step="any" required
               value={formData.rent}
               onChange={e => setFormData({ ...formData, rent: e.target.value })}
               className={inputCls}

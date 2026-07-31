@@ -309,7 +309,8 @@ export default function PaymentsPage() {
               <input
                 type="number"
                 required
-                min="1"
+                min="0"
+                step="any"
                 value={formData.amount}
                 onChange={e => setFormData({ ...formData, amount: e.target.value })}
                 className={inputCls}
