@@ -56,8 +56,8 @@ function StatCard({ icon: Icon, label, value, sub, iconColor, isDark }) {
 
 /* ─── Balance chip ──────────────────────────────────────────────────── */
 function BalanceBadge({ amount }) {
-  if (amount > 0) return <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold tabular-nums">+৳{amount.toFixed(0)}</span>;
-  if (amount < 0) return <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold tabular-nums">-৳{Math.abs(amount).toFixed(0)}</span>;
+  if (amount > 0) return <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold tabular-nums">+৳{amount.toFixed(2)}</span>;
+  if (amount < 0) return <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold tabular-nums">-৳{Math.abs(amount).toFixed(2)}</span>;
   return <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-slate-400 font-semibold">৳0</span>;
 }
 
@@ -356,8 +356,8 @@ export default function MealsPage() {
                     sub={`${monthlySummary.members?.reduce((s,m)=>s+m.totalLunch,0)||0}L + ${monthlySummary.members?.reduce((s,m)=>s+m.totalDinner,0)||0}D`}
                     iconColor="bg-emerald-500/15 text-emerald-400" />
                   <StatCard icon={TrendingDown} label="Total Expenses" isDark={isDark}
-                    value={`৳${(monthlySummary.totalExpense||0).toFixed(0)}`}
-                    sub={`Grocery cost: ৳${(monthlySummary.groceryTotal||0).toFixed(0)}`}
+                    value={`৳${(monthlySummary.totalExpense||0).toFixed(2)}`}
+                    sub={`Grocery cost: ৳${(monthlySummary.groceryTotal||0).toFixed(2)}`}
                     iconColor="bg-red-500/15 text-red-400" />
                   <StatCard icon={BarChart3} label="Meal Rate" isDark={isDark}
                     value={`৳${(monthlySummary.mealRate||0).toFixed(2)}`}
@@ -413,16 +413,16 @@ export default function MealsPage() {
                               <span className={`text-sm font-bold tabular-nums ${isDark ? 'text-white' : 'text-slate-800'}`}>{m.totalMeals}</span>
                             </td>
                             <td className="px-3 py-3.5 text-right">
-                              <span className="text-sm font-semibold text-red-400 tabular-nums">৳{m.mealCost.toFixed(0)}</span>
+                              <span className="text-sm font-semibold text-red-400 tabular-nums">৳{m.mealCost.toFixed(2)}</span>
                             </td>
                             <td className="px-3 py-3.5 text-right">
-                              <span className="text-sm font-semibold text-blue-400 tabular-nums">৳{(m.commonCostPerMember||0).toFixed(0)}</span>
+                              <span className="text-sm font-semibold text-blue-400 tabular-nums">৳{(m.commonCostPerMember||0).toFixed(2)}</span>
                             </td>
                             <td className="px-3 py-3.5 text-right">
-                              <span className="text-sm font-bold text-orange-400 tabular-nums">৳{(m.totalCost||m.mealCost).toFixed(0)}</span>
+                              <span className="text-sm font-bold text-orange-400 tabular-nums">৳{(m.totalCost||m.mealCost).toFixed(2)}</span>
                             </td>
                             <td className="px-3 py-3.5 text-right">
-                              <span className={`text-sm tabular-nums ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{m.paidAmount.toFixed(0)}</span>
+                              <span className={`text-sm tabular-nums ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{m.paidAmount.toFixed(2)}</span>
                             </td>
                             <td className="px-3 py-3.5 text-right">
                               <BalanceBadge amount={m.afterMeal} />
@@ -441,10 +441,10 @@ export default function MealsPage() {
                           <td className="px-3 py-3 text-center text-sm text-amber-400">{monthlySummary.members.reduce((s,m)=>s+m.totalLunch,0)}</td>
                           <td className="px-3 py-3 text-center text-sm text-indigo-400">{monthlySummary.members.reduce((s,m)=>s+m.totalDinner,0)}</td>
                           <td className={`px-3 py-3 text-center text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{monthlySummary.totalMeals}</td>
-                          <td className="px-3 py-3 text-right text-sm text-red-400">৳{monthlySummary.members.reduce((s,m)=>s+m.mealCost,0).toFixed(0)}</td>
-                            <td className="px-3 py-3 text-right text-sm text-blue-400">৳{(monthlySummary.commonCostPerMember||0).toFixed(0)}<span className="text-xs text-slate-500 ml-1">/each</span></td>
-                            <td className="px-3 py-3 text-right text-sm text-orange-400">৳{(monthlySummary.totalExpense||0).toFixed(0)}</td>
-                            <td className={`px-3 py-3 text-right text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0).toFixed(0)}</td>
+                          <td className="px-3 py-3 text-right text-sm text-red-400">৳{(monthlySummary.groceryTotal || 0).toFixed(2)}</td>
+                            <td className="px-3 py-3 text-right text-sm text-blue-400">৳{(monthlySummary.commonTotal || 0).toFixed(2)}</td>
+                            <td className="px-3 py-3 text-right text-sm text-orange-400">৳{(monthlySummary.totalExpense||0).toFixed(2)}</td>
+                            <td className={`px-3 py-3 text-right text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0).toFixed(2)}</td>
                             <td className="px-3 py-3 text-right">
                               <BalanceBadge amount={monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0) - (monthlySummary.totalExpense||0)} />
                             </td>

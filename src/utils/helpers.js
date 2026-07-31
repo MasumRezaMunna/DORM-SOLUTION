@@ -6,7 +6,10 @@ import { CURRENCY_SYMBOL } from './constants';
  * @returns {string} e.g., "৳ 5,500"
  */
 export const formatCurrency = (amount = 0) => {
-  return `${CURRENCY_SYMBOL} ${Number(amount).toLocaleString('en-BD')}`;
+  return `${CURRENCY_SYMBOL} ${Number(amount).toLocaleString('en-BD', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })}`;
 };
 
 /**
