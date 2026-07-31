@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import PageHeader from '../../components/shared/PageHeader';
 import { useTheme } from '../../contexts/ThemeContext';
-import { formatDate, getInitials } from '../../utils/helpers';
+import { formatDate, getInitials, localDateString } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
 import toast from 'react-hot-toast';
@@ -69,7 +69,7 @@ export default function MealsPage() {
   const [tab, setTab] = useState('daily');
 
   // ── Daily tab state ──
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(localDateString());
   const [mealData, setMealData]         = useState({});   // { [memberId]: { lunch, dinner } }
   const [initialised, setInitialised]   = useState('');   // tracks which date was last loaded
 

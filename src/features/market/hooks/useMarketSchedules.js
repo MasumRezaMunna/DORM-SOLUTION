@@ -43,7 +43,8 @@ export const useMarketStats = () => {
   return useQuery({
     queryKey: QUERY_KEYS.MARKET_STATS,
     queryFn: async () => {
-      const { data } = await api.get('/market-schedules/stats');
+      const now = new Date();
+      const { data } = await api.get(`/market-schedules/stats?month=${now.getMonth() + 1}&year=${now.getFullYear()}`);
       return data.data;
     },
     placeholderData: { total: 0, upcoming: 0, today: 0, completed: 0 },

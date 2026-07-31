@@ -9,6 +9,7 @@ import api from '../../../config/axios';
 import { QUERY_KEYS } from '../../../utils/constants';
 import { useTheme } from '../../../contexts/ThemeContext';
 import { getMemberInitials } from '../utils/marketHelpers';
+import { localDateString } from '../../../utils/helpers';
 import DutyRotationSuggestion from './DutyRotationSuggestion';
 
 /**
@@ -53,7 +54,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
   } = useForm({
     defaultValues: {
       marketDate: defaultValues?.marketDate
-        ? new Date(defaultValues.marketDate).toISOString().split('T')[0]
+        ? localDateString(new Date(defaultValues.marketDate))
         : '',
       note: defaultValues?.note || '',
     },
@@ -111,7 +112,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
   const inputClass = `${isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-white border-slate-200 text-slate-800'}`;
   const labelClass = `text-sm font-medium mb-1.5 flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`;
   const errorClass = 'text-xs text-red-400 mt-1';
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDateString();
 
   const selectedIds = selectedMembers.map((m) => m.userId?.toString());
 

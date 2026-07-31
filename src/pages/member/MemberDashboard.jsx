@@ -20,7 +20,8 @@ export default function MemberDashboard() {
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.DASHBOARD_MEMBER,
     queryFn: async () => {
-      const { data } = await api.get('/dashboard/member');
+      const now = new Date();
+      const { data } = await api.get(`/dashboard/member?month=${now.getMonth() + 1}&year=${now.getFullYear()}`);
       return data.data;
     },
     placeholderData: {

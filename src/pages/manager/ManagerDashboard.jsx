@@ -22,7 +22,8 @@ export default function ManagerDashboard() {
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.DASHBOARD_MANAGER,
     queryFn: async () => {
-      const { data } = await api.get('/dashboard/manager');
+      const now = new Date();
+      const { data } = await api.get(`/dashboard/manager?month=${now.getMonth() + 1}&year=${now.getFullYear()}`);
       return data.data;
     },
     // Use demo data if backend is not connected yet

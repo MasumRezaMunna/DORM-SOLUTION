@@ -1,6 +1,18 @@
 import { CURRENCY_SYMBOL } from './constants';
 
 /**
+ * Returns today's date as YYYY-MM-DD in the LOCAL timezone.
+ * Use this instead of new Date().toISOString().split('T')[0] which always uses UTC
+ * and shows yesterday's date for UTC+ users after midnight.
+ */
+export const localDateString = (date = new Date()) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
+/**
  * Format a number as BDT currency
  * @param {number} amount
  * @returns {string} e.g., "৳ 5,500"

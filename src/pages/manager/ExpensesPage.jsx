@@ -6,7 +6,7 @@ import PageHeader from '../../components/shared/PageHeader';
 import DataTable from '../../components/shared/DataTable';
 import Modal from '../../components/shared/Modal';
 import { useTheme } from '../../contexts/ThemeContext';
-import { formatCurrency, formatDate, getMonthName } from '../../utils/helpers';
+import { formatCurrency, formatDate, getMonthName, localDateString } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS, EXPENSE_TYPES } from '../../utils/constants';
 import toast from 'react-hot-toast';
@@ -20,7 +20,7 @@ export default function ExpensesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [filterType, setFilterType] = useState('All');
-  const [form, setForm] = useState({ title: '', amount: '', expenseType: 'Grocery', date: new Date().toISOString().split('T')[0], notes: '' });
+  const [form, setForm] = useState({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
 
   const { data: expenses = [], isLoading } = useQuery({
     queryKey: [QUERY_KEYS.EXPENSES, summaryMonth, summaryYear, filterType],
@@ -36,7 +36,7 @@ export default function ExpensesPage() {
   const { data: dashboardData } = useQuery({
     queryKey: [QUERY_KEYS.DASHBOARD_MANAGER, summaryMonth, summaryYear],
     queryFn: async () => {
-      const { data } = await api.get('/dashboard/manager');
+      const { data } = await api.get(`/dashboard/manager?month=${summaryMonth}&year=${summaryYear}`);
       return data.data?.overview || {};
     },
   });
@@ -49,7 +49,7 @@ export default function ExpensesPage() {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.EXPENSES });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       setIsModalOpen(false);
-      setForm({ title: '', amount: '', expenseType: 'Grocery', date: new Date().toISOString().split('T')[0], notes: '' });
+      setForm({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
       toast.success('Expense added!');
     },
     onError: () => toast.error('Failed to add expense.'),
@@ -64,7 +64,7 @@ export default function ExpensesPage() {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       setIsModalOpen(false);
       setEditingId(null);
-      setForm({ title: '', amount: '', expenseType: 'Grocery', date: new Date().toISOString().split('T')[0], notes: '' });
+      setForm({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
       toast.success('Expense updated!');
     },
     onError: () => toast.error('Failed to update expense.'),
@@ -168,7 +168,7 @@ export default function ExpensesPage() {
             whileTap={{ scale: 0.98 }}
             onClick={() => {
               setEditingId(null);
-              setForm({ title: '', amount: '', expenseType: 'Grocery', date: new Date().toISOString().split('T')[0], notes: '' });
+              setForm({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
               setIsModalOpen(true);
             }}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg"

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Plus, Search, Wallet, User, Edit, Trash2 } from 'lucide-react';
+import { Plus, Search, Wallet, User, Edit, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import PageHeader from '../../components/shared/PageHeader';
 import DataTable from '../../components/shared/DataTable';
 import Modal from '../../components/shared/Modal';
 import { useTheme } from '../../contexts/ThemeContext';
-import { formatCurrency, formatDate } from '../../utils/helpers';
+import { formatCurrency, formatDate, getMonthName } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS, PAYMENT_METHODS } from '../../utils/constants';
 import toast from 'react-hot-toast';
@@ -14,6 +14,9 @@ import { triggerConfetti } from '../../utils/confetti';
 
 export default function PaymentsPage() {
   const { isDark } = useTheme();
+  const now = new Date();
+  const [summaryMonth, setSummaryMonth] = useState(now.getMonth() + 1);
+  const [summaryYear,  setSummaryYear]  = useState(now.getFullYear());
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -21,6 +24,17 @@ export default function PaymentsPage() {
 
   const emptyForm = { memberId: '', amount: '', method: 'cash', transactionId: '', note: '' };
   const [formData, setFormData] = useState(emptyForm);
+
+  const prevMonth = () => {
+    if (summaryMonth === 1) { setSummaryMonth(12); setSummaryYear(y => y - 1); }
+    else setSummaryMonth(m => m - 1);
+  };
+  const nextMonth = () => {
+    const n = new Date();
+    if (summaryYear > n.getFullYear() || (summaryYear === n.getFullYear() && summaryMonth >= n.getMonth() + 1)) return;
+    if (summaryMonth === 12) { setSummaryMonth(1); setSummaryYear(y => y + 1); }
+    else setSummaryMonth(m => m + 1);
+  };
 
   // ── Fetch Members ────────────────────────────────────────────────────────
   const { data: members = [] } = useQuery({
@@ -79,9 +93,9 @@ export default function PaymentsPage() {
 
   // ── Payments list ──────────────────────────────────────────────────────
   const { data: payments = [], isLoading } = useQuery({
-    queryKey: QUERY_KEYS.PAYMENTS,
+    queryKey: [QUERY_KEYS.PAYMENTS, summaryMonth, summaryYear],
     queryFn: async () => {
-      const { data } = await api.get('/payments?limit=200');
+      const { data } = await api.get(`/payments?month=${summaryMonth}&year=${summaryYear}&limit=200`);
       return data.data || [];
     },
     placeholderData: [],
@@ -204,7 +218,7 @@ export default function PaymentsPage() {
         }
       />
 
-      {/* Summary */}
+      {/* Summary + Month Navigator */}
       <div className={`flex items-center gap-4 px-5 py-4 rounded-2xl border ${cardBg}`}>
         <div className="p-2.5 rounded-xl bg-emerald-500/10">
           <Wallet className="w-5 h-5 text-emerald-400" />
@@ -213,8 +227,15 @@ export default function PaymentsPage() {
           <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Collected</p>
           <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{formatCurrency(totalCollected)}</p>
         </div>
-        <div className="ml-auto flex flex-col items-end gap-1">
+        <div className="ml-auto flex items-center gap-2">
           <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{payments.length} transactions</p>
+          <div className={`flex items-center gap-1 rounded-xl border px-3 py-1.5 ${isDark ? 'border-white/10 bg-slate-800' : 'border-slate-200 bg-slate-50'}`}>
+            <button onClick={prevMonth} className="p-0.5 rounded hover:bg-white/10 transition-colors"><ChevronLeft className="w-4 h-4" /></button>
+            <span className={`text-sm font-semibold tabular-nums min-w-[110px] text-center ${isDark ? 'text-white' : 'text-slate-800'}`}>
+              {getMonthName(summaryMonth)} {summaryYear}
+            </span>
+            <button onClick={nextMonth} className="p-0.5 rounded hover:bg-white/10 transition-colors"><ChevronRight className="w-4 h-4" /></button>
+          </div>
         </div>
       </div>
 

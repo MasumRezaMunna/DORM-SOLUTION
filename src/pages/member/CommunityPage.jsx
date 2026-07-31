@@ -14,7 +14,8 @@ export default function CommunityPage() {
   const { data: members = [], isLoading } = useQuery({
     queryKey: ['communityStats'],
     queryFn: async () => {
-      const { data } = await api.get('/dashboard/community');
+      const now = new Date();
+      const { data } = await api.get(`/dashboard/community?month=${now.getMonth() + 1}&year=${now.getFullYear()}`);
       return data.data || [];
     },
     placeholderData: [],
