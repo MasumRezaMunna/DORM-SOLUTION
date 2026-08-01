@@ -264,7 +264,7 @@ export default function PaymentsPage() {
           onSubmit={(e) => {
             e.preventDefault();
             const amt = Number(formData.amount);
-            if (!amt || amt <= 0) return toast.error('Enter a valid amount');
+            if (formData.amount === '' || isNaN(amt)) return toast.error('Enter a valid amount');
             if (!formData.memberId) return toast.error('Please select a member');
             
             if (editingId) {
@@ -309,7 +309,6 @@ export default function PaymentsPage() {
               <input
                 type="number"
                 required
-                min="0"
                 step="any"
                 value={formData.amount}
                 onChange={e => setFormData({ ...formData, amount: e.target.value })}
