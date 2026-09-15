@@ -124,7 +124,7 @@ export default function MemberDashboard() {
     <div className="space-y-6">
       <PageHeader
         title={`Hello, ${user?.name?.split(' ')[0] || 'there'}! 👋`}
-        subtitle={`Welcome to 4/67 Home. Here's your summary.`}
+        subtitle={`Welcome to 11/38 Home. Here's your summary.`}
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">

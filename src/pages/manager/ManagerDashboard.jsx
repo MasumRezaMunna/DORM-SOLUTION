@@ -153,7 +153,7 @@ export default function ManagerDashboard() {
     <div className="space-y-6">
       <PageHeader
         title="Manager Dashboard"
-        subtitle={`Welcome back! Here's what's happening at 4/67 Home.`}
+        subtitle={`Welcome back! Here's what's happening at 11/38 Home.`}
       />
 
       {/* Stats */}

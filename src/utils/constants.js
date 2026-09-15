@@ -1,6 +1,6 @@
 // ─── Application-wide Constants ──────────────────────────────────────────────
 
-export const APP_NAME = '4/67 Home';
+export const APP_NAME = '11/38 Home';
 export const APP_TAGLINE = 'Smart Dormitory Management';
 export const CURRENCY_SYMBOL = '৳';
 export const CURRENCY_CODE = 'BDT';

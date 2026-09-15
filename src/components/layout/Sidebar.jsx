@@ -72,7 +72,7 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
 
           {!effectiveCollapsed && (
             <div className="overflow-hidden text-left">
-              <p className="font-bold text-sm leading-none truncate">4/67 Home</p>
+              <p className="font-bold text-sm leading-none truncate">11/38 Home</p>
               <p className={`text-xs mt-0.5 truncate ${mutedCol}`}>
                 {isManager ? 'Manager Portal' : 'Member Portal'}
               </p>

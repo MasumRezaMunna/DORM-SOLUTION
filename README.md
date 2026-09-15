@@ -1,4 +1,4 @@
-# 4/67 Home Dormitory Management System 🏠
+# 11/38 Home Dormitory Management System 🏠
 
 A comprehensive, full-stack web application designed to manage dormitory activities efficiently. This platform simplifies daily operations, from meal tracking to expense management and member communications, with role-based access for Managers and Members.
 

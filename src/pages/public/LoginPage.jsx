@@ -56,7 +56,7 @@ export default function LoginPage() {
             >
               <Building2 className="w-10 h-10 text-white" />
             </motion.div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">4/67 Home</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight">11/38 Home</h1>
             <p className="text-slate-400 mt-1 text-sm">Smart Dormitory Management System</p>
           </div>
 
@@ -101,7 +101,7 @@ export default function LoginPage() {
         </motion.div>
 
         <p className="text-center text-slate-600 text-xs mt-6">
-          © {new Date().getFullYear()} 4/67 Home. All rights reserved.
+          © {new Date().getFullYear()} 11/38 Home. All rights reserved.
         </p>
       </div>
     </div>
