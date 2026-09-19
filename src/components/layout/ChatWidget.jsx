@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, User, Loader2 } from 'lucide-react';
-
-const AVATAR_SRC = '/meye-avatar.jpg';
 import { useTheme } from '../../contexts/ThemeContext';
 
-// Vite proxies /n8n-chat → n8n webhook (avoids CORS in development).
-const N8N_CHAT_URL = '/n8n-chat';
+const AVATAR_SRC = '/meye-avatar.jpg';
+// Express server proxies this to n8n (works in dev + production, no CORS).
+const N8N_CHAT_URL = '/api/chat';
 const ASSISTANT_NAME = 'মেয়ে';
 
 function TypingIndicator({ isDark }) {
