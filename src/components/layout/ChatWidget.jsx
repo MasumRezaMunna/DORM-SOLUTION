@@ -4,7 +4,7 @@ import { X, Send, User, Loader2 } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const AVATAR_SRC = '/meye-avatar.jpg';
-// Express server proxies this to n8n (works in dev + production, no CORS).
+// Express server proxies this to n8n (avoids CORS — n8n blocks direct browser requests).
 const N8N_CHAT_URL = '/api/chat';
 const ASSISTANT_NAME = 'মেয়ে';
 
