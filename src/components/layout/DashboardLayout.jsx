@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Menu, Sun, Moon } from 'lucide-react';
+import { Menu, Sun, Moon, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import Sidebar from './Sidebar';
 import NotificationDropdown from './NotificationDropdown';
 import UserDropdown from './UserDropdown';
+import ChatWidget from './ChatWidget';
 import { motion } from 'framer-motion';
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -83,6 +83,9 @@ export default function DashboardLayout() {
           </div>
         </main>
       </div>
+
+      {/* Floating AI Chat Widget */}
+      <ChatWidget />
     </div>
   );
 }
