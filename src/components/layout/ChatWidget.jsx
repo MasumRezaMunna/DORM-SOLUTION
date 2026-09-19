@@ -1,21 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
+import { X, Send, User, Loader2 } from 'lucide-react';
+
+const AVATAR_SRC = '/meye-avatar.jpg';
 import { useTheme } from '../../contexts/ThemeContext';
 
-const N8N_CHAT_URL =
-  'https://masumrezamunna.app.n8n.cloud/webhook/82c06985-3684-4bab-a047-1558f36d7961/chat';
+// Vite proxies /n8n-chat → n8n webhook (avoids CORS in development).
+const N8N_CHAT_URL = '/n8n-chat';
+const ASSISTANT_NAME = 'মেয়ে';
 
 function TypingIndicator({ isDark }) {
   return (
     <div className="flex items-end gap-2">
-      <div
-        className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-          isDark ? 'bg-violet-600' : 'bg-violet-500'
-        }`}
-      >
-        <Bot className="w-4 h-4 text-white" />
-      </div>
+      <img
+        src={AVATAR_SRC}
+        alt={ASSISTANT_NAME}
+        className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-violet-400/40"
+      />
       <div
         className={`px-4 py-3 rounded-2xl rounded-bl-sm ${
           isDark ? 'bg-slate-700' : 'bg-white border border-slate-200'
@@ -46,23 +47,21 @@ function ChatMessage({ msg, isDark }) {
       className={`flex items-end gap-2 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
     >
       {/* Avatar */}
-      <div
-        className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-          isUser
-            ? isDark
-              ? 'bg-blue-600'
-              : 'bg-blue-500'
-            : isDark
-            ? 'bg-violet-600'
-            : 'bg-violet-500'
-        }`}
-      >
-        {isUser ? (
+      {isUser ? (
+        <div
+          className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
+            isDark ? 'bg-blue-600' : 'bg-blue-500'
+          }`}
+        >
           <User className="w-4 h-4 text-white" />
-        ) : (
-          <Bot className="w-4 h-4 text-white" />
-        )}
-      </div>
+        </div>
+      ) : (
+        <img
+          src={AVATAR_SRC}
+          alt={ASSISTANT_NAME}
+          className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-violet-400/40"
+        />
+      )}
 
       {/* Bubble */}
       <div
@@ -92,7 +91,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "👋 Hi! I'm your AI assistant. How can I help you today?",
+      content: `👋 হ্যালো! আমি ${ASSISTANT_NAME}। আপনাকে কীভাবে সাহায্য করতে পারি?`,
     },
   ]);
   const [input, setInput] = useState('');
@@ -194,11 +193,13 @@ export default function ChatWidget() {
                   : 'bg-gradient-to-r from-violet-600 to-blue-500'
               }`}
             >
-              <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
+              <img
+                src={AVATAR_SRC}
+                alt={ASSISTANT_NAME}
+                className="w-10 h-10 rounded-xl object-cover ring-2 ring-white/30 flex-shrink-0"
+              />
               <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold text-sm leading-tight">AI Assistant</p>
+                <p className="text-white font-semibold text-sm leading-tight">{ASSISTANT_NAME}</p>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span className="text-white/75 text-xs">Online</span>
@@ -283,31 +284,37 @@ export default function ChatWidget() {
         onClick={() => setIsOpen((prev) => !prev)}
         whileTap={{ scale: 0.9 }}
         whileHover={{ scale: 1.08 }}
-        className="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-violet-600 to-blue-500 text-white"
-        style={{ boxShadow: '0 4px 24px rgba(124,58,237,0.45)' }}
+        className="fixed bottom-5 right-5 z-50 w-16 h-16 rounded-full shadow-xl overflow-hidden"
+        style={{ boxShadow: '0 4px 28px rgba(124,58,237,0.55)' }}
         aria-label="Toggle AI Chat"
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
-            <motion.span
+            <motion.div
               key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.7 }}
               transition={{ duration: 0.18 }}
+              className="w-full h-full flex items-center justify-center bg-gradient-to-br from-violet-600 to-blue-500"
             >
-              <X className="w-6 h-6" />
-            </motion.span>
+              <X className="w-6 h-6 text-white" />
+            </motion.div>
           ) : (
-            <motion.span
-              key="open"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
+            <motion.div
+              key="avatar"
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.7 }}
               transition={{ duration: 0.18 }}
+              className="w-full h-full"
             >
-              <MessageCircle className="w-6 h-6" />
-            </motion.span>
+              <img
+                src={AVATAR_SRC}
+                alt={ASSISTANT_NAME}
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
           )}
         </AnimatePresence>
       </motion.button>

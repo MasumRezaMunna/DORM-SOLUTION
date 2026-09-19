@@ -23,6 +23,13 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
       },
+      // Proxy n8n chat webhook — avoids CORS in development
+      '/n8n-chat': {
+        target: 'https://masumrezamunna.app.n8n.cloud',
+        changeOrigin: true,
+        rewrite: () =>
+          '/webhook/82c06985-3684-4bab-a047-1558f36d7961/chat',
+      },
     },
   },
   build: {
