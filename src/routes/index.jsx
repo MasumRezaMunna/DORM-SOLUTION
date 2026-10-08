@@ -60,10 +60,10 @@ const Unauthorized = () => (
 );
 
 const router = createBrowserRouter([
-  // Root redirect
+  // Root redirect — AuthLayout handles the smart redirect for authenticated users
   { path: '/', element: <Navigate to="/login" replace /> },
 
-  // Auth routes
+  // Auth routes — AuthLayout redirects authenticated users to their dashboard
   {
     element: <AuthLayout />,
     children: [
