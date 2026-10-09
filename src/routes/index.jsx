@@ -1,6 +1,29 @@
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import { ROLES } from '../utils/constants';
+import { useAuth } from '../contexts/AuthContext';
+import { Spinner } from '@heroui/react';
+
+/**
+ * Smart root redirect: waits for auth to resolve, then sends authenticated
+ * users straight to their dashboard instead of bouncing through /login.
+ */
+const RootRedirect = () => {
+  const { isAuthenticated, loading, user, isPending } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-slate-950">
+        <Spinner size="lg" color="primary" />
+      </div>
+    );
+  }
+
+  if (isAuthenticated && isPending) return <Navigate to="/pending" replace />;
+  if (isAuthenticated && user?.role === 'manager') return <Navigate to="/manager" replace />;
+  if (isAuthenticated) return <Navigate to="/dashboard" replace />;
+  return <Navigate to="/login" replace />;
+};
 
 // Layouts
 import { AuthLayout } from '../components/layout/AuthLayout';
@@ -60,8 +83,8 @@ const Unauthorized = () => (
 );
 
 const router = createBrowserRouter([
-  // Root redirect — AuthLayout handles the smart redirect for authenticated users
-  { path: '/', element: <Navigate to="/login" replace /> },
+  // Root redirect — waits for auth state then routes to the correct destination
+  { path: '/', element: <RootRedirect /> },
 
   // Auth routes — AuthLayout redirects authenticated users to their dashboard
   {
