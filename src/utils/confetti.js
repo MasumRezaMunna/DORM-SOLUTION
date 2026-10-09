@@ -27,11 +27,11 @@ const BASE = {
 
 /** Color palettes keyed by action type */
 const PALETTES = {
-  default: ['#a855f7', '#6366f1', '#22d3ee', '#34d399', '#fbbf24', '#f472b6'],
+  default: ['#059669', '#10b981', '#14b8a6', '#06b6d4', '#fbbf24', '#34d399'],
   payment:  ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#fbbf24', '#fcd34d'],
-  member:   ['#8b5cf6', '#a78bfa', '#c4b5fd', '#6366f1', '#60a5fa', '#93c5fd'],
+  member:   ['#059669', '#10b981', '#34d399', '#0d9488', '#14b8a6', '#2dd4bf'],
   meal:     ['#f59e0b', '#fbbf24', '#fcd34d', '#fb923c', '#f87171', '#34d399'],
-  market:   ['#06b6d4', '#22d3ee', '#67e8f9', '#a5f3fc', '#f0abfc', '#e879f9'],
+  market:   ['#06b6d4', '#22d3ee', '#67e8f9', '#14b8a6', '#10b981', '#34d399'],
 };
 
 /**

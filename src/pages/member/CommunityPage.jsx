@@ -30,7 +30,7 @@ export default function CommunityPage() {
           {row.photoURL ? (
             <img src={row.photoURL} alt={row.name} className="w-8 h-8 rounded-full object-cover" />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold">
               {row.name?.charAt(0)?.toUpperCase() || 'U'}
             </div>
           )}
@@ -73,8 +73,8 @@ export default function CommunityPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className={`flex items-center gap-4 px-5 py-4 rounded-2xl border ${isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200'}`}>
-          <div className="p-3 rounded-xl bg-purple-500/10">
-            <Users className="w-5 h-5 text-purple-400" />
+          <div className="p-3 rounded-xl bg-emerald-500/10">
+            <Users className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
           </div>
           <div>
             <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Active Members</p>

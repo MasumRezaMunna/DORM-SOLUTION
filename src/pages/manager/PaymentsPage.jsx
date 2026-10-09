@@ -198,7 +198,7 @@ export default function PaymentsPage() {
   ];
 
   const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputCls = `w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
+  const inputCls = `w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
     isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
   }`;
   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`;

@@ -51,7 +51,7 @@ export default function PendingPage() {
         <button 
           onClick={handleRefresh}
           disabled={checking}
-          className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90 text-white font-medium transition-all mb-3 disabled:opacity-60"
+          className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-md shadow-emerald-500/20 text-white font-medium transition-all mb-3 disabled:opacity-60"
         >
           <RefreshCw className={`w-4 h-4 ${checking ? 'animate-spin' : ''}`} />
           {checking ? 'Checking...' : "I've been approved — Check now"}

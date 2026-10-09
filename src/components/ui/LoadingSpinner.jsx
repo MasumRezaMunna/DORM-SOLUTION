@@ -26,13 +26,13 @@ export function LoadingSpinner({
       <div className="relative">
         {/* Glow behind the ring */}
         <div
-          className={`absolute inset-0 rounded-full blur-md opacity-30 bg-gradient-to-tr from-purple-500 to-blue-500 ${dims[size]}`}
+          className={`absolute inset-0 rounded-full blur-md opacity-30 bg-gradient-to-tr from-emerald-500 to-teal-500 ${dims[size]}`}
         />
         {/* Animated spinner ring */}
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 0.9, ease: 'linear' }}
-          className={`relative rounded-full ${dims[size]} ${borderWidth[size]} border-transparent border-t-purple-500 border-r-blue-500`}
+          className={`relative rounded-full ${dims[size]} ${borderWidth[size]} border-transparent border-t-emerald-500 border-r-teal-500`}
         />
       </div>
 
@@ -135,7 +135,7 @@ export function ErrorCard({ message = 'Something went wrong.', onRetry }) {
       {onRetry && (
         <button
           onClick={onRetry}
-          className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg hover:opacity-90 transition-all"
+          className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-semibold shadow-lg shadow-emerald-500/20 hover:opacity-90 transition-all"
         >
           Retry
         </button>

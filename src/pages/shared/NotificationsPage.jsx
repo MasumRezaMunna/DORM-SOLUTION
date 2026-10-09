@@ -10,7 +10,7 @@ import PageHeader from '../../components/shared/PageHeader';
 import { io } from 'socket.io-client';
 
 const TYPE_COLORS = {
-  bill:      'text-purple-500 bg-purple-500/10',
+  bill:      'text-teal-500 bg-teal-500/10',
   payment:   'text-emerald-500 bg-emerald-500/10',
   notice:    'text-amber-500 bg-amber-500/10',
   complaint: 'text-red-500 bg-red-500/10',
@@ -89,7 +89,7 @@ export default function NotificationsPage() {
             <button
               onClick={() => markAllRead.mutate()}
               disabled={markAllRead.isPending}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg hover:opacity-90 transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 transition-all disabled:opacity-50"
             >
               <CheckCheck className="w-4 h-4" />
               Mark all read
@@ -106,7 +106,7 @@ export default function NotificationsPage() {
             onClick={() => setFilter(f)}
             className={`pb-3 text-sm font-semibold border-b-2 capitalize transition-colors ${
               filter === f
-                ? 'border-purple-500 text-purple-500'
+                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
                 : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
@@ -139,7 +139,7 @@ export default function NotificationsPage() {
                 transition={{ duration: 0.18, delay: i * 0.03 }}
                 className={`flex items-start gap-4 p-4 border-b last:border-0 transition-colors ${
                   isDark ? 'border-white/5' : 'border-slate-100'
-                } ${!n.isRead ? (isDark ? 'bg-purple-500/5' : 'bg-purple-50/50') : ''}`}
+                } ${!n.isRead ? (isDark ? 'bg-emerald-500/5' : 'bg-emerald-50/40') : ''}`}
               >
                 {/* Icon */}
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${TYPE_COLORS[n.type] || 'text-slate-500 bg-slate-500/10'}`}>
@@ -152,7 +152,7 @@ export default function NotificationsPage() {
                     <p className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'} ${!n.isRead ? '' : 'opacity-70'}`}>
                       {n.title}
                     </p>
-                    {!n.isRead && <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 flex-shrink-0" />}
+                    {!n.isRead && <span className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />}
                   </div>
                   <p className={`text-sm mb-1 ${textMuted} ${!n.isRead ? '' : 'opacity-70'}`}>{n.message}</p>
                   <p className={`text-[11px] uppercase font-medium tracking-wider opacity-50 ${textMuted}`}>

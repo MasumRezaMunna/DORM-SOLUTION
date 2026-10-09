@@ -44,7 +44,7 @@ export default function MemberExpensesPage() {
   const textMuted = isDark ? "text-slate-400" : "text-slate-500";
 
   const summaryCards = [
-    { label: "Total Expense", value: formatCurrency(grandTotal),  Icon: ShoppingBag,  color: "text-purple-400", ring: "bg-purple-500/10" },
+    { label: "Total Expense", value: formatCurrency(grandTotal),  Icon: ShoppingBag,  color: "text-emerald-500 dark:text-emerald-400", ring: "bg-emerald-500/10" },
     { label: "Grocery Cost",  value: formatCurrency(groceryCost), Icon: ShoppingCart, color: "text-green-400",  ring: "bg-green-500/10"  },
     { label: "Common Cost",   value: formatCurrency(commonCost),  Icon: Home,         color: "text-blue-400",   ring: "bg-blue-500/10"   },
   ];
@@ -131,7 +131,7 @@ export default function MemberExpensesPage() {
           <button
             key={type}
             onClick={() => setFilterType(type)}
-            className={"px-4 py-2 rounded-xl text-sm font-semibold transition-colors " + (filterType === type ? "bg-purple-600 text-white" : isDark ? "bg-slate-800 text-slate-400 hover:bg-slate-700" : "bg-white text-slate-500 hover:bg-slate-100 border border-slate-200")}
+            className={"px-4 py-2 rounded-xl text-sm font-semibold transition-colors " + (filterType === type ? "bg-emerald-600 text-white shadow-sm" : isDark ? "bg-slate-800 text-slate-400 hover:bg-slate-700" : "bg-white text-slate-500 hover:bg-slate-100 border border-slate-200")}
           >
             {type}
           </button>

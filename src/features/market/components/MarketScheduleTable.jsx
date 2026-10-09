@@ -63,7 +63,7 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
               onClick={() => { setStatus(f.key); setPage(1); }}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                 statusFilter === f.key
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow'
+                  ? 'bg-emerald-600 text-white shadow-sm'
                   : (isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800')
               }`}
             >

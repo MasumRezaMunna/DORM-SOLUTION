@@ -38,9 +38,9 @@ export default function UserDropdown() {
         className="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-slate-500/10 transition-colors focus:outline-none"
       >
         {user?.photoURL ? (
-          <img src={user.photoURL} alt={user.displayName} className="w-8 h-8 rounded-full object-cover ring-2 ring-purple-500/40" onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.displayName || 'U')}&background=8b5cf6&color=fff`; }} />
+          <img src={user.photoURL} alt={user.displayName} className="w-8 h-8 rounded-full object-cover ring-2 ring-emerald-500/40" onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.displayName || 'U')}&background=059669&color=fff`; }} />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold">
             {user?.displayName?.charAt(0)?.toUpperCase() || 'U'}
           </div>
         )}

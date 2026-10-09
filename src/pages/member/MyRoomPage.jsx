@@ -47,8 +47,8 @@ export default function MyRoomPage() {
             className={`rounded-2xl border p-6 lg:col-span-1 ${cardBg}`}
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 rounded-2xl bg-purple-500/10">
-                <DoorOpen className="w-6 h-6 text-purple-400" />
+              <div className="p-3 rounded-2xl bg-emerald-500/10">
+                <DoorOpen className="w-6 h-6 text-emerald-500 dark:text-emerald-400" />
               </div>
               <StatusBadge status={roomData.status || 'occupied'} />
             </div>
@@ -77,7 +77,7 @@ export default function MyRoomPage() {
             <div className="mt-4">
               <div className={`w-full h-2 rounded-full ${isDark ? 'bg-white/10' : 'bg-slate-100'}`}>
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-purple-500 to-blue-500 transition-all"
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all"
                   style={{ width: `${((roomData.currentOccupants?.length || 0) / (roomData.capacity || 1)) * 100}%` }}
                 />
               </div>
@@ -92,7 +92,7 @@ export default function MyRoomPage() {
             className={`rounded-2xl border p-5 lg:col-span-2 ${cardBg}`}
           >
             <h3 className={`font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>
-              <span className="flex items-center gap-2"><Users className="w-4 h-4 text-purple-400" /> Roommates</span>
+              <span className="flex items-center gap-2"><Users className="w-4 h-4 text-emerald-500 dark:text-emerald-400" /> Roommates</span>
             </h3>
             <div className="space-y-3">
               {(roomData.currentOccupants || []).map((m, i) => (
@@ -100,7 +100,7 @@ export default function MyRoomPage() {
                   {m.avatar ? (
                     <img src={m.avatar} alt={m.name} className="w-9 h-9 rounded-full object-cover flex-shrink-0" />
                   ) : (
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
                       {getInitials(m.name || '')}
                     </div>
                   )}

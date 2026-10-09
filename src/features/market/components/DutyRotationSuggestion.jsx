@@ -52,7 +52,7 @@ export default function DutyRotationSuggestion({ selectedIds = [], onSelect, max
                   key={uid}
                   onClick={() => !disabled && onSelect && onSelect(member)}
                   className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all cursor-pointer
-                    ${selected ? 'bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30' : rowHover}
+                    ${selected ? 'bg-gradient-to-r from-emerald-600/20 to-teal-600/20 border border-emerald-500/30' : rowHover}
                     ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`}
                 >
                   {/* Avatar */}

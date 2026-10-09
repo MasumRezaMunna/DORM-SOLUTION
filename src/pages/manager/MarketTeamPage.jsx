@@ -70,7 +70,7 @@ export default function MarketTeamPage() {
       title: 'Total Schedules',
       value: statsLoading ? '...' : (stats?.total ?? 0),
       icon: ShoppingCart,
-      gradient: 'from-purple-500 to-indigo-600',
+      gradient: 'from-emerald-600 to-teal-700',
     },
     {
       title: 'Upcoming Teams',
@@ -104,7 +104,7 @@ export default function MarketTeamPage() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleOpenCreate}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold shadow-lg shadow-purple-500/30 text-sm"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold shadow-md shadow-emerald-500/20 text-sm"
         >
           <Plus className="w-4 h-4" />
           Assign Team

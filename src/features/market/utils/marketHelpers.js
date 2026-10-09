@@ -66,7 +66,7 @@ export const getStatusColor = (status) => {
 export const getStatusGradient = (status) => {
   switch (status) {
     case 'today':     return 'from-emerald-500 to-teal-600';
-    case 'upcoming':  return 'from-blue-500 to-indigo-600';
+    case 'upcoming':  return 'from-teal-500 to-cyan-600';
     case 'completed': return 'from-slate-500 to-slate-700';
     default:          return 'from-slate-500 to-slate-700';
   }

@@ -122,7 +122,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
       {/* ── Date picker ───────────────────────────────────────────────── */}
       <div>
         <label className={labelClass}>
-          <Calendar className="w-4 h-4 text-purple-400" />
+          <Calendar className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
           Market Date
         </label>
         <input
@@ -132,7 +132,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
             required: 'Market date is required',
             validate: (v) => v >= today || 'Cannot select a past date',
           })}
-          className={`w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-purple-500 ${inputClass}`}
+          className={`w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${inputClass}`}
         />
         {errors.marketDate && <p className={errorClass}>{errors.marketDate.message}</p>}
       </div>
@@ -188,7 +188,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
                     onClick={() => !isDisabled && toggleMember(m)}
                     className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-all
                       ${isSelected
-                        ? (isDark ? 'bg-purple-600/20 text-white' : 'bg-purple-50 text-purple-700')
+                        ? (isDark ? 'bg-emerald-600/20 text-white' : 'bg-emerald-50 text-emerald-700')
                         : (isDark ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-slate-100 text-slate-700')
                       }
                       ${isDisabled ? 'opacity-40 cursor-not-allowed' : ''}`}
@@ -205,7 +205,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
                       </p>
                     </div>
                     {isSelected && (
-                      <X className="w-4 h-4 text-purple-400" />
+                      <X className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                     )}
                   </div>
                 );
@@ -238,7 +238,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
           rows={2}
           {...register('note')}
           placeholder="Any instructions or notes for the team..."
-          className={`w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-purple-500 resize-none ${inputClass}`}
+          className={`w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 resize-none ${inputClass}`}
         />
       </div>
 
@@ -255,7 +255,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
         <button
           type="submit"
           disabled={selectedMembers.length < 2 || isLoading}
-          className="flex items-center gap-2 px-6 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg disabled:opacity-50 hover:shadow-purple-500/30 transition-all"
+          className="flex items-center gap-2 px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 disabled:opacity-50 transition-all"
         >
           {!isLoading && <ShoppingCart className="w-4 h-4" />}
           {isLoading ? 'Saving...' : (isEdit ? 'Save Changes' : 'Create Schedule')}

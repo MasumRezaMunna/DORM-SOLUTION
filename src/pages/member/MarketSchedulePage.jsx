@@ -42,7 +42,7 @@ export default function MarketSchedulePage() {
       title: 'Total Market Duties',
       value: myLoading ? '...' : (mySummary.totalDuties ?? 0),
       icon: ShoppingCart,
-      gradient: 'from-purple-500 to-indigo-600',
+      gradient: 'from-emerald-600 to-teal-700',
     },
     {
       title: 'Last Market Date',

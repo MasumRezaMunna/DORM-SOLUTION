@@ -89,7 +89,7 @@ export default function CommunitySummary() {
             <MiniStatCard icon={BarChart3} label="Meal Rate" isDark={isDark}
               value={`৳${(monthlySummary.mealRate||0).toFixed(2)}`}
               sub="per meal (grocery cost ÷ total meals)"
-              iconColor="bg-purple-500/15 text-purple-400" />
+              iconColor="bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" />
             <MiniStatCard icon={Wallet} label="Members" isDark={isDark}
               value={monthlySummary.members?.length || 0}
               sub="active this month"
@@ -123,7 +123,7 @@ export default function CommunitySummary() {
                         <div className="flex items-center gap-2.5">
                           {m.photoURL
                             ? <img src={m.photoURL} alt="" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
-                            : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{getInitials(m.name)}</div>}
+                            : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{getInitials(m.name)}</div>}
                           <div>
                             <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{m.name}</p>
                             {m.roomNumber && <p className={`text-xs ${textMuted}`}>Room {m.roomNumber}</p>}
@@ -131,7 +131,7 @@ export default function CommunitySummary() {
                         </div>
                       </td>
                       <td className="px-3 py-3.5 text-center"><span className="text-sm font-semibold text-amber-400 tabular-nums">{m.totalLunch}</span></td>
-                      <td className="px-3 py-3.5 text-center"><span className="text-sm font-semibold text-indigo-400 tabular-nums">{m.totalDinner}</span></td>
+                      <td className="px-3 py-3.5 text-center"><span className="text-sm font-semibold text-teal-600 dark:text-teal-400 tabular-nums">{m.totalDinner}</span></td>
                       <td className="px-3 py-3.5 text-center"><span className={`text-sm font-bold tabular-nums ${isDark ? 'text-white' : 'text-slate-800'}`}>{m.totalMeals}</span></td>
                       <td className="px-3 py-3.5 text-right"><span className="text-sm font-semibold text-red-400 tabular-nums">৳{m.mealCost.toFixed(2)}</span></td>
                       <td className="px-3 py-3.5 text-right"><span className="text-sm font-semibold text-blue-400 tabular-nums">৳{(m.commonCostPerMember||0).toFixed(2)}</span></td>
@@ -149,7 +149,7 @@ export default function CommunitySummary() {
                     <tr className={`border-t font-semibold ${isDark ? 'border-white/10 bg-white/[0.02]' : 'border-slate-200 bg-slate-50'}`}>
                       <td className={`px-5 py-3 text-xs uppercase tracking-wider ${textMuted}`}>Totals</td>
                       <td className="px-3 py-3 text-center text-sm text-amber-400">{monthlySummary.members.reduce((s,m)=>s+m.totalLunch,0)}</td>
-                      <td className="px-3 py-3 text-center text-sm text-indigo-400">{monthlySummary.members.reduce((s,m)=>s+m.totalDinner,0)}</td>
+                      <td className="px-3 py-3 text-center text-sm text-teal-600 dark:text-teal-400">{monthlySummary.members.reduce((s,m)=>s+m.totalDinner,0)}</td>
                       <td className={`px-3 py-3 text-center text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{monthlySummary.totalMeals}</td>
                       <td className="px-3 py-3 text-right text-sm text-red-400">৳{(monthlySummary.groceryTotal || 0).toFixed(2)}</td>
                       <td className="px-3 py-3 text-right text-sm text-blue-400">৳{(monthlySummary.commonTotal || 0).toFixed(2)}</td>

@@ -89,7 +89,7 @@ export default function ExpensesPage() {
   const totalExpenses = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
 
   const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-purple-500 ${
+  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
     isDark ? 'bg-slate-800 border-white/10 text-white placeholder:text-slate-500' : 'bg-white border-slate-200 text-slate-800 placeholder:text-slate-400'
   }`;
 
@@ -177,7 +177,7 @@ export default function ExpensesPage() {
               setForm({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
               setIsModalOpen(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20"
           >
             <Plus className="w-4 h-4" />
             Add Expense
@@ -199,7 +199,7 @@ export default function ExpensesPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
         {[
-          { label: 'Total Expense', value: formatCurrency(dashboardData?.monthlyExpenses || 0), color: 'text-purple-400', bg: 'bg-purple-500/10' },
+          { label: 'Total Expense', value: formatCurrency(dashboardData?.monthlyExpenses || 0), color: 'text-emerald-500 dark:text-emerald-400', bg: 'bg-emerald-500/10' },
           { label: 'Grocery Cost', value: formatCurrency(dashboardData?.groceryCost || 0), color: 'text-green-400', bg: 'bg-green-500/10' },
           { label: 'Common Cost', value: formatCurrency(dashboardData?.commonCost || 0), color: 'text-blue-400', bg: 'bg-blue-500/10' },
           { label: 'Total Meals', value: dashboardData?.totalMeals || 0, color: 'text-amber-400', bg: 'bg-amber-500/10' },
@@ -218,7 +218,7 @@ export default function ExpensesPage() {
           <button 
             key={type}
             onClick={() => setFilterType(type)}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${filterType === type ? 'bg-purple-600 text-white' : isDark ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-white text-slate-500 hover:bg-slate-100 border border-slate-200'}`}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${filterType === type ? 'bg-emerald-600 text-white shadow-sm' : isDark ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-white text-slate-500 hover:bg-slate-100 border border-slate-200'}`}
           >
             {type}
           </button>
@@ -274,7 +274,7 @@ export default function ExpensesPage() {
               type="submit"
               whileTap={{ scale: 0.97 }}
               disabled={!form.title || !form.amount || createMutation.isPending || updateMutation.isPending}
-              className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold disabled:opacity-50"
+              className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 disabled:opacity-50"
             >
               {createMutation.isPending || updateMutation.isPending ? 'Saving...' : (editingId ? 'Save Changes' : 'Save Expense')}
             </motion.button>

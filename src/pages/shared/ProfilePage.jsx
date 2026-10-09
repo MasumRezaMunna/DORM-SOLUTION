@@ -67,7 +67,7 @@ export default function ProfilePage() {
   };
 
   const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-purple-500 ${
+  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
     isDark ? 'bg-slate-800 border-white/10 text-white placeholder:text-slate-500' : 'bg-white border-slate-200 text-slate-800 placeholder:text-slate-400'
   }`;
   const labelClass = `block text-sm font-medium mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`;
@@ -88,7 +88,7 @@ export default function ProfilePage() {
           {/* Basic Info */}
           <div className={`rounded-2xl border p-6 ${cardBg}`}>
             <h3 className={`flex items-center gap-2 font-semibold mb-5 ${isDark ? 'text-white' : 'text-slate-800'}`}>
-              <User className="w-4 h-4 text-purple-400" /> Basic Information
+              <User className="w-4 h-4 text-emerald-500" /> Basic Information
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -210,7 +210,7 @@ export default function ProfilePage() {
               whileTap={{ scale: 0.97 }}
               type="submit"
               disabled={updateMutation.isPending}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 transition-all disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
               {updateMutation.isPending ? 'Saving...' : 'Save Profile'}

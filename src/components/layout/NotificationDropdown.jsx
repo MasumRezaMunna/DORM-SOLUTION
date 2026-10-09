@@ -93,7 +93,7 @@ export default function NotificationDropdown() {
 
   const getIconColor = (type) => {
     switch (type) {
-      case 'bill': return 'text-purple-500 bg-purple-500/10';
+      case 'bill': return 'text-teal-500 bg-teal-500/10';
       case 'payment': return 'text-emerald-500 bg-emerald-500/10';
       case 'notice': return 'text-amber-500 bg-amber-500/10';
       case 'complaint': return 'text-red-500 bg-red-500/10';
@@ -112,7 +112,7 @@ export default function NotificationDropdown() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`relative p-2 rounded-xl transition-colors ${
-          isOpen ? (isDark ? 'bg-white/10 text-white' : 'bg-slate-100 text-purple-600') : (isDark ? 'text-slate-400 hover:bg-white/5' : 'text-slate-600 hover:bg-slate-100')
+          isOpen ? (isDark ? 'bg-white/10 text-white' : 'bg-slate-100 text-emerald-600') : (isDark ? 'text-slate-400 hover:bg-white/5' : 'text-slate-600 hover:bg-slate-100')
         }`}
       >
         <Bell className="w-5 h-5" />
@@ -136,7 +136,7 @@ export default function NotificationDropdown() {
               {unreadCount > 0 && (
                 <button 
                   onClick={() => markAllReadMutation.mutate()}
-                  className="text-xs font-medium text-purple-500 hover:text-purple-600 flex items-center gap-1"
+                  className="text-xs font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 flex items-center gap-1"
                 >
                   <Check className="w-3 h-3" /> Mark all read
                 </button>
@@ -155,7 +155,7 @@ export default function NotificationDropdown() {
                     <div 
                       key={n._id} 
                       onClick={() => handleNotificationClick(n)}
-                      className={`p-4 transition-colors cursor-pointer flex gap-3 ${itemHover} ${!n.isRead ? (isDark ? 'bg-purple-500/5' : 'bg-purple-50/50') : ''}`}
+                      className={`p-4 transition-colors cursor-pointer flex gap-3 ${itemHover} ${!n.isRead ? (isDark ? 'bg-emerald-500/5' : 'bg-emerald-50/40') : ''}`}
                     >
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${getIconColor(n.type)}`}>
                         <Bell className="w-4 h-4" />
@@ -163,7 +163,7 @@ export default function NotificationDropdown() {
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start mb-0.5">
                           <p className={`text-sm font-semibold truncate ${textPrimary} ${!n.isRead ? '' : 'opacity-80'}`}>{n.title}</p>
-                          {!n.isRead && <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 flex-shrink-0" />}
+                          {!n.isRead && <span className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />}
                         </div>
                         <p className={`text-xs line-clamp-2 mb-1 ${textSecondary} ${!n.isRead ? '' : 'opacity-80'}`}>{n.message}</p>
                         <p className={`text-[10px] uppercase font-medium tracking-wider ${textSecondary} opacity-60`}>
@@ -180,7 +180,7 @@ export default function NotificationDropdown() {
               <Link
                 to={notifRoot}
                 onClick={() => setIsOpen(false)}
-                className="block text-center text-xs font-semibold text-purple-500 hover:text-purple-600 transition-colors"
+                className="block text-center text-xs font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 transition-colors"
               >
                 View all notifications →
               </Link>

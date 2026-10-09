@@ -31,9 +31,9 @@ export default function SettingsPage() {
         <h3 className={`font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>Profile</h3>
         <div className="flex items-center gap-4">
           {user?.avatar ? (
-            <img src={user.avatar} alt={user.name} className="w-14 h-14 rounded-full object-cover ring-2 ring-purple-500/40" />
+            <img src={user.avatar} alt={user.name} className="w-14 h-14 rounded-full object-cover ring-2 ring-emerald-500/40" />
           ) : (
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
             </div>
           )}
@@ -42,7 +42,7 @@ export default function SettingsPage() {
             <p className={`text-sm ${textMuted}`}>{user?.email}</p>
             <span className={`text-xs capitalize px-2 py-0.5 rounded-full mt-1 inline-block ${
               user?.role === 'manager'
-                ? 'bg-purple-500/15 text-purple-400'
+                ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                 : 'bg-blue-500/15 text-blue-400'
             }`}>{user?.role}</span>
           </div>
@@ -54,7 +54,7 @@ export default function SettingsPage() {
         <h3 className={`font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>Appearance</h3>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {isDark ? <Moon className="w-5 h-5 text-purple-400" /> : <Sun className="w-5 h-5 text-amber-400" />}
+            {isDark ? <Moon className="w-5 h-5 text-emerald-400" /> : <Sun className="w-5 h-5 text-amber-400" />}
             <div>
               <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{isDark ? 'Dark Mode' : 'Light Mode'}</p>
               <p className={`text-xs ${textMuted}`}>Toggle between dark and light themes</p>
@@ -63,7 +63,7 @@ export default function SettingsPage() {
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={toggleTheme}
-            className={`relative w-12 h-6 rounded-full transition-colors ${isDark ? 'bg-purple-600' : 'bg-slate-300'}`}
+            className={`relative w-12 h-6 rounded-full transition-colors ${isDark ? 'bg-emerald-600' : 'bg-slate-300'}`}
           >
             <motion.div
               animate={{ x: isDark ? 24 : 2 }}
@@ -92,7 +92,7 @@ export default function SettingsPage() {
                 onClick={() => i18n.changeLanguage(lang.code)}
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                   i18n.language === lang.code
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow'
+                    ? 'bg-emerald-600 text-white shadow'
                     : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >

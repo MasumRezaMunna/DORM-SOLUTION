@@ -65,7 +65,7 @@ export default function ComplaintsPage() {
   const filtered = statusFilter === 'all' ? complaints : complaints.filter(c => c.status === statusFilter);
 
   const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-purple-500 ${
+  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
     isDark ? 'bg-slate-800 border-white/10 text-white placeholder:text-slate-500' : 'bg-white border-slate-200 text-slate-800 placeholder:text-slate-400'
   }`;
   const textMuted = isDark ? 'text-slate-400' : 'text-slate-500';
@@ -86,7 +86,7 @@ export default function ComplaintsPage() {
             onClick={() => setStatusFilter(s)}
             className={`px-4 py-1.5 rounded-lg text-sm font-medium capitalize transition-all ${
               statusFilter === s
-                ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow'
+                ? 'bg-emerald-600 text-white shadow-sm'
                 : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
             }`}
           >

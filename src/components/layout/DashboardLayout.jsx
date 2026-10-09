@@ -62,7 +62,7 @@ export default function DashboardLayout() {
               whileTap={{ scale: 0.9 }}
               onClick={toggleTheme}
               className={`p-2 rounded-xl transition-colors ${
-                isDark ? 'text-slate-400 hover:bg-white/5 hover:text-yellow-400' : 'text-slate-600 hover:bg-slate-100 hover:text-purple-600'
+                isDark ? 'text-slate-400 hover:bg-white/5 hover:text-amber-400' : 'text-slate-600 hover:bg-slate-100 hover:text-emerald-600'
               }`}
             >
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}

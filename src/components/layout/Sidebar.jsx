@@ -66,7 +66,7 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
           onClick={() => { navigate(dashboardRoot); if (onClose) onClose(); }}
           className="flex items-center gap-3 hover:opacity-80 transition-opacity min-w-0"
         >
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md shadow-emerald-500/20 flex items-center justify-center flex-shrink-0">
             <Building2 className="w-5 h-5 text-white" />
           </div>
 
@@ -113,7 +113,7 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group
                 ${effectiveCollapsed ? 'justify-center' : ''}
                 ${isActive
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-900/30'
+                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-900/30'
                   : hoverCls
                 }`
               }

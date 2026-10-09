@@ -17,7 +17,7 @@ import { triggerConfetti } from '../../utils/confetti';
 function MealCounter({ value, onChange, label, icon: Icon, color, disabled }) {
   const styles = {
     amber:  { badge: 'bg-amber-500/15 border-amber-500/40',  text: 'text-amber-300',  btn: 'hover:bg-amber-500/20 text-amber-400' },
-    indigo: { badge: 'bg-indigo-500/15 border-indigo-500/40', text: 'text-indigo-300', btn: 'hover:bg-indigo-500/20 text-indigo-400' },
+    teal:   { badge: 'bg-teal-500/15 border-teal-500/40',    text: 'text-teal-300',   btn: 'hover:bg-teal-500/20 text-teal-400' },
   }[color];
 
   return (
@@ -231,7 +231,7 @@ export default function MealsPage() {
           <button key={t.key} onClick={() => setTab(t.key)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               tab === t.key
-                ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow'
+                ? 'bg-emerald-600 text-white shadow-sm'
                 : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
             }`}>
             <t.icon className="w-3.5 h-3.5" />
@@ -248,7 +248,7 @@ export default function MealsPage() {
             {/* Date + totals bar */}
             <div className="flex flex-wrap gap-3">
               <div className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border ${cardBg}`}>
-                <Calendar className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                <Calendar className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                 <input type="date" value={selectedDate}
                   onChange={e => setSelectedDate(e.target.value)}
                   className={`bg-transparent text-sm outline-none ${isDark ? 'text-white' : 'text-slate-800'}`} />
@@ -258,7 +258,7 @@ export default function MealsPage() {
                 <span className={`text-sm ${textMuted}`}>Lunch: <strong className={isDark ? 'text-white' : 'text-slate-800'}>{totalLunch}</strong></span>
               </div>
               <div className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border ${cardBg}`}>
-                <Moon className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                <Moon className="w-4 h-4 text-teal-500 dark:text-teal-400 flex-shrink-0" />
                 <span className={`text-sm ${textMuted}`}>Dinner: <strong className={isDark ? 'text-white' : 'text-slate-800'}>{totalDinner}</strong></span>
               </div>
               <div className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border ${cardBg}`}>
@@ -282,7 +282,7 @@ export default function MealsPage() {
                   <button onClick={() => setAll('lunch', 1)} className="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-colors font-medium">1 each</button>
                   <button onClick={() => setAll('lunch', 0)} className="text-[11px] px-2 py-0.5 rounded-full bg-white/5 text-slate-500 border border-white/10 hover:bg-white/10 transition-colors font-medium">0 each</button>
                   <span className={`text-xs ${textMuted} ml-2`}>Dinner:</span>
-                  <button onClick={() => setAll('dinner', 1)} className="text-[11px] px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/25 transition-colors font-medium">1 each</button>
+                  <button onClick={() => setAll('dinner', 1)} className="text-[11px] px-2 py-0.5 rounded-full bg-teal-500/15 text-teal-600 dark:text-teal-400 border border-teal-500/30 hover:bg-teal-500/25 transition-colors font-medium">1 each</button>
                   <button onClick={() => setAll('dinner', 0)} className="text-[11px] px-2 py-0.5 rounded-full bg-white/5 text-slate-500 border border-white/10 hover:bg-white/10 transition-colors font-medium">0 each</button>
                 </div>
               </div>
@@ -315,7 +315,7 @@ export default function MealsPage() {
                           <div className="flex items-center gap-3 min-w-0">
                             {member.userId?.photoURL
                               ? <img src={member.userId.photoURL} alt="" className="w-9 h-9 rounded-full object-cover flex-shrink-0" />
-                              : <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{getInitials(member.userId?.displayName || 'U')}</div>}
+                              : <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{getInitials(member.userId?.displayName || 'U')}</div>}
                             <div className="min-w-0">
                               <p className={`text-sm font-medium truncate ${isDark ? 'text-white' : 'text-slate-800'}`}>{member.userId?.displayName || 'Unknown'}</p>
                               <p className={`text-xs ${textMuted}`}>Room {member.roomId?.roomNumber || '—'}</p>
@@ -324,9 +324,9 @@ export default function MealsPage() {
                           {/* Counters */}
                           <div className="flex items-center gap-3 flex-shrink-0">
                             <MealCounter value={lunch}  onChange={v => setMeal(member._id, 'lunch',  v)} label="Lunch"  icon={Sun}  color="amber" />
-                            <MealCounter value={dinner} onChange={v => setMeal(member._id, 'dinner', v)} label="Dinner" icon={Moon} color="indigo" />
+                            <MealCounter value={dinner} onChange={v => setMeal(member._id, 'dinner', v)} label="Dinner" icon={Moon} color="teal" />
                             <div className={`w-9 h-9 rounded-xl flex flex-col items-center justify-center text-xs font-bold leading-tight ${
-                              total === 0 ? 'bg-red-500/15 text-red-400' : total <= 2 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-purple-500/15 text-purple-400'
+                              total === 0 ? 'bg-red-500/15 text-red-400' : total <= 2 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-teal-500/15 text-teal-600 dark:text-teal-400'
                             }`}>
                               <span className="text-sm font-bold">{total}</span>
                               <span className="text-[9px] opacity-70">total</span>
@@ -373,7 +373,7 @@ export default function MealsPage() {
                   <StatCard icon={BarChart3} label="Meal Rate" isDark={isDark}
                     value={`৳${(monthlySummary.mealRate||0).toFixed(2)}`}
                     sub="per meal (grocery cost ÷ total meals)"
-                    iconColor="bg-purple-500/15 text-purple-400" />
+                    iconColor="bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" />
                   <StatCard icon={Wallet} label="Members" isDark={isDark}
                     value={monthlySummary.members?.length || 0}
                     sub="active this month"
@@ -407,7 +407,7 @@ export default function MealsPage() {
                               <div className="flex items-center gap-2.5">
                                 {m.photoURL
                                   ? <img src={m.photoURL} alt="" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
-                                  : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{getInitials(m.name)}</div>}
+                                  : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{getInitials(m.name)}</div>}
                                 <div>
                                   <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{m.name}</p>
                                   {m.roomNumber && <p className={`text-xs ${textMuted}`}>Room {m.roomNumber}</p>}
@@ -418,7 +418,7 @@ export default function MealsPage() {
                               <span className="text-sm font-semibold text-amber-400 tabular-nums">{m.totalLunch}</span>
                             </td>
                             <td className="px-3 py-3.5 text-center">
-                              <span className="text-sm font-semibold text-indigo-400 tabular-nums">{m.totalDinner}</span>
+                              <span className="text-sm font-semibold text-teal-600 dark:text-teal-400 tabular-nums">{m.totalDinner}</span>
                             </td>
                             <td className="px-3 py-3.5 text-center">
                               <span className={`text-sm font-bold tabular-nums ${isDark ? 'text-white' : 'text-slate-800'}`}>{m.totalMeals}</span>
@@ -450,7 +450,7 @@ export default function MealsPage() {
                           <tr className={`border-t font-semibold ${isDark ? 'border-white/10 bg-white/[0.02]' : 'border-slate-200 bg-slate-50'}`}>
                           <td className={`px-5 py-3 text-xs uppercase tracking-wider ${textMuted}`}>Totals</td>
                           <td className="px-3 py-3 text-center text-sm text-amber-400">{monthlySummary.members.reduce((s,m)=>s+m.totalLunch,0)}</td>
-                          <td className="px-3 py-3 text-center text-sm text-indigo-400">{monthlySummary.members.reduce((s,m)=>s+m.totalDinner,0)}</td>
+                          <td className="px-3 py-3 text-center text-sm text-teal-600 dark:text-teal-400">{monthlySummary.members.reduce((s,m)=>s+m.totalDinner,0)}</td>
                           <td className={`px-3 py-3 text-center text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{monthlySummary.totalMeals}</td>
                           <td className="px-3 py-3 text-right text-sm text-red-400">৳{(monthlySummary.groceryTotal || 0).toFixed(2)}</td>
                             <td className="px-3 py-3 text-right text-sm text-blue-400">৳{(monthlySummary.commonTotal || 0).toFixed(2)}</td>
@@ -501,7 +501,7 @@ export default function MealsPage() {
                           <div className="flex flex-col items-center gap-1">
                             {m.photoURL
                               ? <img src={m.photoURL} alt="" className="w-6 h-6 rounded-full object-cover" />
-                              : <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-[9px] font-bold">{getInitials(m.name)}</div>}
+                              : <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-[9px] font-bold">{getInitials(m.name)}</div>}
                             <span className="truncate w-full">{m.name.split(' ')[0]}</span>
                           </div>
                         </th>

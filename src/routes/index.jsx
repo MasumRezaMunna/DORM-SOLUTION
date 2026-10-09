@@ -62,7 +62,7 @@ const NotFound = () => (
       <p className="text-9xl font-black text-white/5 select-none">404</p>
       <h1 className="text-2xl font-bold text-white -mt-8">Page Not Found</h1>
       <p className="text-slate-400 mt-2">The page you are looking for does not exist.</p>
-      <a href="/" className="mt-6 inline-block px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold">Go Home</a>
+      <a href="/" className="mt-6 inline-block px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-sm font-semibold shadow-lg shadow-emerald-500/20 transition-all">Go Home</a>
     </div>
   </div>
 );
@@ -73,7 +73,7 @@ const Unauthorized = () => (
       <p className="text-9xl font-black text-white/5 select-none">403</p>
       <h1 className="text-2xl font-bold text-white -mt-8">Access Denied</h1>
       <p className="text-slate-400 mt-2">You don't have permission to view this page.</p>
-      <a href="/login" className="mt-6 inline-block px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold">Go to Login</a>
+      <a href="/login" className="mt-6 inline-block px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-sm font-semibold shadow-lg shadow-emerald-500/20 transition-all">Go to Login</a>
     </div>
   </div>
 );

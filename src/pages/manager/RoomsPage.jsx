@@ -26,7 +26,7 @@ export default function RoomsPage() {
   const [formData, setFormData] = useState(emptyForm);
 
   const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputCls = `w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
+  const inputCls = `w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
     isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
   }`;
   const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`;
@@ -147,7 +147,7 @@ export default function RoomsPage() {
               setFormData(emptyForm);
               setIsModalOpen(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg shadow-purple-900/30"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20"
           >
             <Plus className="w-4 h-4" />
             Add Room
@@ -163,7 +163,7 @@ export default function RoomsPage() {
             onClick={() => setFilter(tab)}
             className={`px-4 py-1.5 rounded-lg text-sm font-medium capitalize transition-all ${
               filter === tab
-                ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow'
+                ? 'bg-emerald-600 text-white shadow-sm'
                 : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -271,7 +271,7 @@ export default function RoomsPage() {
                       return (
                         <div key={mid} className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
+                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
                               {getInitials(name)}
                             </div>
                             <span className={`text-xs font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{name}</span>
@@ -301,7 +301,7 @@ export default function RoomsPage() {
                       setAssignMemberId('');
                       setIsAssignModalOpen(true);
                     }}
-                    className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20 hover:bg-purple-500/20 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors"
                   >
                     <UserPlus className="w-3.5 h-3.5" />
                     Assign Member
@@ -392,7 +392,7 @@ export default function RoomsPage() {
             </button>
             <button type="submit"
               disabled={addMutation.isPending || updateMutation.isPending}
-              className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg disabled:opacity-50">
+              className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 disabled:opacity-50">
               {addMutation.isPending || updateMutation.isPending ? 'Saving...' : (editingRoom ? 'Save Changes' : 'Add Room')}
             </button>
           </div>
@@ -410,8 +410,8 @@ export default function RoomsPage() {
           {selectedRoom && (
             <div className={`rounded-xl border px-4 py-3 ${isDark ? 'bg-slate-800 border-white/10' : 'bg-slate-50 border-slate-200'}`}>
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-purple-500/10">
-                  <DoorOpen className="w-4 h-4 text-purple-400" />
+                <div className="p-2 rounded-lg bg-emerald-500/10">
+                  <DoorOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 <div>
                   <p className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Room {selectedRoom.roomNumber}</p>
@@ -456,7 +456,7 @@ export default function RoomsPage() {
               onClick={() => {
                 assignMutation.mutate({ roomId: selectedRoom._id, memberId: assignMemberId });
               }}
-              className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg disabled:opacity-50"
+              className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 disabled:opacity-50"
             >
               {assignMutation.isPending ? 'Assigning...' : 'Assign'}
             </button>

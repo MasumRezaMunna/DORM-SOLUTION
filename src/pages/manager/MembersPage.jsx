@@ -61,7 +61,7 @@ const ActionMenu = ({ row, isDark, statusMutation, roleMutation }) => {
             }}
             className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition-colors ${isDark ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-slate-50 text-slate-700'}`}
           >
-            {isManager ? <ShieldAlert className="w-4 h-4 text-orange-400" /> : <Shield className="w-4 h-4 text-purple-400" />}
+            {isManager ? <ShieldAlert className="w-4 h-4 text-orange-400" /> : <Shield className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />}
             {isManager ? 'Demote to Member' : 'Promote to Manager'}
           </button>
         </div>
@@ -173,14 +173,14 @@ export default function MembersPage() {
           {row.userId?.photoURL ? (
             <img src={row.userId.photoURL} alt={row.userId?.displayName} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
               {getInitials(row.userId?.displayName || 'U')}
             </div>
           )}
           <div>
             <div className="flex items-center gap-2">
               <p className={`font-medium text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{row.userId?.displayName || 'Unknown'}</p>
-              {row.userId?.role === 'manager' && <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-400 uppercase tracking-wide">Mgr</span>}
+              {row.userId?.role === 'manager' && <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">Mgr</span>}
             </div>
             <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{row.userId?.email}</p>
           </div>
@@ -242,7 +242,7 @@ export default function MembersPage() {
           {row.photoURL ? (
             <img src={row.photoURL} alt={row.displayName} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
               {getInitials(row.displayName || 'U')}
             </div>
           )}
@@ -285,7 +285,7 @@ export default function MembersPage() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg shadow-purple-900/30 hover:shadow-purple-900/50 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 transition-all"
           >
             <UserPlus className="w-4 h-4" />
             Add Member
@@ -309,13 +309,13 @@ export default function MembersPage() {
       <div className={`flex items-center gap-4 border-b ${isDark ? 'border-white/10' : 'border-slate-200'} mb-6`}>
         <button 
           onClick={() => setActiveTab('members')}
-          className={`pb-3 text-sm font-semibold border-b-2 transition-colors ${activeTab === 'members' ? 'border-purple-500 text-purple-500' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          className={`pb-3 text-sm font-semibold border-b-2 transition-colors ${activeTab === 'members' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
         >
           Active Members
         </button>
         <button 
           onClick={() => setActiveTab('pending')}
-          className={`pb-3 text-sm font-semibold border-b-2 transition-colors flex items-center gap-2 ${activeTab === 'pending' ? 'border-purple-500 text-purple-500' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          className={`pb-3 text-sm font-semibold border-b-2 transition-colors flex items-center gap-2 ${activeTab === 'pending' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
         >
           Pending Approvals
           {pendingUsers.length > 0 && (
@@ -354,7 +354,7 @@ export default function MembersPage() {
               required
               value={formData.userId}
               onChange={e => setFormData({ ...formData, userId: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
+              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
                 isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
               }`}
               placeholder="e.g. 64d9f..."
@@ -366,7 +366,7 @@ export default function MembersPage() {
               type="text"
               value={formData.phone}
               onChange={e => setFormData({ ...formData, phone: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
+              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
                 isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
               }`}
               placeholder="e.g. 01xxxxxxxxx"
@@ -378,7 +378,7 @@ export default function MembersPage() {
               type="text"
               value={formData.nid}
               onChange={e => setFormData({ ...formData, nid: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
+              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
                 isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
               }`}
               placeholder="NID Number"
@@ -390,7 +390,7 @@ export default function MembersPage() {
               type="text"
               value={formData.occupation}
               onChange={e => setFormData({ ...formData, occupation: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-purple-500 transition-colors ${
+              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
                 isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
               }`}
               placeholder="e.g. Student"
@@ -410,7 +410,7 @@ export default function MembersPage() {
             <button
               type="submit"
               disabled={addMutation.isPending}
-              className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold shadow-lg disabled:opacity-50"
+              className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 disabled:opacity-50"
             >
               {addMutation.isPending ? 'Adding...' : 'Add Member'}
             </button>

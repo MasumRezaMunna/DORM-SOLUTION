@@ -14,7 +14,7 @@ function TypingIndicator({ isDark }) {
       <img
         src={AVATAR_SRC}
         alt={ASSISTANT_NAME}
-        className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-violet-400/40"
+        className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-emerald-400/40"
       />
       <div
         className={`px-4 py-3 rounded-2xl rounded-bl-sm ${
@@ -58,7 +58,7 @@ function ChatMessage({ msg, isDark }) {
         <img
           src={AVATAR_SRC}
           alt={ASSISTANT_NAME}
-          className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-violet-400/40"
+          className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-emerald-400/40"
         />
       )}
 
@@ -188,8 +188,8 @@ export default function ChatWidget() {
             <div
               className={`flex items-center gap-3 px-4 py-3 flex-shrink-0 ${
                 isDark
-                  ? 'bg-gradient-to-r from-violet-700 to-blue-700'
-                  : 'bg-gradient-to-r from-violet-600 to-blue-500'
+                  ? 'bg-gradient-to-r from-emerald-700 to-teal-700'
+                  : 'bg-gradient-to-r from-emerald-600 to-teal-600'
               }`}
             >
               <img
@@ -252,7 +252,7 @@ export default function ChatWidget() {
                   disabled={!input.trim() || isLoading}
                   className={`p-2 rounded-lg transition-all flex-shrink-0 ${
                     input.trim() && !isLoading
-                      ? 'bg-gradient-to-br from-violet-600 to-blue-500 text-white shadow-md hover:shadow-violet-500/30 hover:scale-105'
+                      ? 'bg-gradient-to-br from-emerald-600 to-teal-600 text-white shadow-md hover:shadow-emerald-500/30 hover:scale-105'
                       : isDark
                       ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
                       : 'bg-slate-200 text-slate-400 cursor-not-allowed'
@@ -284,7 +284,7 @@ export default function ChatWidget() {
         whileTap={{ scale: 0.9 }}
         whileHover={{ scale: 1.08 }}
         className="fixed bottom-5 right-5 z-50 w-16 h-16 rounded-full shadow-xl overflow-hidden"
-        style={{ boxShadow: '0 4px 28px rgba(124,58,237,0.55)' }}
+        style={{ boxShadow: '0 4px 28px rgba(5,150,105,0.45)' }}
         aria-label="Toggle AI Chat"
       >
         <AnimatePresence mode="wait">
@@ -295,7 +295,7 @@ export default function ChatWidget() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.7 }}
               transition={{ duration: 0.18 }}
-              className="w-full h-full flex items-center justify-center bg-gradient-to-br from-violet-600 to-blue-500"
+              className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-600 to-teal-600"
             >
               <X className="w-6 h-6 text-white" />
             </motion.div>

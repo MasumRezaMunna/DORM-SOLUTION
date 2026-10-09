@@ -132,17 +132,17 @@ export default function WeeklyMealPlan({ isManager = false }) {
                 key={day.dayName} 
                 className={`flex flex-col rounded-xl border p-4 transition-all ${
                   isToday 
-                    ? (isDark ? 'bg-indigo-500/10 border-indigo-500/30 ring-1 ring-indigo-500/30' : 'bg-indigo-50 border-indigo-200 ring-1 ring-indigo-200')
+                    ? (isDark ? 'bg-emerald-500/10 border-emerald-500/30 ring-1 ring-emerald-500/30' : 'bg-emerald-50 border-emerald-200 ring-1 ring-emerald-200')
                     : (isDark ? 'bg-white/[0.02] border-white/5' : 'bg-slate-50 border-slate-100')
                 }`}
               >
                 <h4 className={`text-sm font-semibold mb-3 text-center ${
                   isToday 
-                    ? 'text-indigo-600 dark:text-indigo-400' 
+                    ? 'text-emerald-600 dark:text-emerald-400' 
                     : (isDark ? 'text-slate-300' : 'text-slate-700')
                 }`}>
                   {day.dayName}
-                  {isToday && <span className="ml-2 text-[10px] uppercase tracking-wider bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded-full">Today</span>}
+                  {isToday && <span className="ml-2 text-[10px] uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded-full">Today</span>}
                 </h4>
 
                 <div className="flex justify-around items-center mb-3">
@@ -167,18 +167,18 @@ export default function WeeklyMealPlan({ isManager = false }) {
 
                   {/* Dinner */}
                   <div className="flex flex-col items-center gap-1.5">
-                    <Moon className={`w-5 h-5 ${day.dinner ? 'text-indigo-500' : 'text-slate-300 dark:text-slate-600'}`} />
+                    <Moon className={`w-5 h-5 ${day.dinner ? 'text-teal-500' : 'text-slate-300 dark:text-slate-600'}`} />
                     {isEditing ? (
                       <button 
                         onClick={() => handleToggle(index, 'dinner')}
                         className={`text-xs px-2 py-1 rounded-md ${
-                          day.dinner ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400' : 'bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400'
+                          day.dinner ? 'bg-teal-100 text-teal-700 dark:bg-teal-500/20 dark:text-teal-400' : 'bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400'
                         }`}
                       >
                         {day.dinner ? 'Yes' : 'No'}
                       </button>
                     ) : (
-                      <span className={`text-[10px] font-medium uppercase ${day.dinner ? 'text-indigo-600 dark:text-indigo-400' : textMuted}`}>
+                      <span className={`text-[10px] font-medium uppercase ${day.dinner ? 'text-teal-600 dark:text-teal-400' : textMuted}`}>
                         {day.dinner ? 'Dinner' : 'None'}
                       </span>
                     )}
@@ -208,7 +208,7 @@ export default function WeeklyMealPlan({ isManager = false }) {
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <Moon className={`w-3 h-3 flex-shrink-0 ${day.dinnerNote ? 'text-indigo-500' : 'text-slate-400'}`} />
+                    <Moon className={`w-3 h-3 flex-shrink-0 ${day.dinnerNote ? 'text-teal-500' : 'text-slate-400'}`} />
                     {isEditing ? (
                       <input 
                         type="text" 
@@ -216,7 +216,7 @@ export default function WeeklyMealPlan({ isManager = false }) {
                         onChange={(e) => handleNoteChange(index, 'dinnerNote', e.target.value)}
                         placeholder="Dinner note..."
                         maxLength={80}
-                        className={`w-full text-[10px] px-2 py-1 rounded-md border focus:ring-1 focus:ring-indigo-500 outline-none ${
+                        className={`w-full text-[10px] px-2 py-1 rounded-md border focus:ring-1 focus:ring-teal-500 outline-none ${
                           isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-slate-200 text-slate-800'
                         }`}
                       />
