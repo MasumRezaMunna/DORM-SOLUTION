@@ -43,12 +43,12 @@ function MealCounter({ value, onChange, label, icon: Icon, color, disabled }) {
 /* ─── Stat Card ─────────────────────────────────────────────────────── */
 function StatCard({ icon: Icon, label, value, sub, iconColor, isDark }) {
   return (
-    <div className={`rounded-2xl border p-4 flex items-start gap-3 ${isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm'}`}>
+    <div className={`rounded-2xl border p-4 flex items-start gap-3 ${isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm'}`}>
       <div className={`p-2.5 rounded-xl ${iconColor} flex-shrink-0`}><Icon className="w-4 h-4" /></div>
       <div>
-        <p className={`text-xs font-medium mb-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{label}</p>
-        <p className={`text-xl font-bold tabular-nums ${isDark ? 'text-white' : 'text-slate-800'}`}>{value}</p>
-        {sub && <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{sub}</p>}
+        <p className={`text-xs uppercase font-bold tracking-wider mb-0.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{label}</p>
+        <p className={`text-xl font-extrabold tabular-nums tracking-tight ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{value}</p>
+        {sub && <p className={`text-xs mt-0.5 font-medium ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{sub}</p>}
       </div>
     </div>
   );
@@ -56,9 +56,9 @@ function StatCard({ icon: Icon, label, value, sub, iconColor, isDark }) {
 
 /* ─── Balance chip ──────────────────────────────────────────────────── */
 function BalanceBadge({ amount }) {
-  if (amount > 0) return <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold tabular-nums">+৳{amount.toFixed(2)}</span>;
-  if (amount < 0) return <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold tabular-nums">-৳{Math.abs(amount).toFixed(2)}</span>;
-  return <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-slate-400 font-semibold">৳0</span>;
+  if (amount > 0) return <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#166534] dark:bg-[#14532D]/40 dark:text-[#86EFAC] font-bold tabular-nums">+৳{amount.toFixed(2)}</span>;
+  if (amount < 0) return <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#FEE2E2] text-[#991B1B] dark:bg-[#7F1D1D]/40 dark:text-[#FCA5A5] font-bold tabular-nums">-৳{Math.abs(amount).toFixed(2)}</span>;
+  return <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#ECECE4] text-[#687168] dark:bg-[#292F29] dark:text-[#B1B8AC] font-semibold">৳0</span>;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -79,8 +79,8 @@ export default function MealsPage() {
   const [summaryMonth, setSummaryMonth] = useState(now.getMonth() + 1);
   const [summaryYear,  setSummaryYear]  = useState(now.getFullYear());
 
-  const cardBg    = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const textMuted = isDark ? 'text-slate-400' : 'text-slate-500';
+  const cardBg    = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const textMuted = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
 
   /* ── Members list ─────────────────────────────────────────────────── */
   const { data: members = [], isLoading: membersLoading } = useQuery({
@@ -212,7 +212,7 @@ export default function MealsPage() {
             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               onClick={() => saveMutation.mutate()}
               disabled={saveMutation.isPending || entriesFetching}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-semibold shadow-lg shadow-emerald-900/30 disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm disabled:opacity-50 transition-all"
             >
               <Save className="w-4 h-4" />
               {saveMutation.isPending ? 'Saving...' : 'Save Entries'}
@@ -222,17 +222,17 @@ export default function MealsPage() {
       />
 
       {/* Tab switcher */}
-      <div className={`inline-flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}>
+      <div className={`inline-flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#292F29] border-[#394239]' : 'bg-[#ECECE4] border-[#DDE1D8]'}`}>
         {[
           { key: 'daily',   icon: Calendar,  label: 'Daily Entry' },
           { key: 'summary', icon: BarChart3,  label: 'Monthly Summary' },
           { key: 'breakdown', icon: Table, label: 'Detailed Breakdown' },
         ].map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
               tab === t.key
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
+                ? 'bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#171C18] shadow-sm'
+                : isDark ? 'text-[#B1B8AC] hover:text-[#F0F1E9]' : 'text-[#687168] hover:text-[#202720]'
             }`}>
             <t.icon className="w-3.5 h-3.5" />
             {t.label}
@@ -315,7 +315,7 @@ export default function MealsPage() {
                           <div className="flex items-center gap-3 min-w-0">
                             {member.userId?.photoURL
                               ? <img src={member.userId.photoURL} alt="" className="w-9 h-9 rounded-full object-cover flex-shrink-0" />
-                              : <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{getInitials(member.userId?.displayName || 'U')}</div>}
+                              : <div className="w-9 h-9 rounded-full bg-[#526B52] dark:bg-[#A3B18A] flex items-center justify-center text-white dark:text-[#171C18] text-xs font-bold flex-shrink-0">{getInitials(member.userId?.displayName || 'U')}</div>}
                             <div className="min-w-0">
                               <p className={`text-sm font-medium truncate ${isDark ? 'text-white' : 'text-slate-800'}`}>{member.userId?.displayName || 'Unknown'}</p>
                               <p className={`text-xs ${textMuted}`}>Room {member.roomId?.roomNumber || '—'}</p>
@@ -407,7 +407,7 @@ export default function MealsPage() {
                               <div className="flex items-center gap-2.5">
                                 {m.photoURL
                                   ? <img src={m.photoURL} alt="" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
-                                  : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{getInitials(m.name)}</div>}
+                                  : <div className="w-8 h-8 rounded-full bg-[#526B52] dark:bg-[#A3B18A] flex items-center justify-center text-white dark:text-[#171C18] text-xs font-bold flex-shrink-0">{getInitials(m.name)}</div>}
                                 <div>
                                   <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{m.name}</p>
                                   {m.roomNumber && <p className={`text-xs ${textMuted}`}>Room {m.roomNumber}</p>}
@@ -501,7 +501,7 @@ export default function MealsPage() {
                           <div className="flex flex-col items-center gap-1">
                             {m.photoURL
                               ? <img src={m.photoURL} alt="" className="w-6 h-6 rounded-full object-cover" />
-                              : <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-[9px] font-bold">{getInitials(m.name)}</div>}
+                              : <div className="w-6 h-6 rounded-full bg-[#526B52] dark:bg-[#A3B18A] flex items-center justify-center text-white dark:text-[#171C18] text-[9px] font-bold">{getInitials(m.name)}</div>}
                             <span className="truncate w-full">{m.name.split(' ')[0]}</span>
                           </div>
                         </th>

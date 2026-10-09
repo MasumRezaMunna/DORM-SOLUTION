@@ -28,15 +28,15 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
   const schedules  = data?.data || [];
   const pagination = data?.pagination;
 
-  const cardBg   = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const textCol  = isDark ? 'text-white' : 'text-slate-800';
-  const mutedCol = isDark ? 'text-slate-400' : 'text-slate-500';
+  const cardBg   = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const textCol  = isDark ? 'text-[#F0F1E9]' : 'text-[#202720]';
+  const mutedCol = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
   const thCls    = isDark
-    ? 'bg-slate-800/80 text-slate-400 text-xs uppercase tracking-wide font-semibold px-4 py-3 text-left border-b border-white/5'
-    : 'bg-slate-50 text-slate-500 text-xs uppercase tracking-wide font-semibold px-4 py-3 text-left';
+    ? 'bg-[#292F29] text-[#B1B8AC] text-xs uppercase tracking-wider font-bold px-4 py-3 text-left border-b border-[#394239]'
+    : 'bg-[#ECECE4]/60 text-[#687168] text-xs uppercase tracking-wider font-bold px-4 py-3 text-left border-b border-[#DDE1D8]';
   const tdCls    = isDark
-    ? 'px-4 py-3 border-b border-white/5 text-slate-300'
-    : 'px-4 py-3 border-b border-slate-100 text-slate-700';
+    ? 'px-4 py-3 border-b border-[#394239] text-[#B1B8AC]'
+    : 'px-4 py-3 border-b border-[#DDE1D8] text-[#202720]';
 
   const FILTERS = [
     { key: 'all',       label: 'All' },
@@ -54,17 +54,17 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
       className={`rounded-2xl border ${cardBg}`}
     >
       {/* ── Toolbar ── */}
-      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between p-4 border-b border-inherit">
+      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between p-4 border-b border-[#DDE1D8] dark:border-[#394239]">
         {/* Filter tabs */}
-        <div className={`inline-flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}>
+        <div className={`inline-flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#202720] border-[#394239]' : 'bg-[#ECECE4] border-[#DDE1D8]'}`}>
           {FILTERS.map((f) => (
             <button
               key={f.key}
               onClick={() => { setStatus(f.key); setPage(1); }}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${
                 statusFilter === f.key
-                  ? 'bg-emerald-600 text-white shadow-sm'
-                  : (isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800')
+                  ? 'bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#171C18] shadow-sm'
+                  : (isDark ? 'text-[#B1B8AC] hover:text-[#F0F1E9]' : 'text-[#687168] hover:text-[#202720]')
               }`}
             >
               {f.label}
@@ -78,12 +78,12 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
           placeholder="Search by member name…"
           value={search}
           onValueChange={(v) => { setSearch(v); setPage(1); }}
-          startContent={<Search className="w-4 h-4 text-slate-400" />}
+          startContent={<Search className="w-4 h-4 text-[#687168] dark:text-[#B1B8AC]" />}
           className="w-full sm:w-60"
           variant="bordered"
           classNames={{
-            input: isDark ? 'text-white placeholder:text-slate-500' : '',
-            inputWrapper: isDark ? 'border-white/10 bg-slate-800 hover:border-white/20' : '',
+            input: isDark ? 'text-[#F0F1E9] placeholder:text-[#B1B8AC]/60' : 'text-[#202720] placeholder:text-[#687168]/60',
+            inputWrapper: isDark ? 'border-[#394239] bg-[#202720] hover:border-[#A3B18A]' : 'border-[#DDE1D8] bg-white hover:border-[#748D6B]',
           }}
         />
       </div>
@@ -118,12 +118,12 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
               {schedules.map((s) => (
                 <tr
                   key={s._id}
-                  className={`transition-colors ${isDark ? 'hover:bg-white/[0.02]' : 'hover:bg-slate-50'}`}
+                  className={`transition-colors ${isDark ? 'hover:bg-[#292F29]/60' : 'hover:bg-[#F5F4EE]'}`}
                 >
                   {/* Date */}
                   <td className={tdCls}>
                     <div>
-                      <p className={`text-sm font-semibold ${textCol}`}>{formatDate(s.marketDate)}</p>
+                      <p className={`text-sm font-bold ${textCol}`}>{formatDate(s.marketDate)}</p>
                       <CountdownBadge marketDate={s.marketDate} />
                     </div>
                   </td>
@@ -134,7 +134,7 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
                       <div className="flex -space-x-2">
                         {(s.members || []).map((m, i) => (
                           <Tooltip key={i} content={m.name} placement="top">
-                            <div className="rounded-full ring-2 ring-white dark:ring-slate-900">
+                            <div className="rounded-full ring-2 ring-white dark:ring-[#202720]">
                               <Avatar
                                 src={m.photo}
                                 name={getMemberInitials(m.name)}
@@ -146,7 +146,7 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
                       </div>
                       <div className="hidden sm:flex flex-wrap gap-x-1">
                         {(s.members || []).map((m, i) => (
-                          <span key={i} className={`text-xs ${mutedCol}`}>
+                          <span key={i} className={`text-xs font-medium ${mutedCol}`}>
                             {m.name}{i < s.members.length - 1 ? ',' : ''}
                           </span>
                         ))}
@@ -156,7 +156,7 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
 
                   {/* Created by */}
                   <td className={tdCls}>
-                    <p className={`text-sm ${mutedCol}`}>{s.createdBy?.name || '—'}</p>
+                    <p className={`text-sm font-medium ${mutedCol}`}>{s.createdBy?.name || '—'}</p>
                   </td>
 
                   {/* Status */}
@@ -178,7 +178,7 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
                       <Tooltip content="Edit" placement="left">
                         <button
                           onClick={() => onEdit(s)}
-                          className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-white/10 text-slate-400 hover:text-white' : 'hover:bg-slate-100 text-slate-500 hover:text-slate-700'}`}
+                          className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-[#303A30] text-[#A3B18A]' : 'hover:bg-[#E8EDE3] text-[#526B52]'}`}
                         >
                           <Edit2 className="w-4 h-4" />
                         </button>
@@ -186,7 +186,7 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
                       <Tooltip content="Delete" placement="left" color="danger">
                         <button
                           onClick={() => onDelete(s)}
-                          className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-red-500/10 text-slate-400 hover:text-red-400' : 'hover:bg-red-50 text-slate-500 hover:text-red-500'}`}
+                          className="p-1.5 rounded-lg transition-colors hover:bg-rose-500/10 text-rose-500 dark:text-rose-400"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -202,7 +202,7 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
 
       {/* ── Pagination ── */}
       {pagination && pagination.totalPages > 1 && (
-        <div className={`flex items-center justify-center gap-2 p-4 border-t ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
+        <div className={`flex items-center justify-center gap-2 p-4 border-t ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'}`}>
           <Button
             isIconOnly size="sm" variant="flat"
             isDisabled={page <= 1}
@@ -210,7 +210,7 @@ export default function MarketScheduleTable({ onEdit, onDelete }) {
           >
             <ChevronLeft className="w-4 h-4" />
           </Button>
-          <span className={`text-sm ${mutedCol}`}>
+          <span className={`text-sm font-medium ${mutedCol}`}>
             Page {page} of {pagination.totalPages}
           </span>
           <Button

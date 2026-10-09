@@ -1,13 +1,14 @@
 import { Outlet } from 'react-router-dom';
+import DigitalClock from '../shared/DigitalClock';
 
 export const MainLayout = () => {
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      {/* Navbar Placeholder */}
-      <header className="sticky top-0 z-50 w-full border-b border-divider bg-background/70 backdrop-blur-md">
+    <div className="flex min-h-screen flex-col bg-[#F5F4EE] dark:bg-[#171C18] text-[#202720] dark:text-[#F0F1E9]">
+      {/* Header */}
+      <header className="sticky top-0 z-50 w-full border-b border-[#DDE1D8] dark:border-[#394239] bg-[#F5F4EE]/80 dark:bg-[#171C18]/80 backdrop-blur-md">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <span className="text-xl font-bold text-primary">11/38 Home</span>
-          {/* Navigation Links Placeholder */}
+          <span className="text-xl font-extrabold tracking-tight text-[#526B52] dark:text-[#A3B18A]">Home</span>
+          <DigitalClock />
         </div>
       </header>
 
@@ -15,9 +16,9 @@ export const MainLayout = () => {
         <Outlet />
       </main>
 
-      {/* Footer Placeholder */}
-      <footer className="border-t border-divider py-6 text-center text-sm text-default-500">
-        &copy; {new Date().getFullYear()} 11/38 Home. All rights reserved.
+      {/* Footer */}
+      <footer className="border-t border-[#DDE1D8] dark:border-[#394239] py-6 text-center text-sm text-[#687168] dark:text-[#B1B8AC]">
+        &copy; {new Date().getFullYear()} Home. All rights reserved.
       </footer>
     </div>
   );

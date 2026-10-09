@@ -21,33 +21,34 @@ export default function StatCard({ title, value, icon: Icon, gradient, change, c
       transition={{ delay: index * 0.08, duration: 0.4 }}
       className={`relative rounded-2xl p-5 overflow-hidden border ${
         isDark
-          ? 'bg-slate-900 border-white/10'
-          : 'bg-white border-slate-200 shadow-sm'
+          ? 'bg-[#202720] border-[#394239]'
+          : 'bg-white border-[#DDE1D8] shadow-sm'
       }`}
     >
-      {/* Gradient accent */}
-      <div className={`absolute top-0 right-0 w-32 h-32 rounded-full opacity-10 blur-2xl -translate-y-8 translate-x-8 bg-gradient-to-br ${gradient}`} />
-
       <div className="relative flex items-start justify-between">
         <div className="flex-1 pr-3">
-          <p className={`text-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{title}</p>
+          <p className={`text-xs uppercase font-bold tracking-wider ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{title}</p>
           {showSkeleton ? (
-            <div className={`mt-2.5 h-7 w-24 rounded-lg animate-pulse ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
+            <div className={`mt-2.5 h-8 w-28 rounded-lg animate-pulse ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
           ) : (
-            <p className={`text-2xl font-bold mt-1.5 ${isDark ? 'text-white' : 'text-slate-800'}`}>{value}</p>
+            <p className={`text-3xl font-extrabold tracking-tight mt-1.5 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{value}</p>
           )}
           {change && (
             showSkeleton ? (
-              <div className={`mt-2 h-3.5 w-16 rounded animate-pulse ${isDark ? 'bg-white/5' : 'bg-slate-100'}`} />
+              <div className={`mt-2 h-3.5 w-16 rounded animate-pulse ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
             ) : (
-              <p className={`text-xs mt-2 font-medium ${changePositive ? 'text-emerald-400' : 'text-red-400'}`}>
+              <p className={`text-xs mt-2 font-semibold ${changePositive ? 'text-[#16A34A] dark:text-[#22C55E]' : 'text-[#DC2626] dark:text-[#EF4444]'}`}>
                 {change}
               </p>
             )
           )}
         </div>
-        <div className={`p-3 rounded-2xl bg-gradient-to-br ${gradient} shadow-lg flex-shrink-0`}>
-          <Icon className="w-5 h-5 text-white" />
+        <div className={`p-3 rounded-2xl flex-shrink-0 ${
+          isDark
+            ? 'bg-[#303A30] text-[#A3B18A] border border-[#394239]'
+            : 'bg-[#E8EDE3] text-[#526B52] border border-[#DDE1D8]'
+        }`}>
+          <Icon className="w-5 h-5" />
         </div>
       </div>
     </motion.div>

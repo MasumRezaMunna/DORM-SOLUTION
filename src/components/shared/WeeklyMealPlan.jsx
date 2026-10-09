@@ -61,16 +61,16 @@ export default function WeeklyMealPlan({ isManager = false }) {
     setEditData(newEditData);
   };
 
-  const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const textMuted = isDark ? 'text-slate-400' : 'text-slate-500';
+  const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const textMuted = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
 
   if (isLoading) {
     return (
       <div className={`rounded-2xl border p-6 animate-pulse ${cardBg}`}>
-        <div className="h-6 w-48 bg-slate-200 dark:bg-slate-700 rounded-lg mb-6"></div>
+        <div className="h-6 w-48 bg-[#ECECE4] dark:bg-[#292F29] rounded-lg mb-6"></div>
         <div className="space-y-3">
           {[1,2,3,4,5,6,7].map(i => (
-            <div key={i} className="h-12 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+            <div key={i} className="h-12 bg-[#ECECE4] dark:bg-[#292F29] rounded-lg"></div>
           ))}
         </div>
       </div>
@@ -85,14 +85,14 @@ export default function WeeklyMealPlan({ isManager = false }) {
       animate={{ opacity: 1, y: 0 }}
       className={`rounded-2xl border ${cardBg} overflow-hidden`}
     >
-      <div className={`px-6 py-4 border-b flex justify-between items-center ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
+      <div className={`px-6 py-4 border-b flex justify-between items-center ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'}`}>
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-orange-500/20">
-            <Calendar className="w-5 h-5 text-white" />
+          <div className="p-2.5 rounded-xl bg-[#E8EDE3] text-[#526B52] dark:bg-[#303A30] dark:text-[#A3B18A]">
+            <Calendar className="w-5 h-5" />
           </div>
           <div>
-            <h3 className={`font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>Weekly Meal Plan</h3>
-            <p className={`text-xs ${textMuted}`}>Lunch & Dinner Schedule</p>
+            <h3 className={`font-bold tracking-tight ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>Weekly Meal Plan</h3>
+            <p className={`text-xs font-medium ${textMuted}`}>Lunch & Dinner Schedule</p>
           </div>
         </div>
 
@@ -100,10 +100,10 @@ export default function WeeklyMealPlan({ isManager = false }) {
           <button
             onClick={isEditing ? handleSave : handleEditClick}
             disabled={updateMutation.isPending}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
               isEditing 
-                ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' 
-                : isDark ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                ? 'bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] shadow-sm' 
+                : isDark ? 'bg-[#292F29] hover:bg-[#303A30] text-[#F0F1E9] border border-[#394239]' : 'bg-[#ECECE4] hover:bg-[#E0E0D8] text-[#202720] border border-[#DDE1D8]'
             }`}
           >
             {isEditing ? (
@@ -132,34 +132,34 @@ export default function WeeklyMealPlan({ isManager = false }) {
                 key={day.dayName} 
                 className={`flex flex-col rounded-xl border p-4 transition-all ${
                   isToday 
-                    ? (isDark ? 'bg-emerald-500/10 border-emerald-500/30 ring-1 ring-emerald-500/30' : 'bg-emerald-50 border-emerald-200 ring-1 ring-emerald-200')
-                    : (isDark ? 'bg-white/[0.02] border-white/5' : 'bg-slate-50 border-slate-100')
+                    ? (isDark ? 'bg-[#303A30]/50 border-[#A3B18A]/50 ring-1 ring-[#A3B18A]/50' : 'bg-[#E8EDE3]/60 border-[#526B52]/40 ring-1 ring-[#526B52]/40')
+                    : (isDark ? 'bg-[#292F29]/40 border-[#394239]' : 'bg-[#F5F4EE]/60 border-[#DDE1D8]')
                 }`}
               >
-                <h4 className={`text-sm font-semibold mb-3 text-center ${
+                <h4 className={`text-sm font-bold mb-3 text-center ${
                   isToday 
-                    ? 'text-emerald-600 dark:text-emerald-400' 
-                    : (isDark ? 'text-slate-300' : 'text-slate-700')
+                    ? 'text-[#526B52] dark:text-[#A3B18A]' 
+                    : (isDark ? 'text-[#F0F1E9]' : 'text-[#202720]')
                 }`}>
                   {day.dayName}
-                  {isToday && <span className="ml-2 text-[10px] uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded-full">Today</span>}
+                  {isToday && <span className="ml-2 text-[10px] uppercase font-bold tracking-wider bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#171C18] px-2 py-0.5 rounded-full">Today</span>}
                 </h4>
 
                 <div className="flex justify-around items-center mb-3">
                   {/* Lunch */}
                   <div className="flex flex-col items-center gap-1.5">
-                    <Sun className={`w-5 h-5 ${day.lunch ? 'text-amber-500' : 'text-slate-300 dark:text-slate-600'}`} />
+                    <Sun className={`w-5 h-5 ${day.lunch ? 'text-[#D97706]' : 'text-[#B1B8AC]/40 dark:text-[#687168]/40'}`} />
                     {isEditing ? (
                       <button 
                         onClick={() => handleToggle(index, 'lunch')}
-                        className={`text-xs px-2 py-1 rounded-md ${
-                          day.lunch ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400' : 'bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400'
+                        className={`text-xs px-2 py-1 rounded-md font-semibold ${
+                          day.lunch ? 'bg-[#FEF3C7] text-[#92400E] dark:bg-[#78350F]/40 dark:text-[#FCD34D]' : 'bg-[#ECECE4] text-[#687168] dark:bg-[#292F29] dark:text-[#B1B8AC]'
                         }`}
                       >
                         {day.lunch ? 'Yes' : 'No'}
                       </button>
                     ) : (
-                      <span className={`text-[10px] font-medium uppercase ${day.lunch ? 'text-amber-600 dark:text-amber-400' : textMuted}`}>
+                      <span className={`text-[10px] font-bold uppercase ${day.lunch ? 'text-[#D97706] dark:text-[#F59E0B]' : textMuted}`}>
                         {day.lunch ? 'Lunch' : 'None'}
                       </span>
                     )}
@@ -167,18 +167,18 @@ export default function WeeklyMealPlan({ isManager = false }) {
 
                   {/* Dinner */}
                   <div className="flex flex-col items-center gap-1.5">
-                    <Moon className={`w-5 h-5 ${day.dinner ? 'text-teal-500' : 'text-slate-300 dark:text-slate-600'}`} />
+                    <Moon className={`w-5 h-5 ${day.dinner ? 'text-[#0D9488]' : 'text-[#B1B8AC]/40 dark:text-[#687168]/40'}`} />
                     {isEditing ? (
                       <button 
                         onClick={() => handleToggle(index, 'dinner')}
-                        className={`text-xs px-2 py-1 rounded-md ${
-                          day.dinner ? 'bg-teal-100 text-teal-700 dark:bg-teal-500/20 dark:text-teal-400' : 'bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400'
+                        className={`text-xs px-2 py-1 rounded-md font-semibold ${
+                          day.dinner ? 'bg-[#CCFBF1] text-[#115E59] dark:bg-[#134E4A]/40 dark:text-[#5EEAD4]' : 'bg-[#ECECE4] text-[#687168] dark:bg-[#292F29] dark:text-[#B1B8AC]'
                         }`}
                       >
                         {day.dinner ? 'Yes' : 'No'}
                       </button>
                     ) : (
-                      <span className={`text-[10px] font-medium uppercase ${day.dinner ? 'text-teal-600 dark:text-teal-400' : textMuted}`}>
+                      <span className={`text-[10px] font-bold uppercase ${day.dinner ? 'text-[#0D9488] dark:text-[#2DD4BF]' : textMuted}`}>
                         {day.dinner ? 'Dinner' : 'None'}
                       </span>
                     )}
@@ -186,9 +186,9 @@ export default function WeeklyMealPlan({ isManager = false }) {
                 </div>
 
                 {/* Notes */}
-                <div className="mt-auto pt-3 border-t border-slate-200 dark:border-white/10 space-y-2">
+                <div className="mt-auto pt-3 border-t border-[#DDE1D8] dark:border-[#394239] space-y-2">
                   <div className="flex items-center gap-2">
-                    <Sun className={`w-3 h-3 flex-shrink-0 ${day.lunchNote ? 'text-amber-500' : 'text-slate-400'}`} />
+                    <Sun className={`w-3 h-3 flex-shrink-0 ${day.lunchNote ? 'text-[#D97706]' : 'text-[#687168] dark:text-[#B1B8AC]'}`} />
                     {isEditing ? (
                       <input 
                         type="text" 
@@ -196,19 +196,19 @@ export default function WeeklyMealPlan({ isManager = false }) {
                         onChange={(e) => handleNoteChange(index, 'lunchNote', e.target.value)}
                         placeholder="Lunch note..."
                         maxLength={80}
-                        className={`w-full text-[10px] px-2 py-1 rounded-md border focus:ring-1 focus:ring-amber-500 outline-none ${
-                          isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-slate-200 text-slate-800'
+                        className={`w-full text-[10px] px-2 py-1 rounded-md border focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A] outline-none ${
+                          isDark ? 'bg-[#202720] border-[#394239] text-[#F0F1E9]' : 'bg-white border-[#DDE1D8] text-[#202720]'
                         }`}
                       />
                     ) : (
-                      <p className={`text-[10px] truncate ${day.lunchNote ? (isDark ? 'text-slate-300' : 'text-slate-700') : textMuted}`}>
+                      <p className={`text-[10px] truncate ${day.lunchNote ? (isDark ? 'text-[#F0F1E9]' : 'text-[#202720]') : textMuted}`}>
                         {day.lunchNote || '-'}
                       </p>
                     )}
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <Moon className={`w-3 h-3 flex-shrink-0 ${day.dinnerNote ? 'text-teal-500' : 'text-slate-400'}`} />
+                    <Moon className={`w-3 h-3 flex-shrink-0 ${day.dinnerNote ? 'text-[#0D9488]' : 'text-[#687168] dark:text-[#B1B8AC]'}`} />
                     {isEditing ? (
                       <input 
                         type="text" 
@@ -216,12 +216,12 @@ export default function WeeklyMealPlan({ isManager = false }) {
                         onChange={(e) => handleNoteChange(index, 'dinnerNote', e.target.value)}
                         placeholder="Dinner note..."
                         maxLength={80}
-                        className={`w-full text-[10px] px-2 py-1 rounded-md border focus:ring-1 focus:ring-teal-500 outline-none ${
-                          isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-slate-200 text-slate-800'
+                        className={`w-full text-[10px] px-2 py-1 rounded-md border focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A] outline-none ${
+                          isDark ? 'bg-[#202720] border-[#394239] text-[#F0F1E9]' : 'bg-white border-[#DDE1D8] text-[#202720]'
                         }`}
                       />
                     ) : (
-                      <p className={`text-[10px] truncate ${day.dinnerNote ? (isDark ? 'text-slate-300' : 'text-slate-700') : textMuted}`}>
+                      <p className={`text-[10px] truncate ${day.dinnerNote ? (isDark ? 'text-[#F0F1E9]' : 'text-[#202720]') : textMuted}`}>
                         {day.dinnerNote || '-'}
                       </p>
                     )}

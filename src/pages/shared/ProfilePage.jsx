@@ -66,29 +66,27 @@ export default function ProfilePage() {
     updateMutation.mutate(form);
   };
 
-  const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
-    isDark ? 'bg-slate-800 border-white/10 text-white placeholder:text-slate-500' : 'bg-white border-slate-200 text-slate-800 placeholder:text-slate-400'
-  }`;
-  const labelClass = `block text-sm font-medium mb-1.5 ${isDark ? 'text-slate-300' : 'text-slate-700'}`;
+  const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors border-[#DDE1D8] dark:border-[#394239] bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60 focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A]`;
+  const labelClass = `block text-xs font-semibold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`;
 
   return (
-    <div className="space-y-5 max-w-3xl">
+    <div className="space-y-6 max-w-3xl">
       <PageHeader title="My Profile" subtitle="Update your personal and emergency information" />
 
       {isLoading ? (
         <div className={`rounded-2xl border p-8 animate-pulse ${cardBg}`}>
-          <div className={`h-8 w-32 rounded mb-4 ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
-          <div className={`h-4 w-full rounded mb-2 ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
-          <div className={`h-4 w-2/3 rounded ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
+          <div className={`h-8 w-32 rounded mb-4 ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
+          <div className={`h-4 w-full rounded mb-2 ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
+          <div className={`h-4 w-2/3 rounded ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           
           {/* Basic Info */}
           <div className={`rounded-2xl border p-6 ${cardBg}`}>
-            <h3 className={`flex items-center gap-2 font-semibold mb-5 ${isDark ? 'text-white' : 'text-slate-800'}`}>
-              <User className="w-4 h-4 text-emerald-500" /> Basic Information
+            <h3 className={`flex items-center gap-2 font-bold tracking-tight mb-5 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
+              <User className="w-4 h-4 text-[#526B52] dark:text-[#A3B18A]" /> Basic Information
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -114,7 +112,7 @@ export default function ProfilePage() {
               <div>
                 <label className={labelClass}>Phone Number</label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                  <Phone className="absolute left-3 top-2.5 w-4 h-4 text-[#687168] dark:text-[#B1B8AC]" />
                   <input
                     type="tel"
                     value={form.phone}
@@ -127,7 +125,7 @@ export default function ProfilePage() {
               <div>
                 <label className={labelClass}>NID / Passport Number</label>
                 <div className="relative">
-                  <FileText className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                  <FileText className="absolute left-3 top-2.5 w-4 h-4 text-[#687168] dark:text-[#B1B8AC]" />
                   <input
                     type="text"
                     value={form.nid}
@@ -140,7 +138,7 @@ export default function ProfilePage() {
               <div>
                 <label className={labelClass}>Occupation</label>
                 <div className="relative">
-                  <Briefcase className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                  <Briefcase className="absolute left-3 top-2.5 w-4 h-4 text-[#687168] dark:text-[#B1B8AC]" />
                   <input
                     type="text"
                     value={form.occupation}
@@ -153,7 +151,7 @@ export default function ProfilePage() {
               <div>
                 <label className={labelClass}>Assigned Room</label>
                 <div className="relative">
-                  <DoorOpen className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                  <DoorOpen className="absolute left-3 top-2.5 w-4 h-4 text-[#687168] dark:text-[#B1B8AC]" />
                   <input
                     type="text"
                     disabled
@@ -167,8 +165,8 @@ export default function ProfilePage() {
 
           {/* Emergency Contact */}
           <div className={`rounded-2xl border p-6 ${cardBg}`}>
-            <h3 className={`flex items-center gap-2 font-semibold mb-5 ${isDark ? 'text-white' : 'text-slate-800'}`}>
-              <HeartPulse className="w-4 h-4 text-red-400" /> Emergency Contact
+            <h3 className={`flex items-center gap-2 font-bold tracking-tight mb-5 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
+              <HeartPulse className="w-4 h-4 text-rose-500" /> Emergency Contact
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -210,7 +208,7 @@ export default function ProfilePage() {
               whileTap={{ scale: 0.97 }}
               type="submit"
               disabled={updateMutation.isPending}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
               {updateMutation.isPending ? 'Saving...' : 'Save Profile'}

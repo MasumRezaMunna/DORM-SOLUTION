@@ -70,25 +70,25 @@ export default function MarketTeamPage() {
       title: 'Total Schedules',
       value: statsLoading ? '...' : (stats?.total ?? 0),
       icon: ShoppingCart,
-      gradient: 'from-emerald-600 to-teal-700',
+      gradient: 'from-[#526B52] to-[#405640]',
     },
     {
       title: 'Upcoming Teams',
       value: statsLoading ? '...' : (stats?.upcoming ?? 0),
       icon: ShoppingCart,
-      gradient: 'from-blue-500 to-cyan-600',
+      gradient: 'from-[#748D6B] to-[#526B52]',
     },
     {
       title: "Today's Team",
       value: statsLoading ? '...' : (stats?.today ?? 0),
       icon: ShoppingCart,
-      gradient: 'from-emerald-500 to-teal-600',
+      gradient: 'from-[#A3B18A] to-[#748D6B]',
     },
     {
       title: 'Completed',
       value: statsLoading ? '...' : (stats?.completed ?? 0),
       icon: ShoppingCart,
-      gradient: 'from-slate-500 to-slate-700',
+      gradient: 'from-[#687168] to-[#202720]',
     },
   ];
 
@@ -104,7 +104,7 @@ export default function MarketTeamPage() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleOpenCreate}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold shadow-md shadow-emerald-500/20 text-sm"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all"
         >
           <Plus className="w-4 h-4" />
           Assign Team
@@ -153,9 +153,9 @@ export default function MarketTeamPage() {
             size="sm"
           >
             <div className="p-4">
-              <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+              <p className={`text-sm ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
                 Are you sure you want to delete the market schedule for{' '}
-                <span className="font-semibold text-red-400">
+                <span className="font-bold text-rose-600 dark:text-rose-400">
                   {new Date(deletingSchedule.marketDate).toLocaleDateString()}
                 </span>
                 ? This action cannot be undone.
@@ -165,7 +165,7 @@ export default function MarketTeamPage() {
                   type="button"
                   onClick={() => setDeletingSchedule(null)}
                   disabled={deleteMutation.isPending}
-                  className={`flex-1 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${isDark ? 'bg-white/5 text-slate-300 hover:bg-white/10' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+                  className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${isDark ? 'bg-[#292F29] text-[#B1B8AC] hover:bg-[#303A30]' : 'bg-[#ECECE4] text-[#202720] hover:bg-[#DDE1D8]'}`}
                 >
                   Cancel
                 </button>
@@ -173,7 +173,7 @@ export default function MarketTeamPage() {
                   type="button"
                   onClick={handleDelete}
                   disabled={deleteMutation.isPending}
-                  className="flex-1 px-4 py-2 rounded-xl bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-rose-600 text-white text-sm font-bold hover:bg-rose-700 transition-colors disabled:opacity-50"
                 >
                   {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
                 </button>

@@ -14,25 +14,26 @@ export function LoadingSpinner({
   fullPage = false,
   size = 'md',
 }) {
+  const { isDark } = useTheme();
   const dims        = { sm: 'w-8 h-8',   md: 'w-12 h-12',   lg: 'w-16 h-16' };
   const borderWidth = { sm: 'border-2',  md: 'border-[3px]', lg: 'border-4' };
 
   return (
     <div
       className={`flex flex-col items-center justify-center gap-4 ${
-        fullPage ? 'min-h-screen bg-slate-950' : 'py-16'
+        fullPage ? (isDark ? 'min-h-screen bg-[#171C18]' : 'min-h-screen bg-[#F5F4EE]') : 'py-16'
       }`}
     >
       <div className="relative">
         {/* Glow behind the ring */}
         <div
-          className={`absolute inset-0 rounded-full blur-md opacity-30 bg-gradient-to-tr from-emerald-500 to-teal-500 ${dims[size]}`}
+          className={`absolute inset-0 rounded-full blur-md opacity-25 ${isDark ? 'bg-[#A3B18A]' : 'bg-[#526B52]'} ${dims[size]}`}
         />
         {/* Animated spinner ring */}
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 0.9, ease: 'linear' }}
-          className={`relative rounded-full ${dims[size]} ${borderWidth[size]} border-transparent border-t-emerald-500 border-r-teal-500`}
+          className={`relative rounded-full ${dims[size]} ${borderWidth[size]} border-transparent border-t-[#526B52] border-r-[#A3B18A] dark:border-t-[#A3B18A] dark:border-r-[#BAC7A8]`}
         />
       </div>
 
@@ -41,7 +42,7 @@ export function LoadingSpinner({
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-sm font-medium text-slate-400 tracking-wide"
+          className={`text-sm font-semibold tracking-wide ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}
         >
           {message}
         </motion.p>
@@ -59,7 +60,7 @@ export function Skeleton({ className = '' }) {
   return (
     <div
       className={`animate-pulse rounded-lg ${
-        isDark ? 'bg-white/[0.08]' : 'bg-slate-200'
+        isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'
       } ${className}`}
     />
   );
@@ -72,8 +73,8 @@ export function Skeleton({ className = '' }) {
 export function StatCardSkeleton({ count = 4 }) {
   const { isDark } = useTheme();
   const cardBg = isDark
-    ? 'bg-slate-900 border-white/10'
-    : 'bg-white border-slate-200 shadow-sm';
+    ? 'bg-[#202720] border-[#394239]'
+    : 'bg-white border-[#DDE1D8] shadow-sm';
 
   return (
     <>
@@ -100,8 +101,8 @@ export function StatCardSkeleton({ count = 4 }) {
 export function CardSkeleton({ rows = 3 }) {
   const { isDark } = useTheme();
   const cardBg = isDark
-    ? 'bg-slate-900 border-white/10'
-    : 'bg-white border-slate-200 shadow-sm';
+    ? 'bg-[#202720] border-[#394239]'
+    : 'bg-white border-[#DDE1D8] shadow-sm';
 
   return (
     <div className={`rounded-2xl border p-6 animate-pulse ${cardBg}`}>
@@ -123,19 +124,19 @@ export function CardSkeleton({ rows = 3 }) {
 export function ErrorCard({ message = 'Something went wrong.', onRetry }) {
   const { isDark } = useTheme();
   const cardBg = isDark
-    ? 'bg-slate-900 border-white/10'
-    : 'bg-white border-slate-200 shadow-sm';
+    ? 'bg-[#202720] border-[#394239]'
+    : 'bg-white border-[#DDE1D8] shadow-sm';
 
   return (
     <div className={`rounded-2xl border p-8 text-center ${cardBg}`}>
       <p className="text-2xl mb-2">\u26a0\ufe0f</p>
-      <p className={`text-sm font-medium mb-4 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+      <p className={`text-sm font-semibold mb-4 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
         {message}
       </p>
       {onRetry && (
         <button
           onClick={onRetry}
-          className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-semibold shadow-lg shadow-emerald-500/20 hover:opacity-90 transition-all"
+          className="px-5 py-2 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all"
         >
           Retry
         </button>

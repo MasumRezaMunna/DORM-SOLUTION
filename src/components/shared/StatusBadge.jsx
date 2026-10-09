@@ -1,24 +1,24 @@
 import { useTheme } from '../../contexts/ThemeContext';
 
 const STATUS_STYLES = {
-  pending:   'bg-amber-500/15 text-amber-400 border-amber-500/30',
-  partial:   'bg-orange-500/15 text-orange-400 border-orange-500/30',
-  paid:      'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  active:    'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  inactive:  'bg-slate-500/15 text-slate-400 border-slate-500/30',
-  open:      'bg-blue-500/15 text-blue-400 border-blue-500/30',
-  resolved:  'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  closed:    'bg-slate-500/15 text-slate-400 border-slate-500/30',
-  occupied:  'bg-red-500/15 text-red-400 border-red-500/30',
-  available: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  manager:   'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
-  member:    'bg-blue-500/15 text-blue-400 border-blue-500/30',
+  pending:   'bg-[#FEF3C7] text-[#92400E] border-[#FCD34D] dark:bg-[#78350F]/30 dark:text-[#FCD34D] dark:border-[#F59E0B]/40',
+  partial:   'bg-[#FFEDD5] text-[#9A3412] border-[#FDBA74] dark:bg-[#7C2D12]/30 dark:text-[#FDBA74] dark:border-[#EA580C]/40',
+  paid:      'bg-[#DCFCE7] text-[#166534] border-[#86EFAC] dark:bg-[#14532D]/30 dark:text-[#86EFAC] dark:border-[#22C55E]/40',
+  active:    'bg-[#E8EDE3] text-[#526B52] border-[#A3B18A]/50 dark:bg-[#303A30] dark:text-[#A3B18A] dark:border-[#748D6B]/40',
+  inactive:  'bg-[#ECECE4] text-[#687168] border-[#DDE1D8] dark:bg-[#292F29] dark:text-[#B1B8AC] dark:border-[#394239]',
+  open:      'bg-[#CCFBF1] text-[#115E59] border-[#5EEAD4] dark:bg-[#134E4A]/30 dark:text-[#5EEAD4] dark:border-[#14B8A6]/40',
+  resolved:  'bg-[#DCFCE7] text-[#166534] border-[#86EFAC] dark:bg-[#14532D]/30 dark:text-[#86EFAC] dark:border-[#22C55E]/40',
+  closed:    'bg-[#ECECE4] text-[#687168] border-[#DDE1D8] dark:bg-[#292F29] dark:text-[#B1B8AC] dark:border-[#394239]',
+  occupied:  'bg-[#FEE2E2] text-[#991B1B] border-[#FCA5A5] dark:bg-[#7F1D1D]/30 dark:text-[#FCA5A5] dark:border-[#EF4444]/40',
+  available: 'bg-[#E8EDE3] text-[#526B52] border-[#A3B18A]/50 dark:bg-[#303A30] dark:text-[#A3B18A] dark:border-[#748D6B]/40',
+  manager:   'bg-[#526B52] text-white border-transparent dark:bg-[#A3B18A] dark:text-[#171C18]',
+  member:    'bg-[#ECECE4] text-[#202720] border-[#DDE1D8] dark:bg-[#292F29] dark:text-[#F0F1E9] dark:border-[#394239]',
 };
 
 export default function StatusBadge({ status }) {
-  const style = STATUS_STYLES[status?.toLowerCase()] || 'bg-slate-500/15 text-slate-400 border-slate-500/30';
+  const style = STATUS_STYLES[status?.toLowerCase()] || 'bg-[#ECECE4] text-[#687168] border-[#DDE1D8] dark:bg-[#292F29] dark:text-[#B1B8AC] dark:border-[#394239]';
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border capitalize ${style}`}>
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border capitalize ${style}`}>
       {status || '—'}
     </span>
   );

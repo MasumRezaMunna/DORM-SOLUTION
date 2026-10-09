@@ -45,35 +45,35 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
   const dashboardRoot = isManager ? '/manager' : '/dashboard';
 
   // Theme-aware colours
-  const sideBg = isDark ? 'bg-slate-900' : 'bg-white';
-  const borderCol = isDark ? 'border-white/10' : 'border-slate-200';
-  const textCol = isDark ? 'text-white' : 'text-slate-800';
-  const mutedCol = isDark ? 'text-slate-400' : 'text-slate-500';
-  const dividerCol = isDark ? 'text-slate-600' : 'text-slate-400';
+  const sideBg = isDark ? 'bg-[#202720]' : 'bg-[#FDFCFA]';
+  const borderCol = isDark ? 'border-[#394239]' : 'border-[#DDE1D8]';
+  const textCol = isDark ? 'text-[#F0F1E9]' : 'text-[#202720]';
+  const mutedCol = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
+  const dividerCol = isDark ? 'text-[#899B7A]' : 'text-[#748D6B]';
   const hoverCls = isDark
-    ? 'text-slate-400 hover:text-white hover:bg-white/5'
-    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100';
+    ? 'text-[#B1B8AC] hover:text-[#F0F1E9] hover:bg-[#292F29]'
+    : 'text-[#687168] hover:text-[#202720] hover:bg-[#ECECE4]/70';
 
   const renderSidebarContent = (isMobile) => {
     const effectiveCollapsed = isMobile ? false : collapsed;
 
     return (
-      <div className={`flex flex-col h-full ${sideBg} ${textCol} border-r ${borderCol} transition-colors duration-200`}>
+      <div className={`flex flex-col h-full ${sideBg} ${textCol} border-r ${borderCol} transition-colors duration-200 select-none`}>
 
       {/* ── Logo ─────────────────────────────────────── */}
       <div className={`flex items-center justify-between px-4 py-4 border-b ${borderCol}`} style={{ minHeight: 64 }}>
         <button
           onClick={() => { navigate(dashboardRoot); if (onClose) onClose(); }}
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity min-w-0"
+          className="flex items-center gap-3 hover:opacity-85 transition-opacity min-w-0"
         >
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-md shadow-emerald-500/20 flex items-center justify-center flex-shrink-0">
-            <Building2 className="w-5 h-5 text-white" />
+          <div className="w-9 h-9 rounded-xl bg-[#526B52] dark:bg-[#A3B18A] shadow-sm flex items-center justify-center flex-shrink-0 text-white dark:text-[#171C18]">
+            <Building2 className="w-5 h-5" />
           </div>
 
           {!effectiveCollapsed && (
             <div className="overflow-hidden text-left">
-              <p className="font-bold text-sm leading-none truncate">11/38 Home</p>
-              <p className={`text-xs mt-0.5 truncate ${mutedCol}`}>
+              <p className="font-extrabold text-sm leading-none tracking-tight text-[#202720] dark:text-[#F0F1E9]">Home</p>
+              <p className={`text-[11px] font-medium mt-1 truncate ${mutedCol}`}>
                 {isManager ? 'Manager Portal' : 'Member Portal'}
               </p>
             </div>
@@ -91,12 +91,12 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
       </div>
 
       {/* ── Navigation ───────────────────────────────── */}
-      <nav className="flex-1 px-2 py-3 overflow-y-auto space-y-0.5">
+      <nav className="flex-1 px-3 py-3 overflow-y-auto space-y-1">
         {navItems.map((item) => {
           if (item.divider) {
             return effectiveCollapsed ? null : (
-              <div key={item.label} className="px-3 py-2 mt-2">
-                <p className={`text-[10px] font-semibold uppercase tracking-widest ${dividerCol}`}>
+              <div key={item.label} className="px-3 pt-3 pb-1">
+                <p className={`text-[10px] font-bold uppercase tracking-widest ${dividerCol}`}>
                   {item.label}
                 </p>
               </div>
@@ -110,10 +110,10 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
               onClick={onClose}
               title={effectiveCollapsed ? item.label : undefined}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group
+                `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 group
                 ${effectiveCollapsed ? 'justify-center' : ''}
                 ${isActive
-                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-900/30'
+                  ? 'bg-[#526B52] text-white shadow-sm dark:bg-[#A3B18A] dark:text-[#171C18]'
                   : hoverCls
                 }`
               }
@@ -121,8 +121,8 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
               <item.icon className="w-[18px] h-[18px] flex-shrink-0" />
               {!effectiveCollapsed && (
                 <>
-                  <span className="flex-1">{item.label}</span>
-                  <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-50 transition-opacity" />
+                  <span className="flex-1 font-medium">{item.label}</span>
+                  <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-60 transition-opacity" />
                 </>
               )}
             </NavLink>

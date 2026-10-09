@@ -93,31 +93,31 @@ export default function NotificationDropdown() {
 
   const getIconColor = (type) => {
     switch (type) {
-      case 'bill': return 'text-teal-500 bg-teal-500/10';
-      case 'payment': return 'text-emerald-500 bg-emerald-500/10';
-      case 'notice': return 'text-amber-500 bg-amber-500/10';
-      case 'complaint': return 'text-red-500 bg-red-500/10';
-      case 'room': return 'text-blue-500 bg-blue-500/10';
-      default: return 'text-slate-500 bg-slate-500/10';
+      case 'bill': return 'text-[#526B52] dark:text-[#A3B18A] bg-[#E8EDE3] dark:bg-[#303A30]';
+      case 'payment': return 'text-[#526B52] dark:text-[#A3B18A] bg-[#E8EDE3] dark:bg-[#303A30]';
+      case 'notice': return 'text-[#D97706] dark:text-[#F59E0B] bg-[#FEF3C7] dark:bg-[#78350F]/30';
+      case 'complaint': return 'text-[#DC2626] dark:text-[#EF4444] bg-[#FEE2E2] dark:bg-[#7F1D1D]/30';
+      case 'room': return 'text-[#0D9488] dark:text-[#2DD4BF] bg-[#CCFBF1] dark:bg-[#134E4A]/30';
+      default: return 'text-[#687168] dark:text-[#B1B8AC] bg-[#ECECE4] dark:bg-[#292F29]';
     }
   };
 
-  const bgClasses = isDark ? 'bg-slate-900 border-white/10 shadow-black/50' : 'bg-white border-slate-200 shadow-slate-200/50';
-  const itemHover = isDark ? 'hover:bg-white/5' : 'hover:bg-slate-50';
-  const textPrimary = isDark ? 'text-white' : 'text-slate-800';
-  const textSecondary = isDark ? 'text-slate-400' : 'text-slate-500';
+  const bgClasses = isDark ? 'bg-[#202720] border-[#394239] shadow-2xl' : 'bg-white border-[#DDE1D8] shadow-xl shadow-black/5';
+  const itemHover = isDark ? 'hover:bg-[#292F29]' : 'hover:bg-[#ECECE4]/60';
+  const textPrimary = isDark ? 'text-[#F0F1E9]' : 'text-[#202720]';
+  const textSecondary = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
 
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`relative p-2 rounded-xl transition-colors ${
-          isOpen ? (isDark ? 'bg-white/10 text-white' : 'bg-slate-100 text-emerald-600') : (isDark ? 'text-slate-400 hover:bg-white/5' : 'text-slate-600 hover:bg-slate-100')
+          isOpen ? (isDark ? 'bg-[#292F29] text-[#A3B18A]' : 'bg-[#ECECE4] text-[#526B52]') : (isDark ? 'text-[#B1B8AC] hover:bg-[#292F29] hover:text-[#F0F1E9]' : 'text-[#687168] hover:bg-[#ECECE4] hover:text-[#202720]')
         }`}
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-red-500 border-2 border-white dark:border-slate-900" />
+          <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-[#DC2626] border-2 border-white dark:border-[#202720]" />
         )}
       </button>
 
@@ -131,12 +131,12 @@ export default function NotificationDropdown() {
             className={`absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-2xl border shadow-xl z-50 overflow-hidden flex flex-col ${bgClasses}`}
             style={{ maxHeight: 'calc(100vh - 100px)' }}
           >
-            <div className={`p-4 border-b flex items-center justify-between ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
-              <h3 className={`font-semibold ${textPrimary}`}>Notifications {unreadCount > 0 && <span className="ml-1 text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full">{unreadCount}</span>}</h3>
+            <div className={`p-4 border-b flex items-center justify-between ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'}`}>
+              <h3 className={`font-bold ${textPrimary}`}>Notifications {unreadCount > 0 && <span className="ml-1 text-xs bg-[#DC2626] text-white px-2 py-0.5 rounded-full font-bold">{unreadCount}</span>}</h3>
               {unreadCount > 0 && (
                 <button 
                   onClick={() => markAllReadMutation.mutate()}
-                  className="text-xs font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 flex items-center gap-1"
+                  className="text-xs font-semibold text-[#526B52] hover:text-[#405640] dark:text-[#A3B18A] dark:hover:text-[#BAC7A8] flex items-center gap-1"
                 >
                   <Check className="w-3 h-3" /> Mark all read
                 </button>
@@ -146,27 +146,27 @@ export default function NotificationDropdown() {
             <div className="overflow-y-auto flex-1">
               {notifications.length === 0 ? (
                 <div className={`p-8 text-center ${textSecondary}`}>
-                  <Bell className="w-8 h-8 mx-auto mb-2 opacity-20" />
-                  <p className="text-sm">You're all caught up!</p>
+                  <Bell className="w-8 h-8 mx-auto mb-2 opacity-30" />
+                  <p className="text-sm font-medium">You're all caught up!</p>
                 </div>
               ) : (
-                <div className="divide-y divide-slate-100 dark:divide-white/5">
+                <div className="divide-y divide-[#DDE1D8] dark:divide-[#394239]">
                   {notifications.map((n) => (
                     <div 
                       key={n._id} 
                       onClick={() => handleNotificationClick(n)}
-                      className={`p-4 transition-colors cursor-pointer flex gap-3 ${itemHover} ${!n.isRead ? (isDark ? 'bg-emerald-500/5' : 'bg-emerald-50/40') : ''}`}
+                      className={`p-4 transition-colors cursor-pointer flex gap-3 ${itemHover} ${!n.isRead ? (isDark ? 'bg-[#303A30]/50' : 'bg-[#E8EDE3]/50') : ''}`}
                     >
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${getIconColor(n.type)}`}>
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${getIconColor(n.type)}`}>
                         <Bell className="w-4 h-4" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start mb-0.5">
-                          <p className={`text-sm font-semibold truncate ${textPrimary} ${!n.isRead ? '' : 'opacity-80'}`}>{n.title}</p>
-                          {!n.isRead && <span className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />}
+                          <p className={`text-sm font-bold truncate ${textPrimary} ${!n.isRead ? '' : 'opacity-80'}`}>{n.title}</p>
+                          {!n.isRead && <span className="w-2 h-2 rounded-full bg-[#526B52] dark:bg-[#A3B18A] mt-1.5 flex-shrink-0" />}
                         </div>
                         <p className={`text-xs line-clamp-2 mb-1 ${textSecondary} ${!n.isRead ? '' : 'opacity-80'}`}>{n.message}</p>
-                        <p className={`text-[10px] uppercase font-medium tracking-wider ${textSecondary} opacity-60`}>
+                        <p className={`text-[10px] uppercase font-semibold tracking-wider ${textSecondary} opacity-70`}>
                           {formatRelativeTime(n.createdAt)}
                         </p>
                       </div>
@@ -176,11 +176,11 @@ export default function NotificationDropdown() {
               )}
             </div>
 
-            <div className={`p-3 border-t ${isDark ? 'border-white/10' : 'border-slate-100'}`}>
+            <div className={`p-3 border-t ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'}`}>
               <Link
                 to={notifRoot}
                 onClick={() => setIsOpen(false)}
-                className="block text-center text-xs font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 transition-colors"
+                className="block text-center text-xs font-bold text-[#526B52] hover:text-[#405640] dark:text-[#A3B18A] dark:hover:text-[#BAC7A8] transition-colors"
               >
                 View all notifications →
               </Link>

@@ -226,7 +226,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={value}>
       {loading ? (
-        <LoadingSpinner fullPage message="Loading Dorm Solution…" />
+        <LoadingSpinner fullPage message="Loading Home…" />
       ) : (
         children
       )}

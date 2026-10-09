@@ -25,11 +25,9 @@ export default function RoomsPage() {
   const emptyForm = { roomNumber: '', floor: '', type: 'single', capacity: 1, rent: '' };
   const [formData, setFormData] = useState(emptyForm);
 
-  const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputCls = `w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
-    isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-  }`;
-  const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`;
+  const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const inputCls = `w-full px-4 py-2.5 rounded-xl border border-[#DDE1D8] dark:border-[#394239] outline-none focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A] transition-colors bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60`;
+  const labelCls = `block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`;
 
   /* ── Queries ──────────────────────────────────────────────────────── */
   const { data: rooms = [], isLoading } = useQuery({
@@ -147,7 +145,7 @@ export default function RoomsPage() {
               setFormData(emptyForm);
               setIsModalOpen(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all"
           >
             <Plus className="w-4 h-4" />
             Add Room
@@ -156,15 +154,15 @@ export default function RoomsPage() {
       />
 
       {/* Filter tabs */}
-      <div className={`inline-flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}>
+      <div className={`inline-flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#292F29] border-[#394239]' : 'bg-[#ECECE4] border-[#DDE1D8]'}`}>
         {['all', 'available', 'occupied'].map(tab => (
           <button
             key={tab}
             onClick={() => setFilter(tab)}
-            className={`px-4 py-1.5 rounded-lg text-sm font-medium capitalize transition-all ${
+            className={`px-4 py-1.5 rounded-lg text-sm font-bold capitalize transition-all ${
               filter === tab
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
+                ? 'bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#171C18] shadow-sm'
+                : isDark ? 'text-[#B1B8AC] hover:text-[#F0F1E9]' : 'text-[#687168] hover:text-[#202720]'
             }`}
           >
             {tab}
@@ -177,16 +175,16 @@ export default function RoomsPage() {
         {isLoading
           ? Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className={`rounded-2xl border p-5 animate-pulse ${cardBg}`}>
-              <div className={`h-4 w-24 rounded mb-3 ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
-              <div className={`h-6 w-12 rounded mb-2 ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
-              <div className={`h-3 w-full rounded ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
+              <div className={`h-4 w-24 rounded mb-3 ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
+              <div className={`h-6 w-12 rounded mb-2 ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
+              <div className={`h-3 w-full rounded ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
             </div>
           ))
           : filtered.length === 0
           ? (
             <div className={`col-span-full text-center py-16 rounded-2xl border ${cardBg}`}>
               <DoorOpen className="w-10 h-10 mx-auto mb-3 opacity-30" />
-              <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'}`}>No rooms found</p>
+              <p className={`text-sm font-medium ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>No rooms found</p>
             </div>
           )
           : filtered.map((room, i) => {
@@ -202,8 +200,8 @@ export default function RoomsPage() {
               >
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
-                  <div className={`p-2.5 rounded-xl ${room.status === 'available' ? 'bg-emerald-500/10' : 'bg-red-500/10'}`}>
-                    <DoorOpen className={`w-5 h-5 ${room.status === 'available' ? 'text-emerald-400' : 'text-red-400'}`} />
+                  <div className={`p-2.5 rounded-xl ${room.status === 'available' ? 'bg-[#E8EDE3] text-[#526B52] dark:bg-[#303A30] dark:text-[#A3B18A]' : 'bg-[#FEE2E2] text-[#DC2626] dark:bg-[#7F1D1D]/30 dark:text-[#EF4444]'}`}>
+                    <DoorOpen className="w-5 h-5" />
                   </div>
                   <div className="flex items-center gap-2">
                     <StatusBadge status={room.status || 'available'} />
@@ -271,10 +269,10 @@ export default function RoomsPage() {
                       return (
                         <div key={mid} className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
+                            <div className="w-6 h-6 rounded-full bg-[#526B52] dark:bg-[#A3B18A] flex items-center justify-center text-white dark:text-[#171C18] text-[10px] font-bold flex-shrink-0">
                               {getInitials(name)}
                             </div>
-                            <span className={`text-xs font-medium ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{name}</span>
+                            <span className={`text-xs font-semibold ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{name}</span>
                           </div>
                           <button
                             onClick={() => {
@@ -282,7 +280,7 @@ export default function RoomsPage() {
                                 vacateMutation.mutate({ roomId: room._id, memberId: mid });
                               }
                             }}
-                            className="p-1 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                            className="p-1 text-[#DC2626] dark:text-[#EF4444] hover:bg-[#DC2626]/10 rounded-lg transition-colors"
                           >
                             <UserMinus className="w-3.5 h-3.5" />
                           </button>
@@ -301,7 +299,7 @@ export default function RoomsPage() {
                       setAssignMemberId('');
                       setIsAssignModalOpen(true);
                     }}
-                    className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold bg-[#E8EDE3] dark:bg-[#303A30] text-[#526B52] dark:text-[#A3B18A] border border-[#748D6B]/30 dark:border-[#A3B18A]/30 hover:opacity-85 transition-colors"
                   >
                     <UserPlus className="w-3.5 h-3.5" />
                     Assign Member

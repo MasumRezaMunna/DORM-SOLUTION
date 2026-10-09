@@ -117,21 +117,21 @@ export default function MemberDashboard() {
     },
   ];
 
-  const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const textMuted = isDark ? 'text-slate-400' : 'text-slate-500';
+  const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const textMuted = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
 
   return (
     <div className="space-y-6">
       <PageHeader
         title={`Hello, ${user?.name?.split(' ')[0] || 'there'}! 👋`}
-        subtitle={`Welcome to 11/38 Home. Here's your summary.`}
+        subtitle="Welcome to Home. Here's your summary."
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
         {stats.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
       </div>
 
-      <h3 className={`font-semibold text-lg mt-6 mb-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>Market Schedule Overview</h3>
+      <h3 className={`font-bold text-lg tracking-tight mt-6 mb-2 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>Market Schedule Overview</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
         {marketStats.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
       </div>

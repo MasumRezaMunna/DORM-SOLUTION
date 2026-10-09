@@ -40,13 +40,13 @@ export default function MemberExpensesPage() {
     else setMonth(m => m + 1);
   };
 
-  const cardBg    = isDark ? "bg-slate-900 border-white/10" : "bg-white border-slate-200 shadow-sm";
-  const textMuted = isDark ? "text-slate-400" : "text-slate-500";
+  const cardBg    = isDark ? "bg-[#202720] border-[#394239]" : "bg-white border-[#DDE1D8] shadow-sm";
+  const textMuted = isDark ? "text-[#B1B8AC]" : "text-[#687168]";
 
   const summaryCards = [
-    { label: "Total Expense", value: formatCurrency(grandTotal),  Icon: ShoppingBag,  color: "text-emerald-500 dark:text-emerald-400", ring: "bg-emerald-500/10" },
-    { label: "Grocery Cost",  value: formatCurrency(groceryCost), Icon: ShoppingCart, color: "text-green-400",  ring: "bg-green-500/10"  },
-    { label: "Common Cost",   value: formatCurrency(commonCost),  Icon: Home,         color: "text-blue-400",   ring: "bg-blue-500/10"   },
+    { label: "Total Expense", value: formatCurrency(grandTotal),  Icon: ShoppingBag,  color: "text-[#526B52] dark:text-[#A3B18A]", ring: "bg-[#E8EDE3] dark:bg-[#303A30]" },
+    { label: "Grocery Cost",  value: formatCurrency(groceryCost), Icon: ShoppingCart, color: "text-[#526B52] dark:text-[#A3B18A]", ring: "bg-[#E8EDE3] dark:bg-[#303A30]" },
+    { label: "Common Cost",   value: formatCurrency(commonCost),  Icon: Home,         color: "text-[#687168] dark:text-[#B1B8AC]", ring: "bg-[#ECECE4] dark:bg-[#292F29]" },
   ];
 
   const columns = [
@@ -57,11 +57,11 @@ export default function MemberExpensesPage() {
         const cat = EXPENSE_TYPES.find(c => c.value === row.expenseType);
         return (
           <div className="flex items-center gap-3">
-            <span className="text-xl leading-none">{cat?.icon || "??"}</span>
+            <span className="text-xl leading-none">{cat?.icon || "🛒"}</span>
             <div>
-              <p className={"font-medium text-sm " + (isDark ? "text-white" : "text-slate-800")}>{row.title}</p>
-              <span className={"inline-flex items-center mt-1 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wide uppercase " + (row.expenseType === "Grocery" ? "bg-green-500/10 text-green-500" : "bg-blue-500/10 text-blue-500")}>
-                {row.expenseType === "Grocery" ? "?? " : "?? "}{row.expenseType}
+              <p className={"font-semibold text-sm " + (isDark ? "text-[#F0F1E9]" : "text-[#202720]")}>{row.title}</p>
+              <span className={"inline-flex items-center mt-1 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase " + (row.expenseType === "Grocery" ? "bg-[#E8EDE3] dark:bg-[#303A30] text-[#526B52] dark:text-[#A3B18A]" : "bg-[#ECECE4] dark:bg-[#292F29] text-[#687168] dark:text-[#B1B8AC]")}>
+                {row.expenseType}
               </span>
             </div>
           </div>
@@ -71,27 +71,27 @@ export default function MemberExpensesPage() {
     {
       key: "amount",
       label: "Amount",
-      render: (row) => <span className="text-red-400 font-semibold text-sm">{formatCurrency(row.amount)}</span>,
+      render: (row) => <span className="text-rose-500 dark:text-rose-400 font-bold text-sm tabular-nums">{formatCurrency(row.amount)}</span>,
     },
     {
       key: "date",
       label: "Date",
-      render: (row) => <span className={"text-sm " + textMuted}>{formatDate(row.date)}</span>,
+      render: (row) => <span className={"text-sm font-medium " + textMuted}>{formatDate(row.date)}</span>,
     },
     {
       key: "notes",
       label: "Notes",
-      render: (row) => <span className={"text-xs " + textMuted}>{row.notes || "-"}</span>,
+      render: (row) => <span className={"text-xs " + textMuted}>{row.notes || "—"}</span>,
     },
     {
       key: "addedBy",
       label: "Added By",
-      render: (row) => <span className={"text-xs " + textMuted}>{row.createdBy?.displayName || "-"}</span>,
+      render: (row) => <span className={"text-xs font-medium " + textMuted}>{row.createdBy?.displayName || "—"}</span>,
     },
   ];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader
         title="Monthly Expenses"
         subtitle="View dormitory expenses for the selected month"
@@ -99,13 +99,13 @@ export default function MemberExpensesPage() {
 
       {/* Month Navigator */}
       <div className="flex items-center gap-3">
-        <button onClick={prevMonth} className={"p-2 rounded-xl border transition-colors " + (isDark ? "border-white/10 hover:bg-white/5 text-slate-400" : "border-slate-200 hover:bg-slate-50 text-slate-500")}>
+        <button onClick={prevMonth} className={"p-2 rounded-xl border transition-colors " + (isDark ? "border-[#394239] hover:bg-[#292F29] text-[#B1B8AC]" : "border-[#DDE1D8] hover:bg-[#ECECE4] text-[#687168]")}>
           <ChevronLeft className="w-4 h-4" />
         </button>
-        <span className={"text-sm font-semibold min-w-[110px] text-center " + (isDark ? "text-white" : "text-slate-800")}>
+        <span className={"text-sm font-bold min-w-[110px] text-center " + (isDark ? "text-[#F0F1E9]" : "text-[#202720]")}>
           {getMonthName(month)} {year}
         </span>
-        <button onClick={nextMonth} className={"p-2 rounded-xl border transition-colors " + (isDark ? "border-white/10 hover:bg-white/5 text-slate-400" : "border-slate-200 hover:bg-slate-50 text-slate-500")}>
+        <button onClick={nextMonth} className={"p-2 rounded-xl border transition-colors " + (isDark ? "border-[#394239] hover:bg-[#292F29] text-[#B1B8AC]" : "border-[#DDE1D8] hover:bg-[#ECECE4] text-[#687168]")}>
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
@@ -118,8 +118,8 @@ export default function MemberExpensesPage() {
               <Icon className={"w-5 h-5 " + color} />
             </div>
             <div>
-              <p className={"text-xs " + textMuted}>{label}</p>
-              <p className={"text-lg font-bold " + (isDark ? "text-white" : "text-slate-800")}>{value}</p>
+              <p className={"text-xs font-semibold " + textMuted}>{label}</p>
+              <p className={"text-xl font-extrabold tracking-tight tabular-nums " + (isDark ? "text-[#F0F1E9]" : "text-[#202720]")}>{value}</p>
             </div>
           </div>
         ))}
@@ -131,12 +131,12 @@ export default function MemberExpensesPage() {
           <button
             key={type}
             onClick={() => setFilterType(type)}
-            className={"px-4 py-2 rounded-xl text-sm font-semibold transition-colors " + (filterType === type ? "bg-emerald-600 text-white shadow-sm" : isDark ? "bg-slate-800 text-slate-400 hover:bg-slate-700" : "bg-white text-slate-500 hover:bg-slate-100 border border-slate-200")}
+            className={"px-4 py-2 rounded-xl text-sm font-bold transition-all " + (filterType === type ? "bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#171C18] shadow-sm" : isDark ? "bg-[#202720] text-[#B1B8AC] border border-[#394239] hover:bg-[#292F29]" : "bg-white text-[#687168] hover:bg-[#ECECE4] border border-[#DDE1D8]")}
           >
             {type}
           </button>
         ))}
-        <span className={"ml-auto text-xs " + textMuted}>{expenses.length} entries</span>
+        <span className={"ml-auto text-xs font-medium " + textMuted}>{expenses.length} entries</span>
       </div>
 
       <DataTable

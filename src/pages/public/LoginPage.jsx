@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
-import { Building2, Shield, Users } from 'lucide-react';
+import { Building2, Shield, Users, Sun, Moon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const { loginWithGoogle } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -25,64 +27,91 @@ export default function LoginPage() {
   };
 
   const features = [
-    { icon: Building2, label: 'Room Management', desc: 'Manage rooms & assignments' },
-    { icon: Users, label: 'Member Portal', desc: 'Track all residents easily' },
-    { icon: Shield, label: 'Secure & Private', desc: 'Firebase-powered auth' },
+    { icon: Building2, label: 'Rooms', desc: 'Allocation & tracking' },
+    { icon: Users, label: 'Meals & Bazar', desc: 'Schedules & duties' },
+    { icon: Shield, label: 'Secured', desc: 'Firebase + JWT Auth' },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-teal-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+    <div className={`min-h-screen flex items-center justify-center p-4 relative overflow-hidden transition-colors duration-200 ${
+      isDark ? 'bg-[#171C18] text-[#F0F1E9]' : 'bg-[#F5F4EE] text-[#202720]'
+    }`}>
+      {/* Background subtle scandi grid pattern */}
+      <div className="absolute inset-0 scandi-grid-pattern opacity-40 pointer-events-none" />
+
+      {/* Theme toggle in top right */}
+      <div className="absolute top-5 right-5 z-20">
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+          className={`p-2.5 rounded-xl border transition-all ${
+            isDark
+              ? 'bg-[#202720] border-[#394239] text-[#A3B18A] hover:bg-[#292F29]'
+              : 'bg-white border-[#DDE1D8] text-[#526B52] hover:bg-[#ECECE4]'
+          }`}
+        >
+          {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
       </div>
 
       <div className="relative z-10 w-full max-w-md">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl shadow-2xl p-8"
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className={`rounded-3xl border p-8 sm:p-9 shadow-xl transition-colors duration-200 ${
+            isDark
+              ? 'bg-[#202720] border-[#394239] shadow-2xl'
+              : 'bg-white border-[#DDE1D8] shadow-sm'
+          }`}
         >
           {/* Logo & Title */}
           <div className="text-center mb-8">
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-              className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg shadow-emerald-950/40 mb-4"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.15, type: 'spring', stiffness: 220 }}
+              className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#171C18] shadow-md mb-4"
             >
-              <Building2 className="w-10 h-10 text-white" />
+              <Building2 className="w-8 h-8" />
             </motion.div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">11/38 Home</h1>
-            <p className="text-slate-400 mt-1 text-sm">Smart Dormitory Management System</p>
+            <h1 className="text-3xl font-extrabold tracking-tight">Home</h1>
+            <p className={`mt-1.5 text-sm font-medium ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
+              Scandinavian Calm × Bold Futuristic Dorm Management
+            </p>
           </div>
 
           {/* Feature highlights */}
-          <div className="grid grid-cols-3 gap-3 mb-8">
+          <div className="grid grid-cols-3 gap-2.5 mb-8">
             {features.map((f, i) => (
               <motion.div
                 key={f.label}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + i * 0.1 }}
-                className="flex flex-col items-center text-center p-3 rounded-2xl bg-white/5 border border-white/5"
+                transition={{ delay: 0.25 + i * 0.08 }}
+                className={`flex flex-col items-center text-center p-3 rounded-2xl border transition-colors ${
+                  isDark
+                    ? 'bg-[#292F29] border-[#394239]'
+                    : 'bg-[#ECECE4]/60 border-[#DDE1D8]'
+                }`}
               >
-                <f.icon className="w-5 h-5 text-emerald-400 mb-1.5" />
-                <span className="text-white text-xs font-medium">{f.label}</span>
-                <span className="text-slate-500 text-xs mt-0.5 leading-tight">{f.desc}</span>
+                <f.icon className="w-5 h-5 text-[#526B52] dark:text-[#A3B18A] mb-1.5" />
+                <span className="text-xs font-bold leading-tight">{f.label}</span>
+                <span className={`text-[11px] font-medium mt-0.5 leading-tight ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{f.desc}</span>
               </motion.div>
             ))}
           </div>
 
           {/* Login Button */}
           <motion.button
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleLogin}
-            className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-800 font-semibold shadow-lg transition-all duration-200"
+            className={`w-full flex items-center justify-center gap-3 px-6 py-3.5 rounded-2xl font-bold text-sm transition-all duration-200 border ${
+              isDark
+                ? 'bg-[#292F29] hover:bg-[#303A30] text-[#F0F1E9] border-[#394239]'
+                : 'bg-white hover:bg-[#ECECE4] text-[#202720] border-[#DDE1D8] shadow-sm'
+            }`}
           >
             <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -94,14 +123,14 @@ export default function LoginPage() {
           </motion.button>
 
           {/* Footer note */}
-          <p className="text-center text-slate-500 text-xs mt-6">
+          <p className={`text-center text-xs mt-6 font-medium ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
             Access is controlled by the dormitory manager.<br />
             Only registered members can sign in.
           </p>
         </motion.div>
 
-        <p className="text-center text-slate-600 text-xs mt-6">
-          © {new Date().getFullYear()} 11/38 Home. All rights reserved.
+        <p className={`text-center text-xs mt-6 font-medium ${isDark ? 'text-[#B1B8AC]/60' : 'text-[#687168]/70'}`}>
+          © {new Date().getFullYear()} Home. All rights reserved.
         </p>
       </div>
     </div>

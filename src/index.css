@@ -3,37 +3,115 @@
 /* Configure Tailwind v4 for HeroUI via config bridge */
 @config "../tailwind.config.js";
 
-/* Add custom theme variables or utilities if needed */
+:root {
+  --background: #F5F4EE;
+  --foreground: #202720;
+  --card: #FFFFFF;
+  --card-foreground: #202720;
+  --surface-secondary: #ECECE4;
+  --primary: #526B52;
+  --primary-hover: #405640;
+  --primary-foreground: #FFFFFF;
+  --secondary: #A3B18A;
+  --secondary-foreground: #202720;
+  --accent: #E8EDE3;
+  --accent-foreground: #202720;
+  --muted: #ECECE4;
+  --muted-foreground: #687168;
+  --border: #DDE1D8;
+  --input: #FFFFFF;
+  --ring: #748D6B;
+  --success: #16A34A;
+  --warning: #D97706;
+  --destructive: #DC2626;
+}
+
+.dark {
+  --background: #171C18;
+  --foreground: #F0F1E9;
+  --card: #202720;
+  --card-foreground: #F0F1E9;
+  --surface-secondary: #292F29;
+  --primary: #A3B18A;
+  --primary-hover: #BAC7A8;
+  --primary-foreground: #202720;
+  --secondary: #899B7A;
+  --secondary-foreground: #F0F1E9;
+  --accent: #303A30;
+  --accent-foreground: #F0F1E9;
+  --muted: #292F29;
+  --muted-foreground: #B1B8AC;
+  --border: #394239;
+  --input: #202720;
+  --ring: #A3B18A;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --destructive: #EF4444;
+}
+
 @theme {
-  --color-primary: #059669;
-  --color-secondary: #0D9488;
-  --color-success: #10B981;
-  --color-warning: #F5A524;
-  --color-danger: #F43F5E;
-  
-  --font-sans: 'Inter', system-ui, sans-serif;
-}
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
 
-/* Glassmorphism utility */
-@utility glass {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
+  --color-sage-50: #F4F6F2;
+  --color-sage-100: #E8EDE3;
+  --color-sage-200: #D3DEC9;
+  --color-sage-300: #BAC7A8;
+  --color-sage-400: #A3B18A;
+  --color-sage-500: #748D6B;
+  --color-sage-600: #526B52;
+  --color-sage-700: #405640;
+  --color-sage-800: #303A30;
+  --color-sage-900: #202720;
+  --color-sage-950: #171C18;
 
-@utility glass-dark {
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  --color-oatmeal-50: #FBFBF9;
+  --color-oatmeal-100: #F5F4EE;
+  --color-oatmeal-200: #ECECE4;
+  --color-oatmeal-300: #DDE1D8;
+  --color-oatmeal-400: #B1B8AC;
+  --color-oatmeal-500: #687168;
+
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  /* NextUI/HeroUI will handle theme classes on the html or body element */
-  @apply bg-background text-foreground;
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle modern grid pattern for Scandinavian futuristic hero / dashboard headers */
+.scandi-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(82, 107, 82, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(82, 107, 82, 0.05) 1px, transparent 1px);
+}
+.dark .scandi-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(163, 177, 138, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(163, 177, 138, 0.05) 1px, transparent 1px);
 }

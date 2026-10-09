@@ -10,9 +10,9 @@ export default function PageHeader({ title, subtitle, action }) {
       className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6"
     >
       <div>
-        <h1 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{title}</h1>
+        <h1 className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{title}</h1>
         {subtitle && (
-          <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{subtitle}</p>
+          <p className={`text-sm font-medium mt-1 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{subtitle}</p>
         )}
       </div>
       {action && <div>{action}</div>}

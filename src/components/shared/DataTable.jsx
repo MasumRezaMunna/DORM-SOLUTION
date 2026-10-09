@@ -8,20 +8,20 @@ export default function DataTable({ columns, data = [], emptyMessage = 'No data 
   const { isDark } = useTheme();
 
   const cardClass = isDark
-    ? 'bg-slate-900 border-white/10'
-    : 'bg-white border-slate-200 shadow-sm';
+    ? 'bg-[#202720] border-[#394239]'
+    : 'bg-white border-[#DDE1D8] shadow-sm';
 
   const thClass = isDark
-    ? 'text-slate-400 border-white/5'
-    : 'text-slate-500 border-slate-100';
+    ? 'text-[#B1B8AC] bg-[#292F29]/60 border-[#394239]'
+    : 'text-[#687168] bg-[#ECECE4]/50 border-[#DDE1D8]';
 
   const tdClass = isDark
-    ? 'text-slate-200 border-white/5'
-    : 'text-slate-700 border-slate-100';
+    ? 'text-[#F0F1E9] border-[#394239]/60'
+    : 'text-[#202720] border-[#DDE1D8]/60';
 
   const trClass = isDark
-    ? 'hover:bg-white/3 odd:bg-white/2'
-    : 'hover:bg-slate-50 odd:bg-slate-50/50';
+    ? 'hover:bg-[#292F29]/60 transition-colors'
+    : 'hover:bg-[#ECECE4]/40 transition-colors';
 
   return (
     <div className={`rounded-2xl border overflow-hidden ${cardClass}`}>
@@ -32,7 +32,7 @@ export default function DataTable({ columns, data = [], emptyMessage = 'No data 
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider ${thClass} border-b`}
+                  className={`px-5 py-3.5 text-left text-xs font-bold uppercase tracking-wider ${thClass}`}
                   style={{ width: col.width }}
                 >
                   {col.label}
@@ -46,14 +46,14 @@ export default function DataTable({ columns, data = [], emptyMessage = 'No data 
                 <tr key={i} className={`border-b ${tdClass} ${trClass}`}>
                   {columns.map((col) => (
                     <td key={col.key} className="px-5 py-3.5">
-                      <div className={`h-4 rounded animate-pulse ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} style={{ width: '60%' }} />
+                      <div className={`h-4 rounded-md animate-pulse ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} style={{ width: '60%' }} />
                     </td>
                   ))}
                 </tr>
               ))
             ) : data.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className={`px-5 py-12 text-center ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                <td colSpan={columns.length} className={`px-5 py-12 text-center text-sm font-medium ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
                   {emptyMessage}
                 </td>
               </tr>

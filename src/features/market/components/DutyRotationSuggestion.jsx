@@ -18,20 +18,20 @@ export default function DutyRotationSuggestion({ selectedIds = [], onSelect, max
   const { isDark } = useTheme();
   const { data: suggestions = [], isLoading } = useRotationSuggestion();
 
-  const cardBg  = isDark ? 'bg-slate-800/60 border-white/5' : 'bg-slate-50 border-slate-200';
-  const textCol = isDark ? 'text-white' : 'text-slate-800';
-  const mutedCol = isDark ? 'text-slate-400' : 'text-slate-500';
-  const rowHover = isDark ? 'hover:bg-white/5' : 'hover:bg-slate-100';
+  const cardBg  = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-[#ECECE4]/40 border-[#DDE1D8]';
+  const textCol = isDark ? 'text-[#F0F1E9]' : 'text-[#202720]';
+  const mutedCol = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
+  const rowHover = isDark ? 'hover:bg-[#292F29]' : 'hover:bg-[#ECECE4]';
 
   return (
     <div className={`rounded-2xl border p-4 ${cardBg}`}>
       {/* Header */}
-      <div className="flex items-center gap-2 mb-3">
-        <div className="p-2 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600">
-          <Trophy className="w-4 h-4 text-white" />
+      <div className="flex items-center gap-2.5 mb-3">
+        <div className="p-2 rounded-xl bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#171C18]">
+          <Trophy className="w-4 h-4" />
         </div>
         <div>
-          <p className={`text-sm font-semibold ${textCol}`}>Duty Rotation Suggestion</p>
+          <p className={`text-sm font-bold tracking-tight ${textCol}`}>Duty Rotation Suggestion</p>
           <p className={`text-xs ${mutedCol}`}>Members with fewest duties appear first</p>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function DutyRotationSuggestion({ selectedIds = [], onSelect, max
                   key={uid}
                   onClick={() => !disabled && onSelect && onSelect(member)}
                   className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all cursor-pointer
-                    ${selected ? 'bg-gradient-to-r from-emerald-600/20 to-teal-600/20 border border-emerald-500/30' : rowHover}
+                    ${selected ? 'bg-[#E8EDE3] dark:bg-[#303A30] border border-[#526B52]/40 dark:border-[#A3B18A]/40' : rowHover}
                     ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`}
                 >
                   {/* Avatar */}

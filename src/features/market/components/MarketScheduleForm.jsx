@@ -109,9 +109,9 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
   };
 
   // ── Styles ───────────────────────────────────────────────────────────────
-  const inputClass = `${isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-white border-slate-200 text-slate-800'}`;
-  const labelClass = `text-sm font-medium mb-1.5 flex items-center gap-1.5 ${isDark ? 'text-slate-300' : 'text-slate-600'}`;
-  const errorClass = 'text-xs text-red-400 mt-1';
+  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors border-[#DDE1D8] dark:border-[#394239] bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60 focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A]`;
+  const labelClass = `text-sm font-semibold mb-1.5 flex items-center gap-1.5 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`;
+  const errorClass = 'text-xs text-rose-500 dark:text-rose-400 mt-1 font-medium';
   const today = localDateString();
 
   const selectedIds = selectedMembers.map((m) => m.userId?.toString());
@@ -122,7 +122,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
       {/* ── Date picker ───────────────────────────────────────────────── */}
       <div>
         <label className={labelClass}>
-          <Calendar className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+          <Calendar className="w-4 h-4 text-[#526B52] dark:text-[#A3B18A]" />
           Market Date
         </label>
         <input
@@ -132,7 +132,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
             required: 'Market date is required',
             validate: (v) => v >= today || 'Cannot select a past date',
           })}
-          className={`w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${inputClass}`}
+          className={inputClass}
         />
         {errors.marketDate && <p className={errorClass}>{errors.marketDate.message}</p>}
       </div>
@@ -140,9 +140,9 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
       {/* ── Member Picker ─────────────────────────────────────────────── */}
       <div>
         <label className={labelClass}>
-          <Users className="w-4 h-4 text-blue-400" />
+          <Users className="w-4 h-4 text-[#748D6B] dark:text-[#A3B18A]" />
           Team Members
-          <span className={`text-xs ml-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>(select 2–3)</span>
+          <span className={`text-xs ml-1 font-normal ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>(select 2–3)</span>
         </label>
 
         {/* Selected chips */}
@@ -155,7 +155,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
                   key={uid}
                   onClose={() => toggleMember({ userId: m.userId, userId: { _id: m.userId } })}
                   variant="flat"
-                  color="primary"
+                  className="bg-[#E8EDE3] dark:bg-[#303A30] text-[#526B52] dark:text-[#A3B18A] font-semibold"
                   avatar={
                     <Avatar
                       src={m.photo}
@@ -172,7 +172,7 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
         )}
 
         {/* Member list */}
-        <div className={`rounded-xl border ${isDark ? 'border-white/10 bg-slate-800/60' : 'border-slate-200 bg-slate-50'} max-h-44 overflow-y-auto`}>
+        <div className={`rounded-xl border ${isDark ? 'border-[#394239] bg-[#202720]' : 'border-[#DDE1D8] bg-[#ECECE4]/50'} max-h-44 overflow-y-auto`}>
           {membersLoading
             ? Array.from({ length: 3 }).map((_, i) => (
                 <Skeleton key={i} className="h-12 mx-3 my-2 rounded-xl" />
@@ -188,8 +188,8 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
                     onClick={() => !isDisabled && toggleMember(m)}
                     className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-all
                       ${isSelected
-                        ? (isDark ? 'bg-emerald-600/20 text-white' : 'bg-emerald-50 text-emerald-700')
-                        : (isDark ? 'hover:bg-white/5 text-slate-300' : 'hover:bg-slate-100 text-slate-700')
+                        ? (isDark ? 'bg-[#303A30] text-[#F0F1E9]' : 'bg-[#E8EDE3] text-[#202720]')
+                        : (isDark ? 'hover:bg-[#292F29] text-[#B1B8AC]' : 'hover:bg-white text-[#202720]')
                       }
                       ${isDisabled ? 'opacity-40 cursor-not-allowed' : ''}`}
                   >
@@ -199,13 +199,13 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
                       size="sm"
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{m.userId?.displayName}</p>
-                      <p className={`text-xs truncate ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                      <p className="text-sm font-semibold truncate">{m.userId?.displayName}</p>
+                      <p className={`text-xs truncate ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
                         {m.userId?.email}
                       </p>
                     </div>
                     {isSelected && (
-                      <X className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+                      <X className="w-4 h-4 text-[#526B52] dark:text-[#A3B18A]" />
                     )}
                   </div>
                 );
@@ -230,15 +230,15 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
       {/* ── Note ─────────────────────────────────────────────────────── */}
       <div>
         <label className={labelClass}>
-          <StickyNote className="w-4 h-4 text-amber-400" />
+          <StickyNote className="w-4 h-4 text-amber-500" />
           Note
-          <span className={`text-xs ml-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>(optional)</span>
+          <span className={`text-xs ml-1 font-normal ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>(optional)</span>
         </label>
         <textarea
           rows={2}
           {...register('note')}
           placeholder="Any instructions or notes for the team..."
-          className={`w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 resize-none ${inputClass}`}
+          className={`${inputClass} resize-none`}
         />
       </div>
 
@@ -248,14 +248,14 @@ export default function MarketScheduleForm({ defaultValues = {}, onSubmit, isLoa
           type="button"
           onClick={onCancel}
           disabled={isLoading}
-          className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${isDark ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+          className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${isDark ? 'text-[#B1B8AC] hover:text-[#F0F1E9] hover:bg-[#292F29]' : 'text-[#687168] hover:text-[#202720] hover:bg-[#ECECE4]'}`}
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={selectedMembers.length < 2 || isLoading}
-          className="flex items-center gap-2 px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 disabled:opacity-50 transition-all"
+          className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm disabled:opacity-50 transition-all"
         >
           {!isLoading && <ShoppingCart className="w-4 h-4" />}
           {isLoading ? 'Saving...' : (isEdit ? 'Save Changes' : 'Create Schedule')}

@@ -28,27 +28,27 @@ export default function UserDropdown() {
     navigate('/login');
   };
 
-  const bgClasses = isDark ? 'bg-slate-900 border-white/10 shadow-black/50' : 'bg-white border-slate-200 shadow-slate-200/50';
-  const itemHover = isDark ? 'hover:bg-white/5 text-slate-300 hover:text-white' : 'hover:bg-slate-50 text-slate-600 hover:text-slate-900';
+  const bgClasses = isDark ? 'bg-[#202720] border-[#394239] shadow-2xl' : 'bg-white border-[#DDE1D8] shadow-lg shadow-black/5';
+  const itemHover = isDark ? 'hover:bg-[#292F29] text-[#B1B8AC] hover:text-[#F0F1E9]' : 'hover:bg-[#ECECE4]/70 text-[#687168] hover:text-[#202720]';
 
   return (
     <div className="relative ml-1" ref={dropdownRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-slate-500/10 transition-colors focus:outline-none"
+        className="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors focus:outline-none"
       >
         {user?.photoURL ? (
-          <img src={user.photoURL} alt={user.displayName} className="w-8 h-8 rounded-full object-cover ring-2 ring-emerald-500/40" onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.displayName || 'U')}&background=059669&color=fff`; }} />
+          <img src={user.photoURL} alt={user.displayName} className="w-8 h-8 rounded-full object-cover ring-2 ring-[#748D6B]/50" onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.displayName || 'U')}&background=526B52&color=fff`; }} />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold">
+          <div className="w-8 h-8 rounded-full bg-[#526B52] dark:bg-[#A3B18A] flex items-center justify-center text-white dark:text-[#202720] text-xs font-bold">
             {user?.displayName?.charAt(0)?.toUpperCase() || 'U'}
           </div>
         )}
         <div className="hidden sm:block text-left">
-          <p className={`text-sm font-semibold leading-none ${isDark ? 'text-white' : 'text-slate-800'}`}>
+          <p className={`text-sm font-bold leading-none ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
             {user?.displayName?.split(' ')[0] || 'User'}
           </p>
-          <p className={`text-xs capitalize mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+          <p className={`text-xs capitalize mt-0.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
             {user?.role || 'member'}
           </p>
         </div>
@@ -63,11 +63,11 @@ export default function UserDropdown() {
             transition={{ duration: 0.15 }}
             className={`absolute right-0 top-full mt-2 w-48 rounded-2xl border shadow-xl z-50 overflow-hidden py-2 ${bgClasses}`}
           >
-            <div className="px-4 py-2 border-b mb-2 border-slate-500/10 sm:hidden">
-               <p className={`text-sm font-semibold truncate ${isDark ? 'text-white' : 'text-slate-800'}`}>
+            <div className="px-4 py-2 border-b mb-2 border-[#DDE1D8] dark:border-[#394239] sm:hidden">
+               <p className={`text-sm font-bold truncate ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
                  {user?.displayName || 'User'}
                </p>
-               <p className={`text-xs capitalize ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+               <p className={`text-xs capitalize ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
                  {user?.role || 'member'}
                </p>
             </div>
@@ -75,7 +75,7 @@ export default function UserDropdown() {
             <Link
               to={isManager ? '/manager/profile' : '/dashboard/profile'}
               onClick={() => setIsOpen(false)}
-              className={`flex items-center gap-3 px-4 py-2 text-sm transition-colors ${itemHover}`}
+              className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${itemHover}`}
             >
               <UserCircle className="w-4 h-4" />
               My Profile
@@ -84,7 +84,7 @@ export default function UserDropdown() {
             <Link
               to={isManager ? '/manager/settings' : '/dashboard/settings'}
               onClick={() => setIsOpen(false)}
-              className={`flex items-center gap-3 px-4 py-2 text-sm transition-colors ${itemHover}`}
+              className={`flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors ${itemHover}`}
             >
               <Settings className="w-4 h-4" />
               Settings
@@ -92,7 +92,7 @@ export default function UserDropdown() {
             
             <button
               onClick={handleLogout}
-              className={`flex items-center gap-3 px-4 py-2 text-sm w-full text-left transition-colors mt-1 border-t border-slate-500/10 pt-2 ${isDark ? 'text-red-400 hover:bg-red-500/10' : 'text-red-500 hover:bg-red-50'}`}
+              className={`flex items-center gap-3 px-4 py-2 text-sm font-medium w-full text-left transition-colors mt-1 border-t border-[#DDE1D8] dark:border-[#394239] pt-2 text-[#DC2626] dark:text-[#EF4444] hover:bg-[#DC2626]/10`}
             >
               <LogOut className="w-4 h-4" />
               Sign Out

@@ -18,8 +18,8 @@ export default function UpcomingTeamCard({ schedule, index = 0 }) {
   const { isDark } = useTheme();
 
   const cardBg  = isDark
-    ? 'bg-slate-900 border-white/10 hover:border-blue-500/30'
-    : 'bg-white border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-md';
+    ? 'bg-[#202720] border-[#394239] hover:border-[#A3B18A]/50'
+    : 'bg-white border-[#DDE1D8] hover:border-[#748D6B] shadow-sm';
 
   return (
     <motion.div
@@ -30,16 +30,16 @@ export default function UpcomingTeamCard({ schedule, index = 0 }) {
     >
       {/* Date row */}
       <div className="flex items-start justify-between gap-2 mb-3">
-        <div className="flex items-center gap-2">
-          <div className={`p-2 rounded-xl ${isDark ? 'bg-blue-500/15' : 'bg-blue-50'}`}>
-            <Calendar className="w-4 h-4 text-blue-500" />
+        <div className="flex items-center gap-2.5">
+          <div className={`p-2 rounded-xl ${isDark ? 'bg-[#303A30] text-[#A3B18A]' : 'bg-[#E8EDE3] text-[#526B52]'}`}>
+            <Calendar className="w-4 h-4" />
           </div>
           <div>
-            <p className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>
+            <p className={`text-sm font-bold tracking-tight ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
               {formatDate(schedule.marketDate)}
             </p>
             {schedule.createdBy?.name && (
-              <p className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+              <p className={`text-xs ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
                 by {schedule.createdBy.name}
               </p>
             )}
@@ -53,7 +53,7 @@ export default function UpcomingTeamCard({ schedule, index = 0 }) {
         <div className="flex -space-x-2">
           {(schedule.members || []).map((m, i) => (
             <Tooltip key={i} content={m.name} placement="top">
-              <div className="rounded-full ring-2 ring-white dark:ring-slate-900 relative">
+              <div className="rounded-full ring-2 ring-white dark:ring-[#202720] relative">
                 <Avatar
                   src={m.photo}
                   name={getMemberInitials(m.name)}
@@ -67,7 +67,7 @@ export default function UpcomingTeamCard({ schedule, index = 0 }) {
           {(schedule.members || []).map((m, i) => (
             <span
               key={i}
-              className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}
+              className={`text-xs font-medium ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}
             >
               {m.name}{i < schedule.members.length - 1 ? ',' : ''}
             </span>
@@ -77,7 +77,7 @@ export default function UpcomingTeamCard({ schedule, index = 0 }) {
 
       {/* Note */}
       {schedule.note && (
-        <p className={`text-xs mt-3 pt-3 border-t line-clamp-2 ${isDark ? 'border-white/5 text-slate-500' : 'border-slate-100 text-slate-400'}`}>
+        <p className={`text-xs mt-3 pt-3 border-t line-clamp-2 ${isDark ? 'border-[#394239] text-[#B1B8AC]' : 'border-[#DDE1D8] text-[#687168]'}`}>
           {schedule.note}
         </p>
       )}

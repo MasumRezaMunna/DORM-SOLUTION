@@ -130,7 +130,7 @@ export default function PaymentsPage() {
       key: 'amount',
       label: 'Amount',
       render: (row) => (
-        <span className="text-emerald-400 font-semibold text-sm">{formatCurrency(row.amount)}</span>
+        <span className="text-[#16A34A] dark:text-[#22C55E] font-bold text-sm tabular-nums">{formatCurrency(row.amount)}</span>
       )
     },
     {
@@ -197,11 +197,9 @@ export default function PaymentsPage() {
     },
   ];
 
-  const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputCls = `w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
-    isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-  }`;
-  const labelCls = `block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`;
+  const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const inputCls = `w-full px-4 py-2.5 rounded-xl border border-[#DDE1D8] dark:border-[#394239] outline-none focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A] transition-colors bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60`;
+  const labelCls = `block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`;
 
   return (
     <div className="space-y-5">
@@ -217,7 +215,7 @@ export default function PaymentsPage() {
               setFormData(emptyForm); 
               setIsModalOpen(true); 
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-semibold shadow-lg"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all"
           >
             <Plus className="w-4 h-4" />
             Record Payment
@@ -227,34 +225,34 @@ export default function PaymentsPage() {
 
       {/* Summary + Month Navigator */}
       <div className={`flex items-center gap-4 px-5 py-4 rounded-2xl border ${cardBg}`}>
-        <div className="p-2.5 rounded-xl bg-emerald-500/10">
-          <Wallet className="w-5 h-5 text-emerald-400" />
+        <div className="p-2.5 rounded-xl bg-[#E8EDE3] text-[#526B52] dark:bg-[#303A30] dark:text-[#A3B18A]">
+          <Wallet className="w-5 h-5" />
         </div>
         <div>
-          <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Collected</p>
-          <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{formatCurrency(totalCollected)}</p>
+          <p className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Total Collected</p>
+          <p className={`text-xl font-extrabold tracking-tight tabular-nums ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{formatCurrency(totalCollected)}</p>
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{payments.length} transactions</p>
-          <div className={`flex items-center gap-1 rounded-xl border px-3 py-1.5 ${isDark ? 'border-white/10 bg-slate-800' : 'border-slate-200 bg-slate-50'}`}>
-            <button onClick={prevMonth} className="p-0.5 rounded hover:bg-white/10 transition-colors"><ChevronLeft className="w-4 h-4" /></button>
-            <span className={`text-sm font-semibold tabular-nums min-w-[110px] text-center ${isDark ? 'text-white' : 'text-slate-800'}`}>
+          <p className={`text-xs font-medium ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{payments.length} transactions</p>
+          <div className={`flex items-center gap-1 rounded-xl border px-3 py-1.5 ${isDark ? 'border-[#394239] bg-[#292F29]' : 'border-[#DDE1D8] bg-[#ECECE4]/60'}`}>
+            <button onClick={prevMonth} className="p-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10 transition-colors"><ChevronLeft className="w-4 h-4" /></button>
+            <span className={`text-sm font-bold tabular-nums min-w-[110px] text-center ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
               {getMonthName(summaryMonth)} {summaryYear}
             </span>
-            <button onClick={nextMonth} className="p-0.5 rounded hover:bg-white/10 transition-colors"><ChevronRight className="w-4 h-4" /></button>
+            <button onClick={nextMonth} className="p-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10 transition-colors"><ChevronRight className="w-4 h-4" /></button>
           </div>
         </div>
       </div>
 
       {/* Search */}
       <div className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border ${cardBg}`}>
-        <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
+        <Search className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`} />
         <input
           type="text"
           placeholder="Search by member name..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className={`flex-1 bg-transparent text-sm outline-none ${isDark ? 'text-white placeholder:text-slate-500' : 'text-slate-800 placeholder:text-slate-400'}`}
+          className={`flex-1 bg-transparent text-sm outline-none ${isDark ? 'text-[#F0F1E9] placeholder:text-[#B1B8AC]/60' : 'text-[#202720] placeholder:text-[#687168]/60'}`}
         />
       </div>
 
@@ -365,8 +363,8 @@ export default function PaymentsPage() {
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                isDark ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+                isDark ? 'text-[#B1B8AC] hover:bg-[#292F29]' : 'text-[#687168] hover:bg-[#ECECE4]'
               }`}
             >
               Cancel
@@ -374,7 +372,7 @@ export default function PaymentsPage() {
             <button
               type="submit"
               disabled={addMutation.isPending || updateMutation.isPending || (!editingId && !formData.memberId)}
-              className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-semibold shadow-lg disabled:opacity-50"
+              className="px-6 py-2 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm disabled:opacity-50 transition-all"
             >
               {addMutation.isPending || updateMutation.isPending ? 'Saving...' : (editingId ? 'Save Changes' : 'Record Payment')}
             </button>

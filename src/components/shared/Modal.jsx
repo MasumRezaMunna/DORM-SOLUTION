@@ -43,20 +43,20 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'ma
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className={`relative w-full ${maxWidth} rounded-2xl shadow-2xl overflow-hidden ${
-              isDark ? 'bg-slate-900 border border-white/10' : 'bg-white border border-slate-200'
+              isDark ? 'bg-[#202720] border border-[#394239]' : 'bg-white border border-[#DDE1D8]'
             }`}
           >
             {/* Header */}
             <div className={`flex items-center justify-between px-6 py-4 border-b ${
-              isDark ? 'border-white/10' : 'border-slate-100'
+              isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'
             }`}>
-              <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>
+              <h2 className={`text-lg font-bold tracking-tight ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
                 {title}
               </h2>
               <button
                 onClick={onClose}
                 className={`p-2 rounded-xl transition-colors ${
-                  isDark ? 'text-slate-400 hover:text-white hover:bg-white/10' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                  isDark ? 'text-[#B1B8AC] hover:text-[#F0F1E9] hover:bg-[#292F29]' : 'text-[#687168] hover:text-[#202720] hover:bg-[#ECECE4]'
                 }`}
               >
                 <X className="w-5 h-5" />
@@ -64,7 +64,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'ma
             </div>
 
             {/* Body */}
-            <div className={`p-6 max-h-[calc(100vh-10rem)] overflow-y-auto ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <div className={`p-6 max-h-[calc(100vh-10rem)] overflow-y-auto ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
               {children}
             </div>
           </motion.div>

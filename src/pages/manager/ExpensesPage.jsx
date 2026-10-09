@@ -88,10 +88,8 @@ export default function ExpensesPage() {
 
   const totalExpenses = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
 
-  const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
-    isDark ? 'bg-slate-800 border-white/10 text-white placeholder:text-slate-500' : 'bg-white border-slate-200 text-slate-800 placeholder:text-slate-400'
-  }`;
+  const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const inputClass = `w-full rounded-xl border border-[#DDE1D8] dark:border-[#394239] px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A] bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60`;
 
   const columns = [
     {
@@ -177,7 +175,7 @@ export default function ExpensesPage() {
               setForm({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
               setIsModalOpen(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all"
           >
             <Plus className="w-4 h-4" />
             Add Expense
@@ -189,12 +187,12 @@ export default function ExpensesPage() {
         <button onClick={() => {
           if (summaryMonth === 1) { setSummaryMonth(12); setSummaryYear(y => y - 1); }
           else setSummaryMonth(m => m - 1);
-        }} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-white/10 hover:bg-white/5 text-slate-400' : 'border-slate-200 hover:bg-slate-50 text-slate-500'}`}><ChevronLeft className="w-4 h-4" /></button>
-        <span className={`text-sm font-semibold min-w-[110px] text-center ${isDark ? 'text-white' : 'text-slate-800'}`}>{getMonthName(summaryMonth)} {summaryYear}</span>
+        }} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-[#394239] hover:bg-[#292F29] text-[#B1B8AC]' : 'border-[#DDE1D8] hover:bg-[#ECECE4] text-[#687168]'}`}><ChevronLeft className="w-4 h-4" /></button>
+        <span className={`text-sm font-bold min-w-[110px] text-center ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{getMonthName(summaryMonth)} {summaryYear}</span>
         <button onClick={() => {
           if (summaryMonth === 12) { setSummaryMonth(1); setSummaryYear(y => y + 1); }
           else setSummaryMonth(m => m + 1);
-        }} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-white/10 hover:bg-white/5 text-slate-400' : 'border-slate-200 hover:bg-slate-50 text-slate-500'}`}><ChevronRight className="w-4 h-4" /></button>
+        }} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-[#394239] hover:bg-[#292F29] text-[#B1B8AC]' : 'border-[#DDE1D8] hover:bg-[#ECECE4] text-[#687168]'}`}><ChevronRight className="w-4 h-4" /></button>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
@@ -207,8 +205,8 @@ export default function ExpensesPage() {
           { label: 'Common Cost / Member', value: formatCurrency(dashboardData?.commonCostPerMember || 0), color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
         ].map((card, idx) => (
           <div key={idx} className={`p-4 rounded-2xl border ${cardBg}`}>
-            <p className={`text-xs font-medium mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{card.label}</p>
-            <p className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{card.value}</p>
+            <p className={`text-xs uppercase font-bold tracking-wider mb-1 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{card.label}</p>
+            <p className={`text-lg font-extrabold tracking-tight ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{card.value}</p>
           </div>
         ))}
       </div>
@@ -218,7 +216,7 @@ export default function ExpensesPage() {
           <button 
             key={type}
             onClick={() => setFilterType(type)}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${filterType === type ? 'bg-emerald-600 text-white shadow-sm' : isDark ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-white text-slate-500 hover:bg-slate-100 border border-slate-200'}`}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${filterType === type ? 'bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#171C18] shadow-sm' : isDark ? 'bg-[#292F29] text-[#B1B8AC] hover:bg-[#303A30] border border-[#394239]' : 'bg-white text-[#687168] hover:bg-[#ECECE4] border border-[#DDE1D8]'}`}
           >
             {type}
           </button>
@@ -244,37 +242,37 @@ export default function ExpensesPage() {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Title</label>
+              <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Title</label>
               <input required placeholder="e.g. Rice & Vegetables" value={form.title} onChange={e => setForm(p => ({...p, title: e.target.value}))} className={inputClass} />
             </div>
             <div>
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Amount (৳)</label>
+              <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Amount (৳)</label>
               <input type="number" step="any" required placeholder="Amount" value={form.amount} onChange={e => setForm(p => ({...p, amount: e.target.value}))} className={inputClass} />
             </div>
             <div>
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Expense Type</label>
+              <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Expense Type</label>
               <select value={form.expenseType} onChange={e => setForm(p => ({...p, expenseType: e.target.value}))} className={`${inputClass}`}>
                 {EXPENSE_TYPES.map(c => (
-                  <option key={c.value} value={c.value} className={isDark ? 'bg-slate-800' : 'bg-white'}>{c.icon} {c.label}</option>
+                  <option key={c.value} value={c.value} className={isDark ? 'bg-[#202720]' : 'bg-white'}>{c.icon} {c.label}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Date</label>
+              <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Date</label>
               <input type="date" required value={form.date} onChange={e => setForm(p => ({...p, date: e.target.value}))} className={inputClass} />
             </div>
             <div className="sm:col-span-2">
-              <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Notes (Optional)</label>
+              <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Notes (Optional)</label>
               <input placeholder="Additional details" value={form.notes} onChange={e => setForm(p => ({...p, notes: e.target.value}))} className={`${inputClass} w-full`} />
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-2">
-            <button type="button" onClick={() => setIsModalOpen(false)} className={`px-4 py-2 rounded-xl text-sm ${isDark ? 'text-slate-400 hover:bg-white/5' : 'text-slate-500 hover:bg-slate-100'}`}>Cancel</button>
+            <button type="button" onClick={() => setIsModalOpen(false)} className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${isDark ? 'text-[#B1B8AC] hover:bg-[#292F29]' : 'text-[#687168] hover:bg-[#ECECE4]'}`}>Cancel</button>
             <motion.button
               type="submit"
               whileTap={{ scale: 0.97 }}
               disabled={!form.title || !form.amount || createMutation.isPending || updateMutation.isPending}
-              className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 disabled:opacity-50"
+              className="px-6 py-2 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm disabled:opacity-50 transition-all"
             >
               {createMutation.isPending || updateMutation.isPending ? 'Saving...' : (editingId ? 'Save Changes' : 'Save Expense')}
             </motion.button>

@@ -146,14 +146,14 @@ export default function ManagerDashboard() {
     },
   ];
 
-  const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const textMuted = isDark ? 'text-slate-400' : 'text-slate-500';
+  const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const textMuted = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
 
   return (
     <div className="space-y-6">
       <PageHeader
         title="Manager Dashboard"
-        subtitle={`Welcome back! Here's what's happening at 11/38 Home.`}
+        subtitle="Welcome back! Here's what's happening at Home."
       />
 
       {/* Stats */}
@@ -161,10 +161,8 @@ export default function ManagerDashboard() {
         {stats.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
       </div>
 
-
-
       {/* Market Stats */}
-      <h3 className={`font-semibold text-lg mt-6 mb-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>Market Teams Overview</h3>
+      <h3 className={`font-bold text-lg tracking-tight mt-6 mb-2 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>Market Teams Overview</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {marketCards.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
       </div>
@@ -178,19 +176,19 @@ export default function ManagerDashboard() {
           transition={{ delay: 0.6 }}
           className={`rounded-2xl border p-5 ${cardBg}`}
         >
-          <h3 className={`font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>Open Complaints</h3>
+          <h3 className={`font-bold tracking-tight mb-4 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>Open Complaints</h3>
           {(data?.recentComplaints || []).length === 0 ? (
             <div className={`text-center py-8 ${textMuted}`}>
               <AlertCircle className="w-8 h-8 mx-auto mb-2 opacity-40" />
-              <p className="text-sm">No open complaints — all good! 🎉</p>
+              <p className="text-sm font-medium">No open complaints — all good! 🎉</p>
             </div>
           ) : (
             <div className="space-y-3">
               {(data?.recentComplaints || []).slice(0, 5).map((c, i) => (
-                <div key={i} className={`flex items-start gap-3 py-2 border-b last:border-0 ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
-                  <Clock className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                <div key={i} className={`flex items-start gap-3 py-2 border-b last:border-0 ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'}`}>
+                  <Clock className="w-4 h-4 text-[#D97706] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{c.title}</p>
+                    <p className={`text-sm font-semibold ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{c.title}</p>
                     <p className={`text-xs ${textMuted}`}>{c.memberId?.userId?.displayName || 'Unknown'} · {c.type}</p>
                   </div>
                 </div>

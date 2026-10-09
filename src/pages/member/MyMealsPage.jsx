@@ -10,21 +10,21 @@ import api from '../../config/axios';
 
 function StatCard({ icon: Icon, label, value, sub, iconColor, isDark }) {
   return (
-    <div className={`rounded-2xl border p-4 flex items-start gap-3 ${isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm'}`}>
+    <div className={`rounded-2xl border p-4 flex items-start gap-3.5 ${isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm'}`}>
       <div className={`p-2.5 rounded-xl ${iconColor} flex-shrink-0`}><Icon className="w-4 h-4" /></div>
       <div>
-        <p className={`text-xs font-medium mb-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{label}</p>
-        <p className={`text-xl font-bold tabular-nums ${isDark ? 'text-white' : 'text-slate-800'}`}>{value}</p>
-        {sub && <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{sub}</p>}
+        <p className={`text-xs font-semibold mb-0.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{label}</p>
+        <p className={`text-xl font-extrabold tracking-tight tabular-nums ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{value}</p>
+        {sub && <p className={`text-xs mt-0.5 ${isDark ? 'text-[#B1B8AC]/70' : 'text-[#687168]/80'}`}>{sub}</p>}
       </div>
     </div>
   );
 }
 
 function BalanceBadge({ amount }) {
-  if (amount > 0) return <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold tabular-nums">+৳{amount.toFixed(2)}</span>;
-  if (amount < 0) return <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold tabular-nums">-৳{Math.abs(amount).toFixed(2)}</span>;
-  return <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-slate-400 font-semibold">৳0</span>;
+  if (amount > 0) return <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#E8EDE3] dark:bg-[#303A30] text-[#526B52] dark:text-[#A3B18A] font-bold tabular-nums">+৳{amount.toFixed(2)}</span>;
+  if (amount < 0) return <span className="text-xs px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold tabular-nums">-৳{Math.abs(amount).toFixed(2)}</span>;
+  return <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#ECECE4] dark:bg-[#292F29] text-[#687168] dark:text-[#B1B8AC] font-bold">৳0</span>;
 }
 
 export default function MyMealsPage() {
@@ -35,8 +35,8 @@ export default function MyMealsPage() {
   const [summaryMonth, setSummaryMonth] = useState(now.getMonth() + 1);
   const [summaryYear,  setSummaryYear]  = useState(now.getFullYear());
 
-  const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const textMuted = isDark ? 'text-slate-400' : 'text-slate-500';
+  const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const textMuted = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
 
   // 1. Fetch member's daily meals
   const { data: myMeals = [], isLoading: myMealsLoading } = useQuery({
@@ -83,11 +83,11 @@ export default function MyMealsPage() {
   const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   const columns = [
-    { key: 'date', label: 'Date', render: (row) => <span className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{formatDate(row.date)}</span> },
+    { key: 'date', label: 'Date', render: (row) => <span className={`text-sm font-medium ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{formatDate(row.date)}</span> },
     { key: 'mealCount', label: 'Meals', render: (row) => (
         <div className="flex items-center gap-1.5">
-          <UtensilsCrossed className="w-3.5 h-3.5 text-amber-400" />
-          <span className={`font-semibold text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{row.mealCount}</span>
+          <UtensilsCrossed className="w-3.5 h-3.5 text-amber-500" />
+          <span className={`font-bold text-sm ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{row.mealCount}</span>
         </div>
       )
     },
@@ -95,21 +95,21 @@ export default function MyMealsPage() {
   ];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader title="Meals" subtitle="Track your daily meals and view monthly summary" />
 
       {/* Tab switcher */}
-      <div className={`inline-flex items-center gap-1 p-1 rounded-xl ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}>
+      <div className={`inline-flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-[#202720] border-[#394239]' : 'bg-[#ECECE4] border-[#DDE1D8]'}`}>
         {[
           { key: 'my-meals',  icon: UtensilsCrossed, label: 'My Meals' },
           { key: 'summary',   icon: BarChart3,        label: 'Community Summary' },
           { key: 'breakdown', icon: Table,            label: 'Detailed Breakdown' },
         ].map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${
               tab === t.key
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
+                ? 'bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#171C18] shadow-sm'
+                : isDark ? 'text-[#B1B8AC] hover:text-[#F0F1E9]' : 'text-[#687168] hover:text-[#202720]'
             }`}>
             <t.icon className="w-3.5 h-3.5" />
             {t.label}
@@ -122,15 +122,15 @@ export default function MyMealsPage() {
         {tab === 'my-meals' && (
           <motion.div key="my-meals" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-5">
             <div className={`flex items-center gap-4 px-5 py-4 rounded-2xl border ${cardBg}`}>
-              <div className="p-2.5 rounded-xl bg-amber-500/10">
-                <UtensilsCrossed className="w-5 h-5 text-amber-400" />
+              <div className="p-2.5 rounded-xl bg-[#E8EDE3] dark:bg-[#303A30]">
+                <UtensilsCrossed className="w-5 h-5 text-[#526B52] dark:text-[#A3B18A]" />
               </div>
               <div>
-                <p className={`text-xs ${textMuted}`}>Total Meals Recorded</p>
-                <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}>{totalMyMeals}</p>
+                <p className={`text-xs font-semibold ${textMuted}`}>Total Meals Recorded</p>
+                <p className={`text-2xl font-extrabold tracking-tight ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{totalMyMeals}</p>
               </div>
               <div className="ml-auto text-right">
-                <p className={`text-xs ${textMuted}`}>{myMeals.length} days recorded</p>
+                <p className={`text-xs font-medium ${textMuted}`}>{myMeals.length} days recorded</p>
               </div>
             </div>
 
@@ -143,9 +143,9 @@ export default function MyMealsPage() {
           <motion.div key="summary" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-5">
             {/* Month navigator */}
             <div className="flex items-center gap-3">
-              <button onClick={prevMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-white/10 hover:bg-white/5 text-slate-400' : 'border-slate-200 hover:bg-slate-50 text-slate-500'}`}><ChevronLeft className="w-4 h-4" /></button>
-              <span className={`text-sm font-semibold min-w-[110px] text-center ${isDark ? 'text-white' : 'text-slate-800'}`}>{MONTH_NAMES[summaryMonth - 1]} {summaryYear}</span>
-              <button onClick={nextMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-white/10 hover:bg-white/5 text-slate-400' : 'border-slate-200 hover:bg-slate-50 text-slate-500'}`}><ChevronRight className="w-4 h-4" /></button>
+              <button onClick={prevMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-[#394239] hover:bg-[#292F29] text-[#B1B8AC]' : 'border-[#DDE1D8] hover:bg-[#ECECE4] text-[#687168]'}`}><ChevronLeft className="w-4 h-4" /></button>
+              <span className={`text-sm font-bold min-w-[110px] text-center ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{MONTH_NAMES[summaryMonth - 1]} {summaryYear}</span>
+              <button onClick={nextMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-[#394239] hover:bg-[#292F29] text-[#B1B8AC]' : 'border-[#DDE1D8] hover:bg-[#ECECE4] text-[#687168]'}`}><ChevronRight className="w-4 h-4" /></button>
             </div>
 
             {summaryLoading ? (
@@ -159,62 +159,62 @@ export default function MyMealsPage() {
                   <StatCard icon={UtensilsCrossed} label="Total Meals" isDark={isDark}
                     value={monthlySummary.totalMeals}
                     sub={`${monthlySummary.members?.reduce((s,m)=>s+m.totalLunch,0)||0}L + ${monthlySummary.members?.reduce((s,m)=>s+m.totalDinner,0)||0}D`}
-                    iconColor="bg-emerald-500/15 text-emerald-400" />
+                    iconColor="bg-[#E8EDE3] dark:bg-[#303A30] text-[#526B52] dark:text-[#A3B18A]" />
                   <StatCard icon={TrendingDown} label="Total Expenses" isDark={isDark}
                     value={`৳${(monthlySummary.totalExpense||0).toFixed(2)}`}
                     sub={`Grocery cost: ৳${(monthlySummary.groceryTotal||0).toFixed(2)}`}
-                    iconColor="bg-red-500/15 text-red-400" />
+                    iconColor="bg-rose-500/10 text-rose-600 dark:text-rose-400" />
                   <StatCard icon={BarChart3} label="Meal Rate" isDark={isDark}
                     value={`৳${(monthlySummary.mealRate||0).toFixed(2)}`}
                     sub="per meal (grocery cost ÷ total meals)"
-                    iconColor="bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" />
+                    iconColor="bg-[#E8EDE3] dark:bg-[#303A30] text-[#526B52] dark:text-[#A3B18A]" />
                   <StatCard icon={Wallet} label="Members" isDark={isDark}
                     value={monthlySummary.members?.length || 0}
                     sub="active this month"
-                    iconColor="bg-blue-500/15 text-blue-400" />
+                    iconColor="bg-[#ECECE4] dark:bg-[#292F29] text-[#687168] dark:text-[#B1B8AC]" />
                 </div>
 
                 {/* Per-member breakdown table */}
                 <div className={`rounded-2xl border overflow-hidden ${cardBg}`}>
-                  <div className={`px-5 py-3.5 border-b ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-wider ${textMuted}`}>Member Meal Breakdown — {MONTH_NAMES[summaryMonth-1]} {summaryYear}</p>
+                  <div className={`px-5 py-3.5 border-b ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'}`}>
+                    <p className={`text-xs font-bold uppercase tracking-wider ${textMuted}`}>Member Meal Breakdown — {MONTH_NAMES[summaryMonth-1]} {summaryYear}</p>
                   </div>
-                  <div className={`overflow-x-auto`}>
+                  <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className={`text-xs uppercase tracking-wider ${textMuted} ${isDark ? 'border-white/5' : 'border-slate-100'} border-b`}>
-                          <th className="px-5 py-3 text-left font-medium">Member</th>
-                          <th className="px-3 py-3 text-center font-medium">Lunch</th>
-                          <th className="px-3 py-3 text-center font-medium">Dinner</th>
-                          <th className="px-3 py-3 text-center font-medium">Total Meals</th>
-                          <th className="px-3 py-3 text-right font-medium">Meal Cost</th>
-                          <th className="px-3 py-3 text-right font-medium">Common Cost</th>
-                          <th className="px-3 py-3 text-right font-medium">Total Cost</th>
-                          <th className="px-3 py-3 text-right font-medium">Paid</th>
-                          <th className="px-3 py-3 text-right font-medium">After Deduction</th>
+                        <tr className={`text-xs uppercase tracking-wider font-bold ${textMuted} ${isDark ? 'border-[#394239] bg-[#292F29]' : 'border-[#DDE1D8] bg-[#ECECE4]/60'} border-b`}>
+                          <th className="px-5 py-3 text-left">Member</th>
+                          <th className="px-3 py-3 text-center">Lunch</th>
+                          <th className="px-3 py-3 text-center">Dinner</th>
+                          <th className="px-3 py-3 text-center">Total Meals</th>
+                          <th className="px-3 py-3 text-right">Meal Cost</th>
+                          <th className="px-3 py-3 text-right">Common Cost</th>
+                          <th className="px-3 py-3 text-right">Total Cost</th>
+                          <th className="px-3 py-3 text-right">Paid</th>
+                          <th className="px-3 py-3 text-right">After Deduction</th>
                         </tr>
                       </thead>
-                      <tbody className={`divide-y ${isDark ? 'divide-white/5' : 'divide-slate-100'}`}>
+                      <tbody className={`divide-y ${isDark ? 'divide-[#394239]' : 'divide-[#DDE1D8]'}`}>
                         {(monthlySummary.members || []).map((m) => (
-                          <tr key={m.memberId} className={`transition-colors ${isDark ? 'hover:bg-white/[0.02]' : 'hover:bg-slate-50'}`}>
+                          <tr key={m.memberId} className={`transition-colors ${isDark ? 'hover:bg-[#292F29]/60' : 'hover:bg-[#F5F4EE]'}`}>
                             <td className="px-5 py-3.5">
                               <div className="flex items-center gap-2.5">
                                 {m.photoURL
                                   ? <img src={m.photoURL} alt="" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
-                                  : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{getInitials(m.name)}</div>}
+                                  : <div className="w-8 h-8 rounded-full bg-[#526B52] dark:bg-[#A3B18A] flex items-center justify-center text-white dark:text-[#171C18] text-xs font-bold flex-shrink-0">{getInitials(m.name)}</div>}
                                 <div>
-                                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>{m.name}</p>
+                                  <p className={`text-sm font-semibold ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{m.name}</p>
                                   {m.roomNumber && <p className={`text-xs ${textMuted}`}>Room {m.roomNumber}</p>}
                                 </div>
                               </div>
                             </td>
-                            <td className="px-3 py-3.5 text-center"><span className="text-sm font-semibold text-amber-400 tabular-nums">{m.totalLunch}</span></td>
-                            <td className="px-3 py-3.5 text-center"><span className="text-sm font-semibold text-teal-600 dark:text-teal-400 tabular-nums">{m.totalDinner}</span></td>
-                            <td className="px-3 py-3.5 text-center"><span className={`text-sm font-bold tabular-nums ${isDark ? 'text-white' : 'text-slate-800'}`}>{m.totalMeals}</span></td>
-                            <td className="px-3 py-3.5 text-right"><span className="text-sm font-semibold text-red-400 tabular-nums">৳{m.mealCost.toFixed(2)}</span></td>
-                            <td className="px-3 py-3.5 text-right"><span className="text-sm font-semibold text-blue-400 tabular-nums">৳{(m.commonCostPerMember||0).toFixed(2)}</span></td>
-                            <td className="px-3 py-3.5 text-right"><span className="text-sm font-bold text-orange-400 tabular-nums">৳{(m.totalCost||m.mealCost).toFixed(2)}</span></td>
-                            <td className="px-3 py-3.5 text-right"><span className={`text-sm tabular-nums ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{m.paidAmount.toFixed(2)}</span></td>
+                            <td className="px-3 py-3.5 text-center"><span className="text-sm font-semibold text-amber-500 tabular-nums">{m.totalLunch}</span></td>
+                            <td className="px-3 py-3.5 text-center"><span className="text-sm font-semibold text-[#526B52] dark:text-[#A3B18A] tabular-nums">{m.totalDinner}</span></td>
+                            <td className="px-3 py-3.5 text-center"><span className={`text-sm font-bold tabular-nums ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{m.totalMeals}</span></td>
+                            <td className="px-3 py-3.5 text-right"><span className="text-sm font-semibold text-rose-500 dark:text-rose-400 tabular-nums">৳{m.mealCost.toFixed(2)}</span></td>
+                            <td className="px-3 py-3.5 text-right"><span className="text-sm font-semibold text-[#0D9488] dark:text-[#2DD4BF] tabular-nums">৳{(m.commonCostPerMember||0).toFixed(2)}</span></td>
+                            <td className="px-3 py-3.5 text-right"><span className="text-sm font-bold text-amber-600 dark:text-amber-400 tabular-nums">৳{(m.totalCost||m.mealCost).toFixed(2)}</span></td>
+                            <td className="px-3 py-3.5 text-right"><span className={`text-sm font-medium tabular-nums ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>৳{m.paidAmount.toFixed(2)}</span></td>
                             <td className="px-3 py-3.5 text-right"><BalanceBadge amount={m.afterMeal} /></td>
                           </tr>
                         ))}
@@ -224,15 +224,15 @@ export default function MyMealsPage() {
                       </tbody>
                       {(monthlySummary.members || []).length > 0 && (
                         <tfoot>
-                          <tr className={`border-t font-semibold ${isDark ? 'border-white/10 bg-white/[0.02]' : 'border-slate-200 bg-slate-50'}`}>
+                          <tr className={`border-t font-bold ${isDark ? 'border-[#394239] bg-[#292F29]' : 'border-[#DDE1D8] bg-[#ECECE4]/60'}`}>
                             <td className={`px-5 py-3 text-xs uppercase tracking-wider ${textMuted}`}>Totals</td>
-                            <td className="px-3 py-3 text-center text-sm text-amber-400">{monthlySummary.members.reduce((s,m)=>s+m.totalLunch,0)}</td>
-                            <td className="px-3 py-3 text-center text-sm text-teal-600 dark:text-teal-400">{monthlySummary.members.reduce((s,m)=>s+m.totalDinner,0)}</td>
-                            <td className={`px-3 py-3 text-center text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{monthlySummary.totalMeals}</td>
-                            <td className="px-3 py-3 text-right text-sm text-red-400">৳{(monthlySummary.groceryTotal || 0).toFixed(2)}</td>
-                            <td className="px-3 py-3 text-right text-sm text-blue-400">৳{(monthlySummary.commonTotal || 0).toFixed(2)}</td>
-                            <td className="px-3 py-3 text-right text-sm text-orange-400">৳{(monthlySummary.totalExpense || 0).toFixed(2)}</td>
-                            <td className={`px-3 py-3 text-right text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>৳{monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0).toFixed(2)}</td>
+                            <td className="px-3 py-3 text-center text-sm text-amber-500">{monthlySummary.members.reduce((s,m)=>s+m.totalLunch,0)}</td>
+                            <td className="px-3 py-3 text-center text-sm text-[#526B52] dark:text-[#A3B18A]">{monthlySummary.members.reduce((s,m)=>s+m.totalDinner,0)}</td>
+                            <td className={`px-3 py-3 text-center text-sm ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{monthlySummary.totalMeals}</td>
+                            <td className="px-3 py-3 text-right text-sm text-rose-500 dark:text-rose-400">৳{(monthlySummary.groceryTotal || 0).toFixed(2)}</td>
+                            <td className="px-3 py-3 text-right text-sm text-[#0D9488] dark:text-[#2DD4BF]">৳{(monthlySummary.commonTotal || 0).toFixed(2)}</td>
+                            <td className="px-3 py-3 text-right text-sm text-amber-600 dark:text-amber-400">৳{(monthlySummary.totalExpense || 0).toFixed(2)}</td>
+                            <td className={`px-3 py-3 text-right text-sm ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>৳{monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0).toFixed(2)}</td>
                             <td className="px-3 py-3 text-right"><BalanceBadge amount={monthlySummary.members.reduce((s,m)=>s+m.paidAmount,0) - (monthlySummary.totalExpense||0)} /></td>
                           </tr>
                         </tfoot>
@@ -243,8 +243,8 @@ export default function MyMealsPage() {
               </>
             ) : (
               <div className={`text-center py-16 rounded-2xl border ${cardBg} ${textMuted}`}>
-                <BarChart3 className="w-8 h-8 mx-auto mb-2 opacity-40" />
-                <p className="text-sm">No data available for {MONTH_NAMES[summaryMonth-1]} {summaryYear}.</p>
+                <BarChart3 className="w-8 h-8 mx-auto mb-2 opacity-40 text-[#526B52] dark:text-[#A3B18A]" />
+                <p className="text-sm font-medium">No data available for {MONTH_NAMES[summaryMonth-1]} {summaryYear}.</p>
               </div>
             )}
           </motion.div>
@@ -254,36 +254,36 @@ export default function MyMealsPage() {
           <motion.div key="breakdown" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-5">
             {/* Month navigator */}
             <div className="flex items-center gap-3">
-              <button onClick={prevMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-white/10 hover:bg-white/5 text-slate-400' : 'border-slate-200 hover:bg-slate-50 text-slate-500'}`}><ChevronLeft className="w-4 h-4" /></button>
-              <span className={`text-sm font-semibold min-w-[110px] text-center ${isDark ? 'text-white' : 'text-slate-800'}`}>{MONTH_NAMES[summaryMonth - 1]} {summaryYear}</span>
-              <button onClick={nextMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-white/10 hover:bg-white/5 text-slate-400' : 'border-slate-200 hover:bg-slate-50 text-slate-500'}`}><ChevronRight className="w-4 h-4" /></button>
+              <button onClick={prevMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-[#394239] hover:bg-[#292F29] text-[#B1B8AC]' : 'border-[#DDE1D8] hover:bg-[#ECECE4] text-[#687168]'}`}><ChevronLeft className="w-4 h-4" /></button>
+              <span className={`text-sm font-bold min-w-[110px] text-center ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{MONTH_NAMES[summaryMonth - 1]} {summaryYear}</span>
+              <button onClick={nextMonth} className={`p-2 rounded-xl border transition-colors ${isDark ? 'border-[#394239] hover:bg-[#292F29] text-[#B1B8AC]' : 'border-[#DDE1D8] hover:bg-[#ECECE4] text-[#687168]'}`}><ChevronRight className="w-4 h-4" /></button>
             </div>
 
             {monthMealsLoading || summaryLoading ? (
               <div className={`h-96 rounded-2xl border ${cardBg} animate-pulse`} />
             ) : (
               <div className={`rounded-2xl border overflow-x-auto ${cardBg}`}>
-                <div className={`px-5 py-3.5 border-b ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
-                  <p className={`text-xs font-semibold uppercase tracking-wider ${textMuted}`}>Daily Meal Breakdown — {MONTH_NAMES[summaryMonth-1]} {summaryYear}</p>
+                <div className={`px-5 py-3.5 border-b ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'}`}>
+                  <p className={`text-xs font-bold uppercase tracking-wider ${textMuted}`}>Daily Meal Breakdown — {MONTH_NAMES[summaryMonth-1]} {summaryYear}</p>
                 </div>
                 <table className="w-full">
                   <thead>
-                    <tr className={`text-[11px] uppercase tracking-wider ${textMuted} ${isDark ? 'border-white/5' : 'border-slate-100'} border-b`}>
-                      <th className="px-4 py-3 text-left font-medium sticky left-0 bg-inherit z-10">Date</th>
+                    <tr className={`text-[11px] uppercase tracking-wider font-bold ${textMuted} ${isDark ? 'border-[#394239] bg-[#292F29]' : 'border-[#DDE1D8] bg-[#ECECE4]/60'} border-b`}>
+                      <th className="px-4 py-3 text-left sticky left-0 bg-inherit z-10">Date</th>
                       {(monthlySummary?.members || []).map(m => (
-                        <th key={m.memberId} className="px-2 py-3 text-center font-medium min-w-[70px]">
+                        <th key={m.memberId} className="px-2 py-3 text-center min-w-[70px]">
                           <div className="flex flex-col items-center gap-1">
                             {m.photoURL
                               ? <img src={m.photoURL} alt="" className="w-6 h-6 rounded-full object-cover" />
-                              : <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-[9px] font-bold">{getInitials(m.name)}</div>}
-                            <span className="truncate w-full">{m.name.split(' ')[0]}</span>
+                              : <div className="w-6 h-6 rounded-full bg-[#526B52] dark:bg-[#A3B18A] flex items-center justify-center text-white dark:text-[#171C18] text-[9px] font-bold">{getInitials(m.name)}</div>}
+                            <span className="truncate w-full font-medium">{m.name.split(' ')[0]}</span>
                           </div>
                         </th>
                       ))}
-                      <th className="px-4 py-3 text-center font-medium bg-emerald-500/5 text-emerald-600 dark:text-emerald-400">Total</th>
+                      <th className="px-4 py-3 text-center bg-[#E8EDE3]/50 dark:bg-[#303A30]/50 text-[#526B52] dark:text-[#A3B18A]">Total</th>
                     </tr>
                   </thead>
-                  <tbody className={`divide-y ${isDark ? 'divide-white/5' : 'divide-slate-100'}`}>
+                  <tbody className={`divide-y ${isDark ? 'divide-[#394239]' : 'divide-[#DDE1D8]'}`}>
                     {(() => {
                       const daysInMonth = new Date(summaryYear, summaryMonth, 0).getDate();
                       const rows = [];
@@ -303,9 +303,9 @@ export default function MyMealsPage() {
                           return (
                             <td key={m.memberId} className="px-2 py-2.5 text-center">
                               {count > 0 ? (
-                                <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>{count}</span>
+                                <span className={`text-sm font-semibold tabular-nums ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{count}</span>
                               ) : (
-                                <span className={`text-sm ${isDark ? 'text-slate-700' : 'text-slate-200'}`}>-</span>
+                                <span className={`text-sm ${isDark ? 'text-[#394239]' : 'text-[#DDE1D8]'}`}>-</span>
                               )}
                             </td>
                           );
@@ -314,13 +314,13 @@ export default function MyMealsPage() {
                         superTotal += dayTotal;
 
                         rows.push(
-                          <tr key={d} className={`transition-colors ${isDark ? 'hover:bg-white/[0.02]' : 'hover:bg-slate-50'}`}>
-                            <td className={`px-4 py-2.5 text-sm font-medium sticky left-0 ${isDark ? 'bg-slate-900 text-slate-300' : 'bg-white text-slate-600'}`}>
+                          <tr key={d} className={`transition-colors ${isDark ? 'hover:bg-[#292F29]/60' : 'hover:bg-[#F5F4EE]'}`}>
+                            <td className={`px-4 py-2.5 text-sm font-semibold sticky left-0 ${isDark ? 'bg-[#202720] text-[#B1B8AC]' : 'bg-white text-[#687168]'}`}>
                               {d} {MONTH_NAMES[summaryMonth-1]}
                             </td>
                             {memberCells}
-                            <td className="px-4 py-2.5 text-center bg-emerald-500/5">
-                              <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{dayTotal}</span>
+                            <td className="px-4 py-2.5 text-center bg-[#E8EDE3]/30 dark:bg-[#303A30]/30">
+                              <span className="text-sm font-bold text-[#526B52] dark:text-[#A3B18A] tabular-nums">{dayTotal}</span>
                             </td>
                           </tr>
                         );
@@ -328,15 +328,15 @@ export default function MyMealsPage() {
 
                       // Totals footer row
                       rows.push(
-                        <tr key="totals" className={`border-t-2 font-bold ${isDark ? 'border-white/10 bg-white/[0.02]' : 'border-slate-200 bg-slate-50'}`}>
-                          <td className={`px-4 py-3 text-xs uppercase tracking-wider sticky left-0 ${isDark ? 'bg-slate-900 text-slate-400' : 'bg-slate-50 text-slate-500'}`}>Totals</td>
+                        <tr key="totals" className={`border-t-2 font-bold ${isDark ? 'border-[#394239] bg-[#292F29]' : 'border-[#DDE1D8] bg-[#ECECE4]/60'}`}>
+                          <td className={`px-4 py-3 text-xs uppercase tracking-wider sticky left-0 ${isDark ? 'bg-[#202720] text-[#B1B8AC]' : 'bg-white text-[#687168]'}`}>Totals</td>
                           {(monthlySummary?.members || []).map(m => (
-                            <td key={m.memberId} className={`px-2 py-3 text-center text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                            <td key={m.memberId} className={`px-2 py-3 text-center text-sm tabular-nums ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
                               {monthTotals[m.memberId] || 0}
                             </td>
                           ))}
-                          <td className="px-4 py-3 text-center bg-emerald-500/10">
-                            <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{superTotal}</span>
+                          <td className="px-4 py-3 text-center bg-[#E8EDE3]/60 dark:bg-[#303A30]/60">
+                            <span className="text-sm font-extrabold text-[#526B52] dark:text-[#A3B18A] tabular-nums">{superTotal}</span>
                           </td>
                         </tr>
                       );

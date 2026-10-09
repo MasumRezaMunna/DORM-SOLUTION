@@ -39,7 +39,7 @@ const ActionMenu = ({ row, isDark, statusMutation, roleMutation }) => {
       </button>
       
       {isOpen && (
-        <div className={`absolute right-0 top-full mt-1 w-48 rounded-xl border shadow-xl z-50 py-1 ${isDark ? 'bg-slate-800 border-white/10' : 'bg-white border-slate-100'}`}>
+        <div className={`absolute right-0 top-full mt-1 w-48 rounded-xl border shadow-xl z-50 py-1 ${isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8]'}`}>
           <button
             onClick={() => {
               setIsOpen(false);
@@ -173,16 +173,16 @@ export default function MembersPage() {
           {row.userId?.photoURL ? (
             <img src={row.userId.photoURL} alt={row.userId?.displayName} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#526B52] dark:bg-[#A3B18A] flex items-center justify-center text-white dark:text-[#171C18] text-xs font-bold flex-shrink-0">
               {getInitials(row.userId?.displayName || 'U')}
             </div>
           )}
           <div>
             <div className="flex items-center gap-2">
-              <p className={`font-medium text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{row.userId?.displayName || 'Unknown'}</p>
-              {row.userId?.role === 'manager' && <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">Mgr</span>}
+              <p className={`font-semibold text-sm ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{row.userId?.displayName || 'Unknown'}</p>
+              {row.userId?.role === 'manager' && <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#526B52] text-white dark:bg-[#A3B18A] dark:text-[#171C18] uppercase tracking-wide">Mgr</span>}
             </div>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{row.userId?.email}</p>
+            <p className={`text-xs ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{row.userId?.email}</p>
           </div>
         </div>
       )
@@ -242,13 +242,13 @@ export default function MembersPage() {
           {row.photoURL ? (
             <img src={row.photoURL} alt={row.displayName} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#526B52] dark:bg-[#A3B18A] flex items-center justify-center text-white dark:text-[#171C18] text-xs font-bold flex-shrink-0">
               {getInitials(row.displayName || 'U')}
             </div>
           )}
           <div>
-            <p className={`font-medium text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{row.displayName || 'Unknown'}</p>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{row.email}</p>
+            <p className={`font-semibold text-sm ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{row.displayName || 'Unknown'}</p>
+            <p className={`text-xs ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{row.email}</p>
           </div>
         </div>
       )
@@ -266,7 +266,7 @@ export default function MembersPage() {
               }
             }}
             disabled={approveMutation.isPending}
-            className="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 text-xs font-semibold transition-colors"
+            className="px-3 py-1.5 rounded-lg bg-[#E8EDE3] dark:bg-[#303A30] text-[#526B52] dark:text-[#A3B18A] hover:opacity-85 text-xs font-bold transition-all"
           >
             Activate
           </button>
@@ -285,7 +285,7 @@ export default function MembersPage() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all"
           >
             <UserPlus className="w-4 h-4" />
             Add Member
@@ -294,32 +294,32 @@ export default function MembersPage() {
       />
 
       {/* Search */}
-      <div className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border ${isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm'}`}>
-        <Search className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-slate-500' : 'text-slate-400'}`} />
+      <div className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border ${isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm'}`}>
+        <Search className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`} />
         <input
           type="text"
           placeholder="Search by name, email or room..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className={`flex-1 bg-transparent text-sm outline-none ${isDark ? 'text-white placeholder:text-slate-500' : 'text-slate-800 placeholder:text-slate-400'}`}
+          className={`flex-1 bg-transparent text-sm outline-none ${isDark ? 'text-[#F0F1E9] placeholder:text-[#B1B8AC]/60' : 'text-[#202720] placeholder:text-[#687168]/60'}`}
         />
       </div>
 
       {/* Tabs */}
-      <div className={`flex items-center gap-4 border-b ${isDark ? 'border-white/10' : 'border-slate-200'} mb-6`}>
+      <div className={`flex items-center gap-4 border-b ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'} mb-6`}>
         <button 
           onClick={() => setActiveTab('members')}
-          className={`pb-3 text-sm font-semibold border-b-2 transition-colors ${activeTab === 'members' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          className={`pb-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'members' ? 'border-[#526B52] text-[#526B52] dark:border-[#A3B18A] dark:text-[#A3B18A]' : 'border-transparent text-[#687168] hover:text-[#202720] dark:text-[#B1B8AC] dark:hover:text-[#F0F1E9]'}`}
         >
           Active Members
         </button>
         <button 
           onClick={() => setActiveTab('pending')}
-          className={`pb-3 text-sm font-semibold border-b-2 transition-colors flex items-center gap-2 ${activeTab === 'pending' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400' : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+          className={`pb-3 text-sm font-bold border-b-2 transition-colors flex items-center gap-2 ${activeTab === 'pending' ? 'border-[#526B52] text-[#526B52] dark:border-[#A3B18A] dark:text-[#A3B18A]' : 'border-transparent text-[#687168] hover:text-[#202720] dark:text-[#B1B8AC] dark:hover:text-[#F0F1E9]'}`}
         >
           Pending Approvals
           {pendingUsers.length > 0 && (
-            <span className="px-1.5 py-0.5 rounded-full bg-red-500/10 text-red-500 text-[10px] tabular-nums">{pendingUsers.length}</span>
+            <span className="px-1.5 py-0.5 rounded-full bg-[#DC2626]/10 text-[#DC2626] dark:text-[#EF4444] text-[10px] font-bold tabular-nums">{pendingUsers.length}</span>
           )}
         </button>
       </div>
@@ -348,51 +348,43 @@ export default function MembersPage() {
           className="space-y-4"
         >
           <div>
-            <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>User ID (Object ID from Users collection)</label>
+            <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>User ID (Object ID from Users collection)</label>
             <input
               type="text"
               required
               value={formData.userId}
               onChange={e => setFormData({ ...formData, userId: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
-                isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-              }`}
+              className={`w-full px-4 py-2.5 rounded-xl border border-[#DDE1D8] dark:border-[#394239] outline-none focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A] transition-colors bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60`}
               placeholder="e.g. 64d9f..."
             />
           </div>
           <div>
-            <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Phone</label>
+            <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Phone</label>
             <input
               type="text"
               value={formData.phone}
               onChange={e => setFormData({ ...formData, phone: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
-                isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-              }`}
+              className={`w-full px-4 py-2.5 rounded-xl border border-[#DDE1D8] dark:border-[#394239] outline-none focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A] transition-colors bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60`}
               placeholder="e.g. 01xxxxxxxxx"
             />
           </div>
           <div>
-            <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>NID</label>
+            <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>NID</label>
             <input
               type="text"
               value={formData.nid}
               onChange={e => setFormData({ ...formData, nid: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
-                isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-              }`}
+              className={`w-full px-4 py-2.5 rounded-xl border border-[#DDE1D8] dark:border-[#394239] outline-none focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A] transition-colors bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60`}
               placeholder="NID Number"
             />
           </div>
           <div>
-            <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Occupation</label>
+            <label className={`block text-xs font-bold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Occupation</label>
             <input
               type="text"
               value={formData.occupation}
               onChange={e => setFormData({ ...formData, occupation: e.target.value })}
-              className={`w-full px-4 py-2.5 rounded-xl border outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors ${
-                isDark ? 'bg-slate-800 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'
-              }`}
+              className={`w-full px-4 py-2.5 rounded-xl border border-[#DDE1D8] dark:border-[#394239] outline-none focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A] transition-colors bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60`}
               placeholder="e.g. Student"
             />
           </div>
@@ -401,8 +393,8 @@ export default function MembersPage() {
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                isDark ? 'text-slate-400 hover:text-white hover:bg-white/5' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+                isDark ? 'text-[#B1B8AC] hover:bg-[#292F29]' : 'text-[#687168] hover:bg-[#ECECE4]'
               }`}
             >
               Cancel
@@ -410,7 +402,7 @@ export default function MembersPage() {
             <button
               type="submit"
               disabled={addMutation.isPending}
-              className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 disabled:opacity-50"
+              className="px-6 py-2 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm disabled:opacity-50 transition-all"
             >
               {addMutation.isPending ? 'Adding...' : 'Add Member'}
             </button>

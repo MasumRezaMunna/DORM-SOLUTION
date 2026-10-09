@@ -14,18 +14,18 @@ function TypingIndicator({ isDark }) {
       <img
         src={AVATAR_SRC}
         alt={ASSISTANT_NAME}
-        className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-emerald-400/40"
+        className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-[#748D6B]/40"
       />
       <div
         className={`px-4 py-3 rounded-2xl rounded-bl-sm ${
-          isDark ? 'bg-slate-700' : 'bg-white border border-slate-200'
+          isDark ? 'bg-[#292F29] border border-[#394239]' : 'bg-white border border-[#DDE1D8]'
         }`}
       >
         <div className="flex gap-1 items-center h-4">
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              className={`w-2 h-2 rounded-full ${isDark ? 'bg-slate-400' : 'bg-slate-400'}`}
+              className={`w-2 h-2 rounded-full ${isDark ? 'bg-[#B1B8AC]' : 'bg-[#687168]'}`}
               animate={{ y: [0, -5, 0] }}
               transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
             />
@@ -49,16 +49,16 @@ function ChatMessage({ msg, isDark }) {
       {isUser ? (
         <div
           className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-            isDark ? 'bg-blue-600' : 'bg-blue-500'
+            isDark ? 'bg-[#A3B18A] text-[#202720]' : 'bg-[#526B52] text-white'
           }`}
         >
-          <User className="w-4 h-4 text-white" />
+          <User className="w-4 h-4" />
         </div>
       ) : (
         <img
           src={AVATAR_SRC}
           alt={ASSISTANT_NAME}
-          className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-emerald-400/40"
+          className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-[#748D6B]/40"
         />
       )}
 
@@ -66,15 +66,15 @@ function ChatMessage({ msg, isDark }) {
       <div
         className={`max-w-[75%] px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
           isUser
-            ? `rounded-2xl rounded-br-sm text-white ${
+            ? `rounded-2xl rounded-br-sm ${
                 isDark
-                  ? 'bg-blue-600'
-                  : 'bg-gradient-to-br from-blue-500 to-blue-600'
+                  ? 'bg-[#A3B18A] text-[#171C18] font-medium'
+                  : 'bg-[#526B52] text-white font-medium'
               }`
             : `rounded-2xl rounded-bl-sm ${
                 isDark
-                  ? 'bg-slate-700 text-slate-100'
-                  : 'bg-white border border-slate-200 text-slate-800'
+                  ? 'bg-[#292F29] border border-[#394239] text-[#F0F1E9]'
+                  : 'bg-white border border-[#DDE1D8] text-[#202720] shadow-sm'
               }`
         }`}
       >
@@ -179,8 +179,8 @@ export default function ChatWidget() {
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
             className={`fixed bottom-24 right-5 z-50 w-[360px] sm:w-[380px] flex flex-col rounded-2xl shadow-2xl overflow-hidden ${
               isDark
-                ? 'bg-slate-800 border border-white/10'
-                : 'bg-slate-50 border border-slate-200'
+                ? 'bg-[#202720] border border-[#394239]'
+                : 'bg-[#F5F4EE] border border-[#DDE1D8]'
             }`}
             style={{ height: '520px' }}
           >
@@ -188,8 +188,8 @@ export default function ChatWidget() {
             <div
               className={`flex items-center gap-3 px-4 py-3 flex-shrink-0 ${
                 isDark
-                  ? 'bg-gradient-to-r from-emerald-700 to-teal-700'
-                  : 'bg-gradient-to-r from-emerald-600 to-teal-600'
+                  ? 'bg-[#292F29] border-b border-[#394239]'
+                  : 'bg-[#526B52] text-white'
               }`}
             >
               <img
@@ -198,15 +198,15 @@ export default function ChatWidget() {
                 className="w-10 h-10 rounded-xl object-cover ring-2 ring-white/30 flex-shrink-0"
               />
               <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold text-sm leading-tight">{ASSISTANT_NAME}</p>
+                <p className="text-white font-bold text-sm leading-tight">{ASSISTANT_NAME}</p>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-white/75 text-xs">Online</span>
+                  <span className="w-2 h-2 rounded-full bg-[#A3B18A] animate-pulse" />
+                  <span className="text-white/80 text-xs font-medium">Assistant</span>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/15 transition-colors"
+                className="p-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -224,14 +224,14 @@ export default function ChatWidget() {
             {/* Input */}
             <div
               className={`flex-shrink-0 px-3 py-3 border-t ${
-                isDark ? 'border-white/10 bg-slate-800' : 'border-slate-200 bg-white'
+                isDark ? 'border-[#394239] bg-[#202720]' : 'border-[#DDE1D8] bg-white'
               }`}
             >
               <div
                 className={`flex items-end gap-2 rounded-xl px-3 py-2 ${
                   isDark
-                    ? 'bg-slate-700 border border-white/10'
-                    : 'bg-slate-100 border border-slate-200'
+                    ? 'bg-[#292F29] border border-[#394239]'
+                    : 'bg-[#ECECE4] border border-[#DDE1D8]'
                 }`}
               >
                 <textarea
@@ -241,8 +241,8 @@ export default function ChatWidget() {
                   onKeyDown={handleKeyDown}
                   placeholder="Type a message…"
                   rows={1}
-                  className={`flex-1 resize-none bg-transparent text-sm outline-none placeholder:text-slate-400 leading-relaxed py-0.5 max-h-28 overflow-y-auto ${
-                    isDark ? 'text-white' : 'text-slate-800'
+                  className={`flex-1 resize-none bg-transparent text-sm outline-none placeholder:text-[#687168] dark:placeholder:text-[#B1B8AC] leading-relaxed py-0.5 max-h-28 overflow-y-auto ${
+                    isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'
                   }`}
                   style={{ fieldSizing: 'content' }}
                 />
@@ -252,10 +252,10 @@ export default function ChatWidget() {
                   disabled={!input.trim() || isLoading}
                   className={`p-2 rounded-lg transition-all flex-shrink-0 ${
                     input.trim() && !isLoading
-                      ? 'bg-gradient-to-br from-emerald-600 to-teal-600 text-white shadow-md hover:shadow-emerald-500/30 hover:scale-105'
+                      ? 'bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#202720] shadow-sm hover:opacity-90 hover:scale-105'
                       : isDark
-                      ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
-                      : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                      ? 'bg-[#394239] text-[#B1B8AC]/40 cursor-not-allowed'
+                      : 'bg-[#DDE1D8] text-[#687168]/40 cursor-not-allowed'
                   }`}
                 >
                   {isLoading ? (
@@ -267,7 +267,7 @@ export default function ChatWidget() {
               </div>
               <p
                 className={`text-center text-[10px] mt-2 ${
-                  isDark ? 'text-slate-500' : 'text-slate-400'
+                  isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'
                 }`}
               >
                 Powered by n8n · Press Enter to send
@@ -284,7 +284,7 @@ export default function ChatWidget() {
         whileTap={{ scale: 0.9 }}
         whileHover={{ scale: 1.08 }}
         className="fixed bottom-5 right-5 z-50 w-16 h-16 rounded-full shadow-xl overflow-hidden"
-        style={{ boxShadow: '0 4px 28px rgba(5,150,105,0.45)' }}
+        style={{ boxShadow: isDark ? '0 4px 28px rgba(163,177,138,0.3)' : '0 4px 28px rgba(82,107,82,0.35)' }}
         aria-label="Toggle AI Chat"
       >
         <AnimatePresence mode="wait">
@@ -295,9 +295,9 @@ export default function ChatWidget() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.7 }}
               transition={{ duration: 0.18 }}
-              className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-600 to-teal-600"
+              className="w-full h-full flex items-center justify-center bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#202720]"
             >
-              <X className="w-6 h-6 text-white" />
+              <X className="w-6 h-6" />
             </motion.div>
           ) : (
             <motion.div

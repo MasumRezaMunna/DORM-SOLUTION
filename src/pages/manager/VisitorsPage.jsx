@@ -28,8 +28,8 @@ export default function VisitorsPage() {
       label: 'Visitor',
       render: (row) => (
         <div>
-          <p className={`font-medium text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{row.visitorName}</p>
-          <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{row.phone || '—'}</p>
+          <p className={`font-semibold text-sm ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{row.visitorName}</p>
+          <p className={`text-xs ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{row.phone || '—'}</p>
         </div>
       )
     },
@@ -37,7 +37,7 @@ export default function VisitorsPage() {
       key: 'visiting',
       label: 'Visiting',
       render: (row) => (
-        <span className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+        <span className={`text-sm font-medium ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>
           {row.member?.name || '—'}
         </span>
       )
@@ -45,20 +45,20 @@ export default function VisitorsPage() {
     {
       key: 'purpose',
       label: 'Purpose',
-      render: (row) => <span className={`text-sm capitalize ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{row.purpose || '—'}</span>
+      render: (row) => <span className={`text-sm capitalize ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{row.purpose || '—'}</span>
     },
     {
       key: 'checkIn',
       label: 'Check In',
-      render: (row) => <span className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{formatDate(row.checkIn)}</span>
+      render: (row) => <span className={`text-sm ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{formatDate(row.checkIn)}</span>
     },
     {
       key: 'checkOut',
       label: 'Check Out',
       render: (row) => (
-        <span className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+        <span className={`text-sm ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
           {row.checkOut ? formatDate(row.checkOut) : (
-            <span className="text-amber-400 flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> On-site</span>
+            <span className="text-amber-600 dark:text-amber-400 font-semibold flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> On-site</span>
           )}
         </span>
       )
@@ -71,7 +71,7 @@ export default function VisitorsPage() {
   ];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader
         title="Visitor Log"
         subtitle={`${visitors.filter(v => !v.checkOut).length} visitors currently on-site`}
@@ -79,7 +79,7 @@ export default function VisitorsPage() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all"
           >
             <Plus className="w-4 h-4" />
             Log Visitor

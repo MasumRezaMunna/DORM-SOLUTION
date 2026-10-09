@@ -12,7 +12,7 @@ const RootRedirect = () => {
   const { isAuthenticated, loading, user, isPending } = useAuth();
 
   if (loading) {
-    return <LoadingSpinner fullPage message="Connecting to Dorm Solution…" />;
+    return <LoadingSpinner fullPage message="Connecting to Home…" />;
   }
 
   if (isAuthenticated && isPending) return <Navigate to="/pending" replace />;
@@ -57,23 +57,23 @@ import NotificationsPage from '../pages/shared/NotificationsPage';
 
 // Not Found & Unauthorized
 const NotFound = () => (
-  <div className="min-h-screen flex items-center justify-center bg-slate-950">
+  <div className="min-h-screen flex items-center justify-center bg-[#F5F4EE] dark:bg-[#171C18]">
     <div className="text-center">
-      <p className="text-9xl font-black text-white/5 select-none">404</p>
-      <h1 className="text-2xl font-bold text-white -mt-8">Page Not Found</h1>
-      <p className="text-slate-400 mt-2">The page you are looking for does not exist.</p>
-      <a href="/" className="mt-6 inline-block px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-sm font-semibold shadow-lg shadow-emerald-500/20 transition-all">Go Home</a>
+      <p className="text-9xl font-black text-[#526B52]/10 dark:text-[#A3B18A]/10 select-none">404</p>
+      <h1 className="text-2xl font-extrabold tracking-tight text-[#202720] dark:text-[#F0F1E9] -mt-8">Page Not Found</h1>
+      <p className="text-[#687168] dark:text-[#B1B8AC] mt-2 font-medium">The page you are looking for does not exist.</p>
+      <a href="/" className="mt-6 inline-block px-6 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all">Go Home</a>
     </div>
   </div>
 );
 
 const Unauthorized = () => (
-  <div className="min-h-screen flex items-center justify-center bg-slate-950">
+  <div className="min-h-screen flex items-center justify-center bg-[#F5F4EE] dark:bg-[#171C18]">
     <div className="text-center">
-      <p className="text-9xl font-black text-white/5 select-none">403</p>
-      <h1 className="text-2xl font-bold text-white -mt-8">Access Denied</h1>
-      <p className="text-slate-400 mt-2">You don't have permission to view this page.</p>
-      <a href="/login" className="mt-6 inline-block px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-sm font-semibold shadow-lg shadow-emerald-500/20 transition-all">Go to Login</a>
+      <p className="text-9xl font-black text-[#DC2626]/10 dark:text-[#EF4444]/10 select-none">403</p>
+      <h1 className="text-2xl font-extrabold tracking-tight text-[#202720] dark:text-[#F0F1E9] -mt-8">Access Denied</h1>
+      <p className="text-[#687168] dark:text-[#B1B8AC] mt-2 font-medium">You don't have permission to view this page.</p>
+      <a href="/login" className="mt-6 inline-block px-6 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all">Go to Login</a>
     </div>
   </div>
 );

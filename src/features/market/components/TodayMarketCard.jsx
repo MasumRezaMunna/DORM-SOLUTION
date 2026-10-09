@@ -29,27 +29,27 @@ export default function TodayMarketCard() {
       initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
-      className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 p-6 shadow-xl shadow-emerald-900/20"
+      className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-[#526B52] via-[#405640] to-[#2D3F2D] dark:from-[#303A30] dark:via-[#242C24] dark:to-[#171C18] p-6 shadow-lg border border-[#405640] dark:border-[#394239]"
     >
       {/* Decorative circle */}
-      <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+      <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full bg-white/5 blur-2xl pointer-events-none" />
       <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-white/5 blur-xl pointer-events-none" />
 
       {/* Header */}
       <div className="relative flex items-center gap-3 mb-5">
-        <div className="p-2.5 rounded-2xl bg-white/20 backdrop-blur">
-          <ShoppingCart className="w-5 h-5 text-white" />
+        <div className="p-2.5 rounded-2xl bg-white/15 backdrop-blur">
+          <ShoppingCart className="w-5 h-5 text-[#F0F1E9]" />
         </div>
         <div>
-          <p className="text-white/80 text-sm font-medium">Today's Market</p>
-          <p className="text-white font-bold text-xl">
+          <p className="text-white/70 text-xs font-semibold uppercase tracking-wider">Today's Market</p>
+          <p className="text-white font-extrabold text-xl tracking-tight">
             {schedule ? formatDate(schedule.marketDate) : 'No Team Assigned'}
           </p>
         </div>
 
         <Chip
           size="sm"
-          className="ml-auto bg-white/20 text-white font-semibold backdrop-blur"
+          className="ml-auto bg-white/20 text-white font-bold backdrop-blur"
         >
           <CalendarCheck className="w-3 h-3 inline mr-1" />
           Today

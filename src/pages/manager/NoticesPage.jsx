@@ -11,10 +11,10 @@ import { QUERY_KEYS } from '../../utils/constants';
 import toast from 'react-hot-toast';
 
 const PRIORITY_ICONS = {
-  low: { icon: Info, color: 'text-blue-400 bg-blue-500/10' },
-  medium: { icon: Bell, color: 'text-emerald-500 bg-emerald-500/10 dark:text-emerald-400' },
-  high: { icon: AlertTriangle, color: 'text-amber-400 bg-amber-500/10' },
-  urgent: { icon: Megaphone, color: 'text-red-400 bg-red-500/10' },
+  low: { icon: Info, color: 'text-[#0D9488] bg-[#0D9488]/10 dark:text-[#2DD4BF]' },
+  medium: { icon: Bell, color: 'text-[#526B52] bg-[#E8EDE3] dark:text-[#A3B18A] dark:bg-[#303A30]' },
+  high: { icon: AlertTriangle, color: 'text-amber-600 bg-amber-500/10 dark:text-amber-400' },
+  urgent: { icon: Megaphone, color: 'text-rose-600 bg-rose-500/10 dark:text-rose-400' },
 };
 
 export default function NoticesPage() {
@@ -74,13 +74,11 @@ export default function NoticesPage() {
     onError: () => toast.error('Failed to delete notice.')
   });
 
-  const cardBg = isDark ? 'bg-slate-900 border-white/10' : 'bg-white border-slate-200 shadow-sm';
-  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 ${
-    isDark ? 'bg-slate-800 border-white/10 text-white placeholder:text-slate-500' : 'bg-white border-slate-200 text-slate-800 placeholder:text-slate-400'
-  }`;
+  const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';
+  const inputClass = `w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors border-[#DDE1D8] dark:border-[#394239] bg-white dark:bg-[#202720] text-[#202720] dark:text-[#F0F1E9] placeholder:text-[#687168]/60 dark:placeholder:text-[#B1B8AC]/60 focus:border-[#748D6B] dark:focus:border-[#A3B18A] focus:ring-1 focus:ring-[#748D6B] dark:focus:ring-[#A3B18A]`;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader
         title="Notice Board"
         subtitle="Post announcements and important updates for all members"
@@ -93,7 +91,7 @@ export default function NoticesPage() {
               setForm({ title: '', content: '', priority: 'medium', isPinned: false });
               setIsModalOpen(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all"
           >
             <PlusCircle className="w-4 h-4" />
             New Notice
@@ -119,7 +117,7 @@ export default function NoticesPage() {
           className="space-y-4"
         >
           <div>
-            <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Title</label>
+            <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Title</label>
             <input
               required
               placeholder="Notice title..."
@@ -129,7 +127,7 @@ export default function NoticesPage() {
             />
           </div>
           <div>
-            <label className={`block text-xs font-medium mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Content</label>
+            <label className={`block text-xs font-semibold mb-1.5 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>Content</label>
             <textarea
               required
               placeholder="Notice content..."
@@ -139,7 +137,7 @@ export default function NoticesPage() {
               className={`${inputClass} resize-none`}
             />
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between pt-2">
             <div className="flex items-center gap-3">
               <select
                 value={form.priority}
@@ -147,27 +145,33 @@ export default function NoticesPage() {
                 className={`${inputClass} w-auto`}
               >
                 {['low', 'medium', 'high', 'urgent'].map(p => (
-                  <option key={p} value={p} className={isDark ? 'bg-slate-800' : 'bg-white'}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>
+                  <option key={p} value={p} className={isDark ? 'bg-[#202720] text-[#F0F1E9]' : 'bg-white text-[#202720]'}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>
                 ))}
               </select>
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={form.isPinned}
                   onChange={e => setForm(p => ({ ...p, isPinned: e.target.checked }))}
-                  className="w-4 h-4 accent-emerald-500"
+                  className="w-4 h-4 rounded accent-[#526B52] dark:accent-[#A3B18A]"
                 />
-                <span className={`text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Pin to top</span>
+                <span className={`text-sm font-medium ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>Pin to top</span>
               </label>
             </div>
             
             <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-              <button type="button" onClick={() => setIsModalOpen(false)} className={`px-4 py-2 rounded-xl text-sm ${isDark ? 'text-slate-400 hover:bg-white/5' : 'text-slate-500 hover:bg-slate-100'}`}>Cancel</button>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(false)}
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${isDark ? 'text-[#B1B8AC] hover:bg-[#292F29]' : 'text-[#687168] hover:bg-[#ECECE4]'}`}
+              >
+                Cancel
+              </button>
               <motion.button
                 type="submit"
                 whileTap={{ scale: 0.97 }}
                 disabled={!form.title || !form.content || createMutation.isPending || updateMutation.isPending}
-                className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-semibold shadow-md shadow-emerald-500/20 disabled:opacity-50"
+                className="px-6 py-2.5 rounded-xl bg-[#526B52] hover:bg-[#405640] dark:bg-[#A3B18A] dark:hover:bg-[#BAC7A8] text-white dark:text-[#171C18] text-sm font-bold shadow-sm transition-all disabled:opacity-50"
               >
                 {createMutation.isPending || updateMutation.isPending ? 'Publishing...' : (editingId ? 'Save Changes' : 'Publish Notice')}
               </motion.button>
@@ -181,14 +185,14 @@ export default function NoticesPage() {
         {isLoading ? (
           Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className={`rounded-2xl border p-5 animate-pulse ${cardBg}`}>
-              <div className={`h-5 w-48 rounded mb-2 ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
-              <div className={`h-3 w-full rounded ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
+              <div className={`h-5 w-48 rounded mb-2 ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
+              <div className={`h-3 w-full rounded ${isDark ? 'bg-[#292F29]' : 'bg-[#ECECE4]'}`} />
             </div>
           ))
         ) : notices.length === 0 ? (
           <div className={`text-center py-16 rounded-2xl border ${cardBg}`}>
-            <Bell className="w-10 h-10 mx-auto mb-3 opacity-30" />
-            <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'}`}>No notices yet. Create your first one!</p>
+            <Bell className="w-10 h-10 mx-auto mb-3 opacity-30 text-[#687168] dark:text-[#B1B8AC]" />
+            <p className="text-sm font-medium text-[#687168] dark:text-[#B1B8AC]">No notices yet. Create your first one!</p>
           </div>
         ) : (
           [...notices].sort((a,b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0)).map((notice, i) => {
@@ -199,20 +203,20 @@ export default function NoticesPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className={`rounded-2xl border p-5 ${cardBg} ${notice.isPinned ? 'border-emerald-500/40' : ''}`}
+                className={`rounded-2xl border p-5 transition-all ${cardBg} ${notice.isPinned ? 'border-[#526B52]/40 dark:border-[#A3B18A]/40 bg-[#F5F4EE]/40 dark:bg-[#292F29]/40' : ''}`}
               >
                 <div className="flex items-start gap-4">
                   <div className={`p-2.5 rounded-xl flex-shrink-0 ${color}`}>
                     <Icon className="w-4 h-4" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                       {notice.isPinned && (
-                        <Pin className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                        <Pin className="w-3.5 h-3.5 text-[#526B52] dark:text-[#A3B18A] flex-shrink-0" />
                       )}
-                      <h4 className={`font-semibold text-sm ${isDark ? 'text-white' : 'text-slate-800'}`}>{notice.title}</h4>
+                      <h4 className={`font-bold text-sm tracking-tight ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>{notice.title}</h4>
                       <div className="ml-auto flex items-center gap-3">
-                        <span className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                        <span className={`text-xs font-medium ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>
                           {formatRelativeTime(notice.createdAt)}
                         </span>
                         <button
@@ -226,7 +230,8 @@ export default function NoticesPage() {
                             });
                             setIsModalOpen(true);
                           }}
-                          className="text-blue-400 hover:text-blue-500 transition-colors"
+                          className="p-1 rounded-lg text-[#526B52] hover:bg-[#E8EDE3] dark:text-[#A3B18A] dark:hover:bg-[#303A30] transition-colors"
+                          title="Edit notice"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
@@ -236,13 +241,14 @@ export default function NoticesPage() {
                               deleteMutation.mutate(notice._id);
                             }
                           }}
-                          className="text-red-400 hover:text-red-500 transition-colors"
+                          className="p-1 rounded-lg text-rose-500 hover:bg-rose-500/10 dark:text-rose-400 transition-colors"
+                          title="Delete notice"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
-                    <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{notice.content}</p>
+                    <p className={`text-sm leading-relaxed ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'}`}>{notice.content}</p>
                   </div>
                 </div>
               </motion.div>
