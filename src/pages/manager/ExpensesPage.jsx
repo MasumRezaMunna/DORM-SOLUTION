@@ -9,7 +9,6 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { formatCurrency, formatDate, getMonthName, localDateString } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS, EXPENSE_TYPES } from '../../utils/constants';
-import toast from 'react-hot-toast';
 import funToast from '../../utils/funToast';
 
 export default function ExpensesPage() {

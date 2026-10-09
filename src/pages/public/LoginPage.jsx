@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import toast from 'react-hot-toast';
 import funToast from '../../utils/funToast';
+import soundManager from '../../utils/soundEffects';
 
 export default function LoginPage() {
   const { loginWithGoogle } = useAuth();
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    soundManager.playClick();
     try {
       const userData = await loginWithGoogle();
       const firstName = userData?.name?.split(' ')[0] || 'User';

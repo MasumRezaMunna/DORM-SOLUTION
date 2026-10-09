@@ -1,5 +1,6 @@
 import toast from 'react-hot-toast';
 import { triggerConfetti } from './confetti';
+import soundManager from './soundEffects';
 
 const SUCCESS_POOLS = {
   meal: [
@@ -88,6 +89,9 @@ export const funToast = {
       triggerConfetti(typeof options.confetti === 'string' ? options.confetti : 'default');
     }
 
+    // Play subtle success chime
+    soundManager.playSuccess();
+
     return toast.success(message, {
       duration: 3800,
       ...options,
@@ -119,6 +123,9 @@ export const funToast = {
     const prefix = 'Oops! ';
     const display = cleanMessage.startsWith('Oops') ? cleanMessage : `${prefix}${cleanMessage}`;
 
+    // Play subtle error pulse
+    soundManager.playError();
+
     return toast.error(display, {
       duration: 5000,
     });
@@ -129,6 +136,7 @@ export const funToast = {
    */
   easterEgg: (message = '🎉 Secret Unlocked! তুমি একজন Certified Dorm Survivor! 🏆') => {
     triggerConfetti('default');
+    soundManager.playEasterEgg();
     return toast(message, {
       icon: '🏆',
       duration: 4500,
@@ -145,6 +153,7 @@ export const funToast = {
    * Clock wisdom easter egg
    */
   clockWisdom: (quote) => {
+    soundManager.playClick();
     return toast(quote, {
       icon: '⏰',
       duration: 4000,

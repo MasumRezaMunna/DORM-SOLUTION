@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { triggerConfetti } from '../../utils/confetti';
 import funToast from '../../utils/funToast';
+import soundManager from '../../utils/soundEffects';
 
 // Playful dorm-life greetings
 const GREETINGS = [
@@ -107,6 +108,7 @@ export default function DormMascot() {
     }
 
     // Normal greeting
+    soundManager.playMascot();
     setCurrentMessage(getGreeting());
     setIsAwake(true);
 

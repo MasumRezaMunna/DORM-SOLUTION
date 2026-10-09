@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import NotificationDropdown from './NotificationDropdown';
 import UserDropdown from './UserDropdown';
 import ChatWidget from './ChatWidget';
+import SoundToggle from './SoundToggle';
 import DigitalClock from '../shared/DigitalClock';
 import DormMascot from '../shared/DormMascot';
 import { motion } from 'framer-motion';
@@ -61,6 +62,9 @@ export default function DashboardLayout() {
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Live Asia/Dhaka Digital Clock */}
             <DigitalClock />
+
+            {/* Sound toggle */}
+            <SoundToggle />
 
             {/* Theme toggle */}
             <motion.button

@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
+import soundManager from '../../utils/soundEffects';
 
 /**
  * Reusable Micro-Interaction Button Component
@@ -54,12 +55,18 @@ export const Button = forwardRef(function Button(
 
   const isDisabled = disabled || loading;
 
+  const handleClick = (e) => {
+    if (isDisabled) return;
+    soundManager.playClick();
+    if (onClick) onClick(e);
+  };
+
   return (
     <motion.button
       ref={ref}
       type={type}
       disabled={isDisabled}
-      onClick={isDisabled ? undefined : onClick}
+      onClick={handleClick}
       whileHover={isDisabled ? {} : { y: -1.5, transition: { duration: 0.12 } }}
       whileTap={isDisabled ? {} : { scale: 0.97, transition: { duration: 0.08 } }}
       className={`inline-flex items-center justify-center transition-colors select-none focus:outline-none focus:ring-2 focus:ring-[#748D6B] disabled:opacity-50 disabled:pointer-events-none disabled:transform-none ${sizeClasses} ${variantClasses} ${className}`}

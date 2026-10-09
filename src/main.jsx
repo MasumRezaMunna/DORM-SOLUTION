@@ -4,6 +4,7 @@ import { HeroUIProvider } from '@heroui/system';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { SoundProvider } from './contexts/SoundContext';
 import './config/i18n';
 import './index.css';
 import App from './App';
@@ -22,9 +23,11 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <HeroUIProvider>
-          <App />
-        </HeroUIProvider>
+        <SoundProvider>
+          <HeroUIProvider>
+            <App />
+          </HeroUIProvider>
+        </SoundProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

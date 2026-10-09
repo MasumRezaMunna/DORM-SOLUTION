@@ -10,9 +10,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { formatDate, getInitials, localDateString } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
-import toast from 'react-hot-toast';
 import funToast from '../../utils/funToast';
-import { triggerConfetti } from '../../utils/confetti';
 
 /* ─── Meal +/- Counter ──────────────────────────────────────────────── */
 function MealCounter({ value, onChange, label, icon: Icon, color, disabled }) {

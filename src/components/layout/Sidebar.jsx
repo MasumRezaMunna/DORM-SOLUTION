@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { triggerConfetti } from '../../utils/confetti';
 import funToast from '../../utils/funToast';
+import soundManager from '../../utils/soundEffects';
 import {
   LayoutDashboard, Users, DoorOpen, Receipt, Wallet,
   ShoppingBag, UtensilsCrossed, Bell, MessageSquareWarning,
@@ -74,6 +75,7 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
       }
     }
     lastLogoClickTimeRef.current = now;
+    soundManager.playClick();
     navigate(dashboardRoot);
     if (onClose) onClose();
   };
@@ -131,7 +133,10 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
               key={item.to}
               to={item.to}
               end={item.to === '/manager' || item.to === '/dashboard'}
-              onClick={onClose}
+              onClick={() => {
+                soundManager.playClick();
+                if (onClose) onClose();
+              }}
               title={effectiveCollapsed ? item.label : undefined}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 group
