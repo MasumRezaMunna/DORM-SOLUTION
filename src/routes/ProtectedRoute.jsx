@@ -1,16 +1,12 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Spinner } from '@heroui/react';
+import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 
 export const ProtectedRoute = ({ allowedRoles = [] }) => {
   const { isAuthenticated, loading, user, isPending } = useAuth();
 
   if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Spinner size="lg" color="primary" />
-      </div>
-    );
+    return <LoadingSpinner fullPage message="Verifying session…" />;
   }
 
   if (!isAuthenticated) {

@@ -10,8 +10,10 @@ import { useTheme } from '../../contexts/ThemeContext';
  * @param {string} change - e.g. "+5% this month"
  * @param {number} index - for stagger animation
  */
-export default function StatCard({ title, value, icon: Icon, gradient, change, changePositive, index = 0 }) {
+export default function StatCard({ title, value, icon: Icon, gradient, change, changePositive, index = 0, isLoading = false }) {
   const { isDark } = useTheme();
+  const showSkeleton = isLoading || value === '...';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -27,16 +29,24 @@ export default function StatCard({ title, value, icon: Icon, gradient, change, c
       <div className={`absolute top-0 right-0 w-32 h-32 rounded-full opacity-10 blur-2xl -translate-y-8 translate-x-8 bg-gradient-to-br ${gradient}`} />
 
       <div className="relative flex items-start justify-between">
-        <div>
+        <div className="flex-1 pr-3">
           <p className={`text-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{title}</p>
-          <p className={`text-2xl font-bold mt-1.5 ${isDark ? 'text-white' : 'text-slate-800'}`}>{value}</p>
+          {showSkeleton ? (
+            <div className={`mt-2.5 h-7 w-24 rounded-lg animate-pulse ${isDark ? 'bg-white/10' : 'bg-slate-200'}`} />
+          ) : (
+            <p className={`text-2xl font-bold mt-1.5 ${isDark ? 'text-white' : 'text-slate-800'}`}>{value}</p>
+          )}
           {change && (
-            <p className={`text-xs mt-2 font-medium ${changePositive ? 'text-emerald-400' : 'text-red-400'}`}>
-              {change}
-            </p>
+            showSkeleton ? (
+              <div className={`mt-2 h-3.5 w-16 rounded animate-pulse ${isDark ? 'bg-white/5' : 'bg-slate-100'}`} />
+            ) : (
+              <p className={`text-xs mt-2 font-medium ${changePositive ? 'text-emerald-400' : 'text-red-400'}`}>
+                {change}
+              </p>
+            )
           )}
         </div>
-        <div className={`p-3 rounded-2xl bg-gradient-to-br ${gradient} shadow-lg`}>
+        <div className={`p-3 rounded-2xl bg-gradient-to-br ${gradient} shadow-lg flex-shrink-0`}>
           <Icon className="w-5 h-5 text-white" />
         </div>
       </div>

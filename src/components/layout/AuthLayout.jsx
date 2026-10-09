@@ -1,6 +1,6 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Spinner } from '@heroui/react';
+import { LoadingSpinner } from '../ui/LoadingSpinner';
 
 /**
  * Auth layout — wraps public pages like /login.
@@ -11,11 +11,7 @@ export const AuthLayout = () => {
   const { isAuthenticated, loading, user, isPending } = useAuth();
 
   if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-slate-950">
-        <Spinner size="lg" color="primary" />
-      </div>
-    );
+    return <LoadingSpinner fullPage message="Checking session…" />;
   }
 
   if (isAuthenticated && !isPending) {

@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import { signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { auth, googleProvider } from '../config/firebase';
 import api from '../config/axios';
+import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 
 const AuthContext = createContext();
 
@@ -36,6 +37,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginWithGoogle = async () => {
     try {
+      await setPersistence(auth, browserLocalPersistence).catch(() => {});
       const result  = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
 
@@ -76,54 +78,70 @@ export const AuthProvider = ({ children }) => {
   //
   // FAST PATH (token exists in localStorage):
   //   Validate the stored JWT with a single GET /auth/me call.
-  //   This avoids the expensive Firebase handshake (getIdToken + POST /auth/google
-  //   + GET /members/me = 3 sequential network calls) on every page load.
-  //   If the JWT has expired the backend returns 401, which the axios interceptor
-  //   catches and fires auth:logout to clear state.
+  //   This avoids the expensive Firebase handshake on every page load.
+  //   If the JWT has expired, the axios interceptor will silently renew
+  //   it via Firebase and retry the request transparently.
   //
-  // SLOW PATH (no token stored):
-  //   Subscribe to Firebase onAuthStateChanged once. If Firebase still has
-  //   an active session (e.g. localStorage was cleared), exchange the Firebase
-  //   ID token for a fresh JWT. Unsubscribe immediately after the first event
-  //   to prevent duplicate state updates.
+  // SLOW PATH / REHYDRATION (no token stored or initial visit):
+  //   Wait for Firebase authStateReady, then exchange the Firebase ID token
+  //   for a fresh backend JWT without requiring user interaction.
   // ============================================================
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    let isMounted = true;
 
-    if (storedToken) {
-      // Fast path: restore session from existing JWT (1 API call instead of 3)
-      api.get('/auth/me')
-        .then(async ({ data }) => {
+    const restoreSession = async () => {
+      // 1. Ensure browserLocalPersistence is active
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+      } catch (err) {
+        // Silently continue if already configured or unsupported
+      }
+
+      const storedToken = localStorage.getItem('token');
+
+      // FAST PATH: Token found in localStorage
+      if (storedToken) {
+        try {
+          const { data } = await api.get('/auth/me');
+          if (!isMounted) return;
+
           const userData = data.data;
           const pending  = await checkMemberPending(userData);
+
           setUser(userData);
           setToken(storedToken);
           setIsPending(pending);
-        })
-        .catch(() => {
-          // JWT is invalid or expired — clear storage
-          localStorage.removeItem('token');
-          setToken(null);
-          setUser(null);
-          setIsPending(false);
-        })
-        .finally(() => setLoading(false));
+          setLoading(false);
+          return;
+        } catch {
+          // If /auth/me failed and axios interceptor renewal also failed,
+          // storedToken is invalid/expired. Fall through to verify Firebase session.
+        }
+      }
 
-      return; // skip Firebase listener when fast path is taken
-    }
-
-    // Slow path: no JWT stored — check Firebase session
-    let settled = false;
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (settled) return;
-      settled = true;
-      unsubscribe(); // one-shot: unsubscribe right away
-
+      // SLOW PATH / FALLBACK: Check Firebase auth session
       try {
+        if (typeof auth.authStateReady === 'function') {
+          await auth.authStateReady();
+        }
+
+        let firebaseUser = auth.currentUser;
+        if (!firebaseUser) {
+          firebaseUser = await new Promise((resolve) => {
+            const timer = setTimeout(() => resolve(null), 2500);
+            const unsub = onAuthStateChanged(auth, (u) => {
+              clearTimeout(timer);
+              unsub();
+              resolve(u);
+            });
+          });
+        }
+
         if (firebaseUser) {
-          // Firebase has a session but no JWT in storage — exchange for a new one
           const idToken  = await firebaseUser.getIdToken();
           const { data } = await api.post('/auth/google', { idToken });
+          if (!isMounted) return;
+
           const jwtToken = data.data.token;
           const userData = data.data.user;
 
@@ -134,32 +152,63 @@ export const AuthProvider = ({ children }) => {
           setUser(userData);
           setToken(jwtToken);
           setIsPending(pending);
+        } else {
+          if (isMounted) {
+            localStorage.removeItem('token');
+            setUser(null);
+            setToken(null);
+            setIsPending(false);
+          }
         }
-        // No Firebase session + no stored JWT: stay logged-out (defaults are null/false)
-      } catch (error) {
-        console.error('Auth state rehydration error:', error);
-        localStorage.removeItem('token');
-        setToken(null);
-        setUser(null);
-        setIsPending(false);
+      } catch (err) {
+        console.error('Session restoration error:', err);
+        if (isMounted) {
+          localStorage.removeItem('token');
+          setUser(null);
+          setToken(null);
+          setIsPending(false);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
-    });
+    };
 
-    return () => unsubscribe();
+    restoreSession();
+
+    return () => {
+      isMounted = false;
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Global 401 handler fired by the axios response interceptor
+  // ── Global auth event handlers ────────────────────────────────────────────
   useEffect(() => {
+    // Fired by the axios interceptor when a JWT expired but Firebase successfully
+    // issued a new one. Update state without logging the user out.
+    const handleTokenRenewed = (e) => {
+      const { token: newToken, user: newUser } = e.detail || {};
+      if (newToken) {
+        setToken(newToken);
+        if (newUser) setUser(newUser);
+      }
+    };
+
+    // Fired when renewal is impossible (no Firebase session, account disabled, etc.).
     const handleAuthLogout = () => {
       setToken(null);
       setUser(null);
       setIsPending(false);
       signOut(auth).catch(() => {});
     };
-    window.addEventListener('auth:logout', handleAuthLogout);
-    return () => window.removeEventListener('auth:logout', handleAuthLogout);
+
+    window.addEventListener('auth:tokenRenewed', handleTokenRenewed);
+    window.addEventListener('auth:logout',       handleAuthLogout);
+
+    return () => {
+      window.removeEventListener('auth:tokenRenewed', handleTokenRenewed);
+      window.removeEventListener('auth:logout',       handleAuthLogout);
+    };
   }, []);
 
   const value = {
@@ -176,7 +225,11 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {loading ? (
+        <LoadingSpinner fullPage message="Loading Dorm Solution…" />
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };

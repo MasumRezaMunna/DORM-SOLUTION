@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import { ProtectedRoute } from './ProtectedRoute';
 import { ROLES } from '../utils/constants';
 import { useAuth } from '../contexts/AuthContext';
-import { Spinner } from '@heroui/react';
+import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 
 /**
  * Smart root redirect: waits for auth to resolve, then sends authenticated
@@ -12,11 +12,7 @@ const RootRedirect = () => {
   const { isAuthenticated, loading, user, isPending } = useAuth();
 
   if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-slate-950">
-        <Spinner size="lg" color="primary" />
-      </div>
-    );
+    return <LoadingSpinner fullPage message="Connecting to Dorm Solution…" />;
   }
 
   if (isAuthenticated && isPending) return <Navigate to="/pending" replace />;
