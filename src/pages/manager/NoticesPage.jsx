@@ -33,13 +33,19 @@ export default function NoticesPage() {
     placeholderData: [],
   });
 
+  const invalidateNoticeData = () => {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.NOTICES });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
+    queryClient.invalidateQueries({ queryKey: ['notifications'] });
+  };
+
   const createMutation = useMutation({
     mutationFn: async (payload) => {
       const { data } = await api.post('/notices', payload);
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.NOTICES });
+      invalidateNoticeData();
       setIsModalOpen(false);
       setForm({ title: '', content: '', priority: 'medium', isPinned: false });
       toast.success('Notice published!');
@@ -50,7 +56,7 @@ export default function NoticesPage() {
   const updateMutation = useMutation({
     mutationFn: (data) => api.put(`/notices/${editingId}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.NOTICES });
+      invalidateNoticeData();
       toast.success('Notice updated successfully!');
       setIsModalOpen(false);
       setEditingId(null);
@@ -62,7 +68,7 @@ export default function NoticesPage() {
   const deleteMutation = useMutation({
     mutationFn: (id) => api.delete(`/notices/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.NOTICES });
+      invalidateNoticeData();
       toast.success('Notice deleted successfully!');
     },
     onError: () => toast.error('Failed to delete notice.')

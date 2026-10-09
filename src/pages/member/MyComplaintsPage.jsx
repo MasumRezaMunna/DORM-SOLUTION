@@ -32,6 +32,8 @@ export default function MyComplaintsPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MY_COMPLAINTS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.COMPLAINTS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       setIsModalOpen(false);
       setForm({ title: '', description: '', type: 'maintenance', priority: 'medium' });
       toast.success('Complaint submitted successfully!');

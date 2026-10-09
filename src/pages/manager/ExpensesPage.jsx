@@ -23,7 +23,7 @@ export default function ExpensesPage() {
   const [form, setForm] = useState({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
 
   const { data: expenses = [], isLoading } = useQuery({
-    queryKey: [QUERY_KEYS.EXPENSES, summaryMonth, summaryYear, filterType],
+    queryKey: [...QUERY_KEYS.EXPENSES, summaryMonth, summaryYear, filterType],
     queryFn: async () => {
       let url = `/expenses?month=${summaryMonth}&year=${summaryYear}&limit=200`;
       if (filterType !== 'All') url += `&expenseType=${filterType}`;
@@ -34,20 +34,28 @@ export default function ExpensesPage() {
   });
 
   const { data: dashboardData } = useQuery({
-    queryKey: [QUERY_KEYS.DASHBOARD_MANAGER, summaryMonth, summaryYear],
+    queryKey: [...QUERY_KEYS.DASHBOARD_MANAGER, summaryMonth, summaryYear],
     queryFn: async () => {
       const { data } = await api.get(`/dashboard/manager?month=${summaryMonth}&year=${summaryYear}`);
       return data.data?.overview || {};
     },
   });
 
+  const invalidateExpenseData = () => {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.EXPENSES });
+    queryClient.invalidateQueries({ queryKey: ['member-expenses'] });
+    queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
+    queryClient.invalidateQueries({ queryKey: ['communityStats'] });
+  };
+
   const createMutation = useMutation({
     mutationFn: async (payload) => {
       await api.post('/expenses', { ...payload, amount: Number(payload.amount) });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.EXPENSES });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+      invalidateExpenseData();
       setIsModalOpen(false);
       setForm({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
       toast.success('Expense added!');
@@ -60,8 +68,7 @@ export default function ExpensesPage() {
       await api.put(`/expenses/${editingId}`, { ...payload, amount: Number(payload.amount) });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.EXPENSES });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+      invalidateExpenseData();
       setIsModalOpen(false);
       setEditingId(null);
       setForm({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
@@ -73,8 +80,7 @@ export default function ExpensesPage() {
   const deleteMutation = useMutation({
     mutationFn: (id) => api.delete(`/expenses/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.EXPENSES });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+      invalidateExpenseData();
       toast.success('Expense deleted!');
     },
     onError: () => toast.error('Failed to delete expense.'),

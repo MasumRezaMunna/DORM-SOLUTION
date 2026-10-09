@@ -6,6 +6,7 @@ import PageHeader from '../../components/shared/PageHeader';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../config/axios';
+import { QUERY_KEYS } from '../../utils/constants';
 import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
@@ -49,6 +50,12 @@ export default function ProfilePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myProfile'] });
       queryClient.invalidateQueries({ queryKey: ['auth', 'me'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
+      queryClient.invalidateQueries({ queryKey: ['communityStats'] });
+      queryClient.invalidateQueries({ queryKey: ['room', 'my'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       toast.success('Profile updated successfully!');
     },
     onError: () => toast.error('Failed to update profile.')

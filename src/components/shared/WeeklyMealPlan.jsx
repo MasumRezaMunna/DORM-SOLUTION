@@ -20,13 +20,14 @@ export default function WeeklyMealPlan({ isManager = false }) {
       const { data } = await api.get('/meals/weekly-plan');
       return data.data;
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 30 * 1000,
   });
 
   // Mutation to update the plan
   const updateMutation = useMutation({
     mutationFn: (days) => api.put('/meals/weekly-plan', { days }),
-    onSuccess: () => {
+    onSuccess: (_, days) => {
+      queryClient.setQueryData(['weeklyMealPlan'], (old) => ({ ...(old || {}), days }));
       queryClient.invalidateQueries({ queryKey: ['weeklyMealPlan'] });
       toast.success('Weekly meal plan updated!');
       triggerConfetti('meal');

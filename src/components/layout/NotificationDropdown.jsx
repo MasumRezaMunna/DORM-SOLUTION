@@ -42,12 +42,18 @@ export default function NotificationDropdown() {
 
   const markReadMutation = useMutation({
     mutationFn: async (id) => api.put(`/notifications/${id}/read`),
-    onSuccess: () => queryClient.invalidateQueries(['notifications']),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      queryClient.invalidateQueries({ queryKey: ['notifications-page'] });
+    },
   });
 
   const markAllReadMutation = useMutation({
     mutationFn: async () => api.put('/notifications/read-all'),
-    onSuccess: () => queryClient.invalidateQueries(['notifications']),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      queryClient.invalidateQueries({ queryKey: ['notifications-page'] });
+    },
   });
 
   const resolveLink = (link) => {

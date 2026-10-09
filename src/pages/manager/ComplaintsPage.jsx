@@ -28,12 +28,18 @@ export default function ComplaintsPage() {
     placeholderData: [],
   });
 
+  const invalidateComplaintData = () => {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.COMPLAINTS });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MY_COMPLAINTS });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+  };
+
   const resolveMutation = useMutation({
     mutationFn: async (id) => {
       await api.patch(`/complaints/${id}`, { status: 'resolved' });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(QUERY_KEYS.COMPLAINTS);
+      invalidateComplaintData();
       toast.success('Complaint marked as resolved!');
     },
   });
@@ -41,7 +47,7 @@ export default function ComplaintsPage() {
   const updateMutation = useMutation({
     mutationFn: (data) => api.put(`/complaints/${editingId}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.COMPLAINTS });
+      invalidateComplaintData();
       toast.success('Complaint updated successfully!');
       setIsModalOpen(false);
       setEditingId(null);
@@ -51,7 +57,7 @@ export default function ComplaintsPage() {
   const deleteMutation = useMutation({
     mutationFn: (id) => api.delete(`/complaints/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.COMPLAINTS });
+      invalidateComplaintData();
       toast.success('Complaint deleted successfully!');
     }
   });

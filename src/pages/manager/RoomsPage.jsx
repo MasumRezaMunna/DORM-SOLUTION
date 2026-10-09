@@ -62,6 +62,7 @@ export default function RoomsPage() {
     mutationFn: (room) => api.post('/rooms', room),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       toast.success('Room added!');
       setIsModalOpen(false);
       setFormData(emptyForm);
@@ -73,6 +74,7 @@ export default function RoomsPage() {
     mutationFn: (room) => api.put(`/rooms/${editingRoom}`, room),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       toast.success('Room updated!');
       setIsModalOpen(false);
       setEditingRoom(null);
@@ -85,6 +87,7 @@ export default function RoomsPage() {
     mutationFn: (id) => api.delete(`/rooms/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       toast.success('Room deleted!');
     },
     onError: (err) => toast.error(err.response?.data?.message || 'Cannot delete room'),
@@ -95,6 +98,10 @@ export default function RoomsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
+      queryClient.invalidateQueries({ queryKey: ['room', 'my'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
+      queryClient.invalidateQueries({ queryKey: ['communityStats'] });
       toast.success('Member assigned to room!');
       setAssignMemberId('');
     },
@@ -106,6 +113,10 @@ export default function RoomsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
+      queryClient.invalidateQueries({ queryKey: ['room', 'my'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
+      queryClient.invalidateQueries({ queryKey: ['communityStats'] });
       toast.success('Member removed from room!');
     },
     onError: (err) => toast.error(err.response?.data?.message || 'Failed to remove member'),

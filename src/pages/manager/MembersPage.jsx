@@ -79,10 +79,21 @@ export default function MembersPage() {
 
   const [formData, setFormData] = useState({ userId: '', phone: '', nid: '', occupation: '' });
 
+  const invalidateMemberData = () => {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
+    queryClient.invalidateQueries({ queryKey: ['pendingUsers'] });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
+    queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
+    queryClient.invalidateQueries({ queryKey: ['communityStats'] });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_ROTATION });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_SCHEDULES });
+  };
+
   const addMutation = useMutation({
     mutationFn: (newMember) => api.post('/members', newMember),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
+      invalidateMemberData();
       toast.success('Member added successfully!');
       triggerConfetti('member');
       setIsModalOpen(false);
@@ -96,7 +107,7 @@ export default function MembersPage() {
   const statusMutation = useMutation({
     mutationFn: ({ id, status }) => api.put(`/members/${id}`, { status }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
+      invalidateMemberData();
       toast.success('Status updated!');
     },
     onError: () => toast.error('Failed to update status')
@@ -105,8 +116,7 @@ export default function MembersPage() {
   const approveMutation = useMutation({
     mutationFn: (userId) => api.post('/members', { userId }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
-      queryClient.invalidateQueries({ queryKey: ['pendingUsers'] });
+      invalidateMemberData();
       toast.success('Member activated successfully!');
       triggerConfetti('member');
     },
@@ -118,7 +128,7 @@ export default function MembersPage() {
   const roleMutation = useMutation({
     mutationFn: ({ id, role }) => api.put(`/users/${id}/role`, { role }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEMBERS });
+      invalidateMemberData();
       toast.success('Role updated successfully!');
     },
     onError: (err) => toast.error('Failed to update role')

@@ -116,16 +116,24 @@ export const useMySchedules = () => {
 
 // ─── Mutations ────────────────────────────────────────────────────────────────
 
+const invalidateAllMarketQueries = (qc) => {
+  qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_SCHEDULES });
+  qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_STATS });
+  qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_TODAY });
+  qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_UPCOMING });
+  qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_ROTATION });
+  qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_HISTORY });
+  qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_ME });
+  qc.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+  qc.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
+};
+
 export const useCreateSchedule = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (payload) => api.post('/market-schedules', payload),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_SCHEDULES });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_STATS });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_TODAY });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_UPCOMING });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_ROTATION });
+      invalidateAllMarketQueries(qc);
       toast.success('Market schedule created successfully! 🛒');
       triggerConfetti('market');
     },
@@ -140,10 +148,7 @@ export const useUpdateSchedule = () => {
   return useMutation({
     mutationFn: ({ id, ...payload }) => api.patch(`/market-schedules/${id}`, payload),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_SCHEDULES });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_STATS });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_TODAY });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_UPCOMING });
+      invalidateAllMarketQueries(qc);
       toast.success('Market schedule updated!');
     },
     onError: (err) => {
@@ -157,10 +162,7 @@ export const useDeleteSchedule = () => {
   return useMutation({
     mutationFn: (id) => api.delete(`/market-schedules/${id}`),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_SCHEDULES });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_STATS });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_TODAY });
-      qc.invalidateQueries({ queryKey: QUERY_KEYS.MARKET_UPCOMING });
+      invalidateAllMarketQueries(qc);
       toast.success('Market schedule deleted.');
     },
     onError: (err) => {

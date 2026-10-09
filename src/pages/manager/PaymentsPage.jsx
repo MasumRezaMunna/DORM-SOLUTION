@@ -48,12 +48,21 @@ export default function PaymentsPage() {
 
   const activeMembers = members.filter(m => m.status === 'active');
 
+  const invalidatePaymentData = () => {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PAYMENTS });
+    queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
+    queryClient.invalidateQueries({ queryKey: ['communityStats'] });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.BILLS });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MY_BILLS });
+  };
+
   // ── Record payment mutation ────────────────────────────────────────────
   const addMutation = useMutation({
     mutationFn: (newPayment) => api.post('/payments', newPayment),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PAYMENTS });
-      queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
+      invalidatePaymentData();
       toast.success('Payment recorded successfully!');
       triggerConfetti('payment');
       setIsModalOpen(false);
@@ -67,8 +76,7 @@ export default function PaymentsPage() {
   const updateMutation = useMutation({
     mutationFn: (data) => api.put(`/payments/${editingId}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PAYMENTS });
-      queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
+      invalidatePaymentData();
       toast.success('Payment updated successfully!');
       setIsModalOpen(false);
       setEditingId(null);
@@ -82,8 +90,7 @@ export default function PaymentsPage() {
   const deleteMutation = useMutation({
     mutationFn: (id) => api.delete(`/payments/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PAYMENTS });
-      queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
+      invalidatePaymentData();
       toast.success('Payment deleted successfully!');
     },
     onError: (err) => {
@@ -93,7 +100,7 @@ export default function PaymentsPage() {
 
   // ── Payments list ──────────────────────────────────────────────────────
   const { data: payments = [], isLoading } = useQuery({
-    queryKey: [QUERY_KEYS.PAYMENTS, summaryMonth, summaryYear],
+    queryKey: [...QUERY_KEYS.PAYMENTS, summaryMonth, summaryYear],
     queryFn: async () => {
       const { data } = await api.get(`/payments?month=${summaryMonth}&year=${summaryYear}&limit=200`);
       return data.data || [];

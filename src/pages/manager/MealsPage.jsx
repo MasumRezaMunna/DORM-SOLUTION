@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Save, Calendar, UtensilsCrossed, Sun, Moon, Users,
@@ -66,6 +66,7 @@ function BalanceBadge({ amount }) {
 ═══════════════════════════════════════════════════════════════════════ */
 export default function MealsPage() {
   const { isDark } = useTheme();
+  const queryClient = useQueryClient();
   const [tab, setTab] = useState('daily');
 
   // ── Daily tab state ──
@@ -130,6 +131,16 @@ export default function MealsPage() {
       await api.post('/meals/bulk', { entries });
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mealEntries'] });
+      queryClient.invalidateQueries({ queryKey: ['mealMonthlyDetail'] });
+      queryClient.invalidateQueries({ queryKey: ['mealEntriesMonth'] });
+      queryClient.invalidateQueries({ queryKey: ['meals'] });
+      queryClient.invalidateQueries({ queryKey: ['communityStats'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MEALS });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
+      queryClient.invalidateQueries({ queryKey: ['weeklyMealPlan'] });
+
       toast.success('Meal entries saved!');
       triggerConfetti('meal');
       setInitialised(selectedDate); // prevent re-hydration overwriting fresh data
