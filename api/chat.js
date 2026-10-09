@@ -7,7 +7,8 @@
  */
 
 const N8N_WEBHOOK_URL =
-  'https://masumrezamunna.app.n8n.cloud/webhook/82c06985-3684-4bab-a047-1558f36d7961/chat';
+  process.env.N8N_WEBHOOK_URL ||
+  'http://localhost:5678/webhook/82c06985-3684-4bab-a047-1558f36d7961/chat';
 
 export default async function handler(req, res) {
   // Only allow POST
