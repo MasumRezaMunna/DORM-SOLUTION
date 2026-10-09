@@ -10,6 +10,7 @@ import { formatCurrency, formatDate, getMonthName, localDateString } from '../..
 import api from '../../config/axios';
 import { QUERY_KEYS, EXPENSE_TYPES } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import funToast from '../../utils/funToast';
 
 export default function ExpensesPage() {
   const { isDark } = useTheme();
@@ -58,9 +59,9 @@ export default function ExpensesPage() {
       invalidateExpenseData();
       setIsModalOpen(false);
       setForm({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
-      toast.success('Expense added!');
+      funToast.expenseSuccess('Done, boss! খরচের ভাউচার সেভ হয়েছে! 🏷️');
     },
-    onError: () => toast.error('Failed to add expense.'),
+    onError: (err) => funToast.error(err, 'খরচের হিসাব সেভ করা যায়নি। আবার চেষ্টা করো।'),
   });
 
   const updateMutation = useMutation({
@@ -72,18 +73,18 @@ export default function ExpensesPage() {
       setIsModalOpen(false);
       setEditingId(null);
       setForm({ title: '', amount: '', expenseType: 'Grocery', date: localDateString(), notes: '' });
-      toast.success('Expense updated!');
+      funToast.expenseSuccess('খরচের হিসাব আপডেট সফল! 📊');
     },
-    onError: () => toast.error('Failed to update expense.'),
+    onError: (err) => funToast.error(err, 'খরচ আপডেট করা যায়নি।'),
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id) => api.delete(`/expenses/${id}`),
     onSuccess: () => {
       invalidateExpenseData();
-      toast.success('Expense deleted!');
+      funToast.success('খরচের হিসাব মুছে ফেলা হয়েছে! 🗑️');
     },
-    onError: () => toast.error('Failed to delete expense.'),
+    onError: (err) => funToast.error(err, 'খরচ মোছা যায়নি।'),
   });
 
   const totalExpenses = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import toast from 'react-hot-toast';
+import funToast from '../../utils/funToast';
 
 export default function LoginPage() {
   const { loginWithGoogle } = useAuth();
@@ -13,7 +14,8 @@ export default function LoginPage() {
   const handleLogin = async () => {
     try {
       const userData = await loginWithGoogle();
-      toast.success(`Welcome back, ${userData?.name?.split(' ')[0] || 'User'}!`);
+      const firstName = userData?.name?.split(' ')[0] || 'User';
+      funToast.success(`Welcome back, ${firstName}! শুভ আগমন! 🌟`, { confetti: 'member' });
       if (userData?.role === 'manager') {
         navigate('/manager');
       } else {
@@ -21,7 +23,7 @@ export default function LoginPage() {
       }
     } catch (err) {
       if (err.code !== 'auth/popup-closed-by-user') {
-        toast.error('Login failed. Please try again.');
+        funToast.error(err, 'লগইন সফল হয়নি। আবার চেষ্টা করো।');
       }
     }
   };

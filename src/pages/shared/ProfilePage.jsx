@@ -8,6 +8,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import funToast from '../../utils/funToast';
 
 export default function ProfilePage() {
   const { isDark } = useTheme();
@@ -56,9 +57,9 @@ export default function ProfilePage() {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
-      toast.success('Profile updated successfully!');
+      funToast.profileSuccess('প্রোফাইল আপডেট হয়েছে! একদম চকচকে! ✨');
     },
-    onError: () => toast.error('Failed to update profile.')
+    onError: (err) => funToast.error(err, 'প্রোফাইল আপডেট করা যায়নি।'),
   });
 
   const handleSubmit = (e) => {

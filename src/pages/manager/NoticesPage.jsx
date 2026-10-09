@@ -9,6 +9,7 @@ import { formatRelativeTime } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import funToast from '../../utils/funToast';
 
 const PRIORITY_ICONS = {
   low: { icon: Info, color: 'text-[#0D9488] bg-[#0D9488]/10 dark:text-[#2DD4BF]' },
@@ -48,30 +49,30 @@ export default function NoticesPage() {
       invalidateNoticeData();
       setIsModalOpen(false);
       setForm({ title: '', content: '', priority: 'medium', isPinned: false });
-      toast.success('Notice published!');
+      funToast.noticeSuccess('নোটিশ পাবলিশ হয়েছে! সবাই অ্যালার্ট! 📢');
     },
-    onError: () => toast.error('Failed to create notice.'),
+    onError: (err) => funToast.error(err, 'নোটিশ তৈরি করা যায়নি।'),
   });
 
   const updateMutation = useMutation({
     mutationFn: (data) => api.put(`/notices/${editingId}`, data),
     onSuccess: () => {
       invalidateNoticeData();
-      toast.success('Notice updated successfully!');
+      funToast.noticeSuccess('Done, boss! নোটিশ আপডেট সফল! 📌');
       setIsModalOpen(false);
       setEditingId(null);
       setForm({ title: '', content: '', priority: 'medium', isPinned: false });
     },
-    onError: () => toast.error('Failed to update notice.')
+    onError: (err) => funToast.error(err, 'নোটিশ আপডেট করা যায়নি।')
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id) => api.delete(`/notices/${id}`),
     onSuccess: () => {
       invalidateNoticeData();
-      toast.success('Notice deleted successfully!');
+      funToast.success('নোটিশ মুছে ফেলা হয়েছে! 🗑️');
     },
-    onError: () => toast.error('Failed to delete notice.')
+    onError: (err) => funToast.error(err, 'নোটিশ মোছা যায়নি।')
   });
 
   const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';

@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Clock } from 'lucide-react';
+import funToast from '../../utils/funToast';
 
 // Explicitly configure Asia/Dhaka formatters
 const TIME_FORMATTER = new Intl.DateTimeFormat('en-US', {
@@ -68,13 +69,42 @@ export default function DigitalClock({ className = '' }) {
     dateString = currentTime.toLocaleDateString();
   }
 
+  const lastClickRef = useRef(0);
+
+  const handleClockClick = () => {
+    const now = Date.now();
+    if (now - lastClickRef.current < 2000) return; // 2s cooldown to prevent spam
+    lastClickRef.current = now;
+
+    const DORM_TIME_WISDOM = [
+      'দাদা, ঘড়ি যতই দেখুক, ডাইনিং কিন্তু টাইমমতোই বন্ধ হবে! ⏰🍛',
+      'সময় ও মেসের সকালের নাস্তা কারো জন্য অপেক্ষা করে না! 🍳⏳',
+      'ঘড়ির কাঁটা ঘুরছে—আজকের বাজারটা কিন্তু তোমাকেই করতে হবে! 🛒🕰️',
+      'Dorm Fact: রাত ৩টায় হঠাৎ খিদে লাগার সাথে সময়ের অদ্ভুত টান আছে! 🌙🍜',
+      'Time is money, কিন্তু মেসে ডিম শেষ হয়ে যাওয়া হলো আসল ক্রাইসিস! 🥚⌛',
+      'Dhaka Time: জ্যাম আর মেসের ওয়াইফাই—দুটোর গতিই সময় নিরপেক্ষ! 📶🐢',
+    ];
+
+    const quote = DORM_TIME_WISDOM[Math.floor(Math.random() * DORM_TIME_WISDOM.length)];
+    funToast.clockWisdom(quote);
+  };
+
   const accessibleLabel = `Dhaka time: ${hour}:${minute}:${second} ${dayPeriod}, ${dateString}`;
 
   return (
     <div
-      className={`inline-flex items-center gap-2 sm:gap-2.5 px-2 py-1 sm:px-2.5 sm:py-1 rounded-xl border border-[#DDE1D8] dark:border-[#394239] bg-[#ECECE4]/60 hover:bg-[#ECECE4] dark:bg-[#202720]/80 dark:hover:bg-[#202720] transition-colors select-none shadow-[0_1px_2px_rgba(0,0,0,0.03)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)] ${className}`}
-      title={`Live Asia/Dhaka Time (BST) · ${accessibleLabel}`}
-      aria-label={accessibleLabel}
+      role="button"
+      tabIndex={0}
+      onClick={handleClockClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClockClick();
+        }
+      }}
+      className={`inline-flex items-center gap-2 sm:gap-2.5 px-2 py-1 sm:px-2.5 sm:py-1 rounded-xl border border-[#DDE1D8] dark:border-[#394239] bg-[#ECECE4]/60 hover:bg-[#ECECE4] dark:bg-[#202720]/80 dark:hover:bg-[#202720] hover:border-[#748D6B] dark:hover:border-[#A3B18A] transition-all select-none cursor-pointer active:scale-95 shadow-[0_1px_2px_rgba(0,0,0,0.03)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)] ${className}`}
+      title={`Live Asia/Dhaka Time (BST) · Click for dorm wisdom ⏰ · ${accessibleLabel}`}
+      aria-label={`${accessibleLabel}. Click for dorm wisdom`}
     >
       {/* Subtle watch icon badge */}
       <div className="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#E8EDE3] dark:bg-[#292F29] text-[#526B52] dark:text-[#A3B18A] border border-[#DDE1D8]/60 dark:border-[#394239]/80 flex-shrink-0">

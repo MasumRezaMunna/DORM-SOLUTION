@@ -7,6 +7,7 @@ import NotificationDropdown from './NotificationDropdown';
 import UserDropdown from './UserDropdown';
 import ChatWidget from './ChatWidget';
 import DigitalClock from '../shared/DigitalClock';
+import DormMascot from '../shared/DormMascot';
 import { motion } from 'framer-motion';
 
 export default function DashboardLayout() {
@@ -88,6 +89,9 @@ export default function DashboardLayout() {
           </div>
         </main>
       </div>
+
+      {/* Sleeping Dorm Mascot */}
+      <DormMascot />
 
       {/* Floating AI Chat Widget */}
       <ChatWidget />

@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../../config/axios';
 import { QUERY_KEYS } from '../../../utils/constants';
 import toast from 'react-hot-toast';
+import funToast from '../../../utils/funToast';
 import { triggerConfetti } from '../../../utils/confetti';
 
 // ─── Manager Hooks ────────────────────────────────────────────────────────────
@@ -134,11 +135,10 @@ export const useCreateSchedule = () => {
     mutationFn: (payload) => api.post('/market-schedules', payload),
     onSuccess: () => {
       invalidateAllMarketQueries(qc);
-      toast.success('Market schedule created successfully! 🛒');
-      triggerConfetti('market');
+      funToast.marketSuccess('বাজারের মিশন সফল! শিডিউল তৈরি হয়েছে! 🫡🛒');
     },
     onError: (err) => {
-      toast.error(err?.response?.data?.message || 'Failed to create market schedule');
+      funToast.error(err, 'বাজারের শিডিউল তৈরি করা যায়নি। আবার চেষ্টা করো।');
     },
   });
 };
@@ -149,10 +149,10 @@ export const useUpdateSchedule = () => {
     mutationFn: ({ id, ...payload }) => api.patch(`/market-schedules/${id}`, payload),
     onSuccess: () => {
       invalidateAllMarketQueries(qc);
-      toast.success('Market schedule updated!');
+      funToast.marketSuccess('বাজারের শিডিউল আপডেট সফল! 🥦');
     },
     onError: (err) => {
-      toast.error(err?.response?.data?.message || 'Failed to update market schedule');
+      funToast.error(err, 'বাজারের শিডিউল আপডেট করা যায়নি।');
     },
   });
 };
@@ -163,10 +163,10 @@ export const useDeleteSchedule = () => {
     mutationFn: (id) => api.delete(`/market-schedules/${id}`),
     onSuccess: () => {
       invalidateAllMarketQueries(qc);
-      toast.success('Market schedule deleted.');
+      funToast.success('বাজারের শিডিউল মুছে ফেলা হয়েছে! 🗑️');
     },
     onError: (err) => {
-      toast.error(err?.response?.data?.message || 'Failed to delete market schedule');
+      funToast.error(err, 'বাজারের শিডিউল মোছা যায়নি।');
     },
   });
 };

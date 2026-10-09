@@ -1,7 +1,10 @@
+import { useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { triggerConfetti } from '../../utils/confetti';
+import funToast from '../../utils/funToast';
 import {
   LayoutDashboard, Users, DoorOpen, Receipt, Wallet,
   ShoppingBag, UtensilsCrossed, Bell, MessageSquareWarning,
@@ -54,6 +57,27 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
     ? 'text-[#B1B8AC] hover:text-[#F0F1E9] hover:bg-[#292F29]'
     : 'text-[#687168] hover:text-[#202720] hover:bg-[#ECECE4]/70';
 
+  const logoClicksRef = useRef(0);
+  const lastLogoClickTimeRef = useRef(0);
+
+  const handleLogoClick = () => {
+    const now = Date.now();
+    if (now - lastLogoClickTimeRef.current > 2500) {
+      logoClicksRef.current = 1;
+    } else {
+      logoClicksRef.current += 1;
+      if (logoClicksRef.current >= 5) {
+        logoClicksRef.current = 0;
+        triggerConfetti('default');
+        funToast.easterEgg('🎉 Secret Unlocked! তুমি একজন Certified Dorm Survivor! 🏆');
+        return;
+      }
+    }
+    lastLogoClickTimeRef.current = now;
+    navigate(dashboardRoot);
+    if (onClose) onClose();
+  };
+
   const renderSidebarContent = (isMobile) => {
     const effectiveCollapsed = isMobile ? false : collapsed;
 
@@ -63,7 +87,7 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
       {/* ── Logo ─────────────────────────────────────── */}
       <div className={`flex items-center justify-between px-4 py-4 border-b ${borderCol}`} style={{ minHeight: 64 }}>
         <button
-          onClick={() => { navigate(dashboardRoot); if (onClose) onClose(); }}
+          onClick={handleLogoClick}
           className="flex items-center gap-3 hover:opacity-85 transition-opacity min-w-0"
         >
           <div className="w-9 h-9 rounded-xl bg-[#526B52] dark:bg-[#A3B18A] shadow-sm flex items-center justify-center flex-shrink-0 text-white dark:text-[#171C18]">

@@ -10,6 +10,7 @@ import { getInitials } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS, ROOM_TYPES } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import funToast from '../../utils/funToast';
 
 export default function RoomsPage() {
   const { isDark } = useTheme();
@@ -61,11 +62,11 @@ export default function RoomsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
-      toast.success('Room added!');
+      funToast.success('রুম সফলভাবে তৈরি হয়েছে! 🚪', { category: 'room' });
       setIsModalOpen(false);
       setFormData(emptyForm);
     },
-    onError: (err) => toast.error(err.response?.data?.message || 'Failed to add room'),
+    onError: (err) => funToast.error(err, 'রুম তৈরি করা যায়নি।'),
   });
 
   const updateMutation = useMutation({
@@ -73,12 +74,12 @@ export default function RoomsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
-      toast.success('Room updated!');
+      funToast.success('রুম আপডেট সম্পন্ন হয়েছে! 🏠', { category: 'room' });
       setIsModalOpen(false);
       setEditingRoom(null);
       setFormData(emptyForm);
     },
-    onError: (err) => toast.error(err.response?.data?.message || 'Failed to update room'),
+    onError: (err) => funToast.error(err, 'রুম আপডেট করা যায়নি।'),
   });
 
   const deleteMutation = useMutation({
@@ -86,9 +87,9 @@ export default function RoomsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOMS });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
-      toast.success('Room deleted!');
+      funToast.success('রুম মুছে ফেলা হয়েছে! 🗑️');
     },
-    onError: (err) => toast.error(err.response?.data?.message || 'Cannot delete room'),
+    onError: (err) => funToast.error(err, 'রুম মোছা যায়নি।'),
   });
 
   const assignMutation = useMutation({

@@ -11,6 +11,7 @@ import { formatDate, getInitials, localDateString } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import funToast from '../../utils/funToast';
 import { triggerConfetti } from '../../utils/confetti';
 
 /* ─── Meal +/- Counter ──────────────────────────────────────────────── */
@@ -141,11 +142,10 @@ export default function MealsPage() {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MEMBER });
       queryClient.invalidateQueries({ queryKey: ['weeklyMealPlan'] });
 
-      toast.success('Meal entries saved!');
-      triggerConfetti('meal');
+      funToast.mealSuccess('Meal update হয়ে গেছে—এবার খাওয়ার পালা! 🍚');
       setInitialised(selectedDate); // prevent re-hydration overwriting fresh data
     },
-    onError: () => toast.error('Failed to save meal entries.'),
+    onError: (err) => funToast.error(err, 'খাবারের হিসাব সেভ করা যায়নি। আবার চেষ্টা করো।'),
   });
 
   const getMeal = (id, field) => mealData[id]?.[field] ?? 1;

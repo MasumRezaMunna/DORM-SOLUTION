@@ -10,6 +10,7 @@ import { formatCurrency, formatDate, getMonthName } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS, PAYMENT_METHODS } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import funToast from '../../utils/funToast';
 import { triggerConfetti } from '../../utils/confetti';
 
 export default function PaymentsPage() {
@@ -63,13 +64,12 @@ export default function PaymentsPage() {
     mutationFn: (newPayment) => api.post('/payments', newPayment),
     onSuccess: () => {
       invalidatePaymentData();
-      toast.success('Payment recorded successfully!');
-      triggerConfetti('payment');
+      funToast.paymentSuccess('টাকার হিসাব কড়া! পেমেন্ট রেকর্ড সম্পন্ন! 💸');
       setIsModalOpen(false);
       setFormData(emptyForm);
     },
     onError: (err) => {
-      toast.error(err.response?.data?.message || 'Failed to record payment');
+      funToast.error(err, 'পেমেন্ট রেকর্ড করা যায়নি।');
     }
   });
 
@@ -77,13 +77,13 @@ export default function PaymentsPage() {
     mutationFn: (data) => api.put(`/payments/${editingId}`, data),
     onSuccess: () => {
       invalidatePaymentData();
-      toast.success('Payment updated successfully!');
+      funToast.paymentSuccess('Done, boss! পেমেন্ট আপডেট সফল! 🧾');
       setIsModalOpen(false);
       setEditingId(null);
       setFormData(emptyForm);
     },
     onError: (err) => {
-      toast.error(err.response?.data?.message || 'Failed to update payment');
+      funToast.error(err, 'পেমেন্ট আপডেট করা যায়নি।');
     }
   });
 
@@ -91,10 +91,10 @@ export default function PaymentsPage() {
     mutationFn: (id) => api.delete(`/payments/${id}`),
     onSuccess: () => {
       invalidatePaymentData();
-      toast.success('Payment deleted successfully!');
+      funToast.success('পেমেন্ট রেকর্ড মুছে ফেলা হয়েছে! 🗑️');
     },
     onError: (err) => {
-      toast.error(err.response?.data?.message || 'Failed to delete payment');
+      funToast.error(err, 'পেমেন্ট রেকর্ড মোছা যায়নি।');
     }
   });
 

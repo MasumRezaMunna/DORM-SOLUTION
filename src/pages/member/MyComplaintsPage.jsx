@@ -10,6 +10,7 @@ import { formatRelativeTime } from '../../utils/helpers';
 import api from '../../config/axios';
 import { QUERY_KEYS, COMPLAINT_TYPES } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import funToast from '../../utils/funToast';
 
 export default function MyComplaintsPage() {
   const { isDark } = useTheme();
@@ -36,9 +37,9 @@ export default function MyComplaintsPage() {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.DASHBOARD_MANAGER });
       setIsModalOpen(false);
       setForm({ title: '', description: '', type: 'maintenance', priority: 'medium' });
-      toast.success('Complaint submitted successfully!');
+      funToast.success('অভিযোগ নথিভুক্ত হয়েছে! ব্যবস্থা নেওয়া হচ্ছে! 📝', { category: 'complaint' });
     },
-    onError: () => toast.error('Failed to submit complaint.'),
+    onError: (err) => funToast.error(err, 'অভিযোগ জমা দেওয়া যায়নি। আবার চেষ্টা করো।'),
   });
 
   const cardBg = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-white border-[#DDE1D8] shadow-sm';

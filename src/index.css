@@ -115,3 +115,65 @@ body {
     linear-gradient(to right, rgba(163, 177, 138, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(163, 177, 138, 0.05) 1px, transparent 1px);
 }
+
+/* ─── Micro-Interactions: Global Button Dynamics ─────────────────────── */
+button,
+[role="button"] {
+  transition-property: color, background-color, border-color, transform, box-shadow, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle click scale-down feedback for all interactive buttons */
+button:not(:disabled):active,
+[role="button"]:not([aria-disabled="true"]):active {
+  transform: scale(0.975);
+}
+
+/* Subtle hover lift on primary and action buttons */
+button.bg-\[\#526B52\]:not(:disabled):hover,
+button.dark\:bg-\[\#A3B18A\]:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px -2px rgba(82, 107, 82, 0.25);
+}
+.dark button.bg-\[\#526B52\]:not(:disabled):hover,
+.dark button.dark\:bg-\[\#A3B18A\]:not(:disabled):hover {
+  box-shadow: 0 4px 14px -2px rgba(163, 177, 138, 0.2);
+}
+
+/* Micro-movement for button icons on hover */
+button:not(:disabled):hover svg:not(.animate-spin) {
+  transform: scale(1.06);
+  transition: transform 150ms ease;
+}
+
+/* Disabled buttons: strictly disable all transformations and events */
+button:disabled,
+button[disabled],
+[aria-disabled="true"] {
+  pointer-events: none !important;
+  transform: none !important;
+  cursor: not-allowed !important;
+  opacity: 0.55;
+}
+
+/* ─── Toast theme overrides ─────────────────────────────────────────── */
+.dark .scandi-toast {
+  background: #202720 !important;
+  color: #F0F1E9 !important;
+  border-color: #394239 !important;
+}
+
+/* ─── Accessibility: Respect prefers-reduced-motion ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+  }
+}
+
