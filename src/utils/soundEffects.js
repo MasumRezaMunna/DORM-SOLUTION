@@ -194,40 +194,27 @@ class SoundEffectsManager {
   }
 
   /**
-   * 4. Mascot: cute ascending chirp / bubbly wake-up sound (C5 -> E5 -> G5)
+   * 4. Mascot: Loud Cat Meow Sound Effect (/dragon-studio-cat-meow-401729.mp3)
    */
   playMascot() {
-    if (!this.canPlay('mascot', 350)) return;
-    const ctx = this.getAudioContext();
-    if (!ctx) return;
-
     try {
-      const t = ctx.currentTime;
-      // C5
-      this.playTone(ctx, {
-        freq: 523.25,
-        type: 'sine',
-        startTime: t,
-        duration: 0.08,
-        startGain: 0.09,
-      });
-      // E5
-      this.playTone(ctx, {
-        freq: 659.25,
-        type: 'sine',
-        startTime: t + 0.06,
-        duration: 0.1,
-        startGain: 0.1,
-      });
-      // G5
-      this.playTone(ctx, {
-        freq: 783.99,
-        type: 'sine',
-        startTime: t + 0.12,
-        duration: 0.22,
-        startGain: 0.11,
-      });
-    } catch {}
+      if (!this.mascotAudio) {
+        this.mascotAudio = new Audio('/dragon-studio-cat-meow-401729.mp3');
+        this.mascotAudio.volume = 0.9;
+        this.mascotAudio.preload = 'auto';
+      }
+      // Prevent overlapping playback: reset to beginning
+      this.mascotAudio.pause();
+      this.mascotAudio.currentTime = 0;
+      const playPromise = this.mascotAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('Mascot cat meow audio playback prevented:', err);
+        });
+      }
+    } catch (err) {
+      console.warn('Mascot audio playback error:', err);
+    }
   }
 
   /**

@@ -17,9 +17,8 @@ function TypingIndicator({ isDark }) {
         className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-2 ring-[#748D6B]/40"
       />
       <div
-        className={`px-4 py-3 rounded-2xl rounded-bl-sm ${
-          isDark ? 'bg-[#292F29] border border-[#394239]' : 'bg-white border border-[#DDE1D8]'
-        }`}
+        className={`px-4 py-3 rounded-2xl rounded-bl-sm ${isDark ? 'bg-[#292F29] border border-[#394239]' : 'bg-white border border-[#DDE1D8]'
+          }`}
       >
         <div className="flex gap-1 items-center h-4">
           {[0, 1, 2].map((i) => (
@@ -48,9 +47,8 @@ function ChatMessage({ msg, isDark }) {
       {/* Avatar */}
       {isUser ? (
         <div
-          className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-            isDark ? 'bg-[#A3B18A] text-[#202720]' : 'bg-[#526B52] text-white'
-          }`}
+          className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${isDark ? 'bg-[#A3B18A] text-[#202720]' : 'bg-[#526B52] text-white'
+            }`}
         >
           <User className="w-4 h-4" />
         </div>
@@ -64,19 +62,16 @@ function ChatMessage({ msg, isDark }) {
 
       {/* Bubble */}
       <div
-        className={`max-w-[75%] px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
-          isUser
-            ? `rounded-2xl rounded-br-sm ${
-                isDark
-                  ? 'bg-[#A3B18A] text-[#171C18] font-medium'
-                  : 'bg-[#526B52] text-white font-medium'
-              }`
-            : `rounded-2xl rounded-bl-sm ${
-                isDark
-                  ? 'bg-[#292F29] border border-[#394239] text-[#F0F1E9]'
-                  : 'bg-white border border-[#DDE1D8] text-[#202720] shadow-sm'
-              }`
-        }`}
+        className={`max-w-[75%] px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${isUser
+            ? `rounded-2xl rounded-br-sm ${isDark
+              ? 'bg-[#A3B18A] text-[#171C18] font-medium'
+              : 'bg-[#526B52] text-white font-medium'
+            }`
+            : `rounded-2xl rounded-bl-sm ${isDark
+              ? 'bg-[#292F29] border border-[#394239] text-[#F0F1E9]'
+              : 'bg-white border border-[#DDE1D8] text-[#202720] shadow-sm'
+            }`
+          }`}
       >
         {msg.content}
       </div>
@@ -90,7 +85,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `👋 হ্যালো! আমি ${ASSISTANT_NAME}। আপনাকে কীভাবে সাহায্য করতে পারি?`,
+      content: `Hey, This is ${ASSISTANT_NAME}. How can i help you?`,
     },
   ]);
   const [input, setInput] = useState('');
@@ -177,20 +172,18 @@ export default function ChatWidget() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 20 }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className={`fixed bottom-24 right-5 z-50 w-[360px] sm:w-[380px] flex flex-col rounded-2xl shadow-2xl overflow-hidden ${
-              isDark
+            className={`fixed bottom-24 right-5 z-50 w-[360px] sm:w-[380px] flex flex-col rounded-2xl shadow-2xl overflow-hidden ${isDark
                 ? 'bg-[#202720] border border-[#394239]'
                 : 'bg-[#F5F4EE] border border-[#DDE1D8]'
-            }`}
+              }`}
             style={{ height: '520px' }}
           >
             {/* Header */}
             <div
-              className={`flex items-center gap-3 px-4 py-3 flex-shrink-0 ${
-                isDark
+              className={`flex items-center gap-3 px-4 py-3 flex-shrink-0 ${isDark
                   ? 'bg-[#292F29] border-b border-[#394239]'
                   : 'bg-[#526B52] text-white'
-              }`}
+                }`}
             >
               <img
                 src={AVATAR_SRC}
@@ -223,16 +216,14 @@ export default function ChatWidget() {
 
             {/* Input */}
             <div
-              className={`flex-shrink-0 px-3 py-3 border-t ${
-                isDark ? 'border-[#394239] bg-[#202720]' : 'border-[#DDE1D8] bg-white'
-              }`}
+              className={`flex-shrink-0 px-3 py-3 border-t ${isDark ? 'border-[#394239] bg-[#202720]' : 'border-[#DDE1D8] bg-white'
+                }`}
             >
               <div
-                className={`flex items-end gap-2 rounded-xl px-3 py-2 ${
-                  isDark
+                className={`flex items-end gap-2 rounded-xl px-3 py-2 ${isDark
                     ? 'bg-[#292F29] border border-[#394239]'
                     : 'bg-[#ECECE4] border border-[#DDE1D8]'
-                }`}
+                  }`}
               >
                 <textarea
                   ref={inputRef}
@@ -241,22 +232,20 @@ export default function ChatWidget() {
                   onKeyDown={handleKeyDown}
                   placeholder="Type a message…"
                   rows={1}
-                  className={`flex-1 resize-none bg-transparent text-sm outline-none placeholder:text-[#687168] dark:placeholder:text-[#B1B8AC] leading-relaxed py-0.5 max-h-28 overflow-y-auto ${
-                    isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'
-                  }`}
+                  className={`flex-1 resize-none bg-transparent text-sm outline-none placeholder:text-[#687168] dark:placeholder:text-[#B1B8AC] leading-relaxed py-0.5 max-h-28 overflow-y-auto ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'
+                    }`}
                   style={{ fieldSizing: 'content' }}
                 />
                 <motion.button
                   whileTap={{ scale: 0.88 }}
                   onClick={sendMessage}
                   disabled={!input.trim() || isLoading}
-                  className={`p-2 rounded-lg transition-all flex-shrink-0 ${
-                    input.trim() && !isLoading
+                  className={`p-2 rounded-lg transition-all flex-shrink-0 ${input.trim() && !isLoading
                       ? 'bg-[#526B52] dark:bg-[#A3B18A] text-white dark:text-[#202720] shadow-sm hover:opacity-90 hover:scale-105'
                       : isDark
-                      ? 'bg-[#394239] text-[#B1B8AC]/40 cursor-not-allowed'
-                      : 'bg-[#DDE1D8] text-[#687168]/40 cursor-not-allowed'
-                  }`}
+                        ? 'bg-[#394239] text-[#B1B8AC]/40 cursor-not-allowed'
+                        : 'bg-[#DDE1D8] text-[#687168]/40 cursor-not-allowed'
+                    }`}
                 >
                   {isLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -266,9 +255,8 @@ export default function ChatWidget() {
                 </motion.button>
               </div>
               <p
-                className={`text-center text-[10px] mt-2 ${
-                  isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'
-                }`}
+                className={`text-center text-[10px] mt-2 ${isDark ? 'text-[#B1B8AC]' : 'text-[#687168]'
+                  }`}
               >
                 Powered by n8n · Press Enter to send
               </p>
