@@ -7,7 +7,7 @@ import { auth } from './firebase';
  */
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
-  timeout: 15000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -60,8 +60,8 @@ api.interceptors.response.use(
     // Skip if it's already a retry, a network error, or the /auth/google exchange itself.
     if (
       error.response?.status !== 401 ||
-      originalConfig._retried ||
-      originalConfig.url?.includes('/auth/google')
+      originalConfig?._retried ||
+      originalConfig?.url?.includes('/auth/google')
     ) {
       return Promise.reject(error);
     }
@@ -78,15 +78,15 @@ api.interceptors.response.use(
     _isRenewing = true;
 
     try {
-      let firebaseUser = auth.currentUser;
-      if (!firebaseUser && typeof auth.authStateReady === 'function') {
+      if (typeof auth.authStateReady === 'function') {
         await auth.authStateReady();
-        firebaseUser = auth.currentUser;
       }
+
+      let firebaseUser = auth.currentUser;
       if (!firebaseUser) {
-        // Wait briefly for onAuthStateChanged just in case
+        // Wait up to 5s for onAuthStateChanged just in case
         firebaseUser = await new Promise((resolve) => {
-          const timer = setTimeout(() => resolve(null), 2500);
+          const timer = setTimeout(() => resolve(null), 5000);
           const unsub = auth.onAuthStateChanged((u) => {
             clearTimeout(timer);
             unsub();
@@ -107,17 +107,21 @@ api.interceptors.response.use(
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL || '/api'}/auth/google`,
         { idToken },
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' }, timeout: 45000 }
       );
 
       const newToken = data?.data?.token;
+      const newUser = data?.data?.user;
       if (!newToken) throw new Error('Renewal response missing token');
 
       localStorage.setItem('token', newToken);
+      if (newUser) {
+        localStorage.setItem('user', JSON.stringify(newUser));
+      }
 
       // Notify AuthContext of the fresh user data (role, etc.) without logout.
       window.dispatchEvent(
-        new CustomEvent('auth:tokenRenewed', { detail: { token: newToken, user: data.data.user } })
+        new CustomEvent('auth:tokenRenewed', { detail: { token: newToken, user: newUser } })
       );
 
       // Flush queued requests with the new token.
@@ -126,12 +130,20 @@ api.interceptors.response.use(
       // Retry the original failed request.
       originalConfig.headers.Authorization = `Bearer ${newToken}`;
       return api(originalConfig);
-    } catch {
-      // Renewal failed — now it's safe to log out.
+    } catch (renewError) {
+      // Flush any queued requests with failure
       _flushQueue(null);
-      localStorage.removeItem('token');
-      window.dispatchEvent(new Event('auth:logout'));
-      return Promise.reject(error);
+
+      // Only force full logout if Firebase session is actually absent or server returned 401/403
+      const isAuthRevoked = !auth.currentUser || renewError?.response?.status === 401 || renewError?.response?.status === 403;
+      if (isAuthRevoked) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('isPending');
+        window.dispatchEvent(new Event('auth:logout'));
+      }
+
+      return Promise.reject(renewError);
     } finally {
       _isRenewing = false;
     }
