@@ -161,10 +161,12 @@ export default function ManagerDashboard() {
         {stats.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
       </div>
 
-      {/* Market Stats */}
-      <h3 className={`font-bold text-lg tracking-tight mt-6 mb-2 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>Market Teams Overview</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {marketCards.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
+      {/* Market Stats — visible on tablet (sm-xl), replaced by right panel on xl+ */}
+      <div className="hidden sm:block xl:hidden">
+        <h3 className={`font-bold text-lg tracking-tight mt-6 mb-2 ${isDark ? 'text-[#F0F1E9]' : 'text-[#202720]'}`}>Market Teams Overview</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          {marketCards.map((s, i) => <StatCard key={s.title} {...s} index={i} />)}
+        </div>
       </div>
 
       {/* Recent Activity */}
@@ -198,7 +200,10 @@ export default function ManagerDashboard() {
         </motion.div>
       </div>
 
-      <WeeklyMealPlan isManager={true} />
+      {/* Weekly Meal Plan — visible on tablet (sm-xl), in right panel on xl+ */}
+      <div className="hidden sm:block xl:hidden">
+        <WeeklyMealPlan isManager={true} />
+      </div>
 
       <CommunitySummary />
     </div>

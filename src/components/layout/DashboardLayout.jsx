@@ -9,6 +9,7 @@ import ChatWidget from './ChatWidget';
 import SoundToggle from './SoundToggle';
 import DigitalClock from '../shared/DigitalClock';
 import DormMascot from '../shared/DormMascot';
+import QuickAccessPanel from './QuickAccessPanel';
 import { motion } from 'framer-motion';
 
 export default function DashboardLayout() {
@@ -60,8 +61,10 @@ export default function DashboardLayout() {
 
           {/* Right actions */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Live Asia/Dhaka Digital Clock */}
-            <DigitalClock />
+            {/* Live Asia/Dhaka Digital Clock – hidden on mobile, visible sm+ */}
+            <span className="hidden sm:flex">
+              <DigitalClock />
+            </span>
 
             {/* Sound toggle */}
             <SoundToggle />
@@ -93,6 +96,9 @@ export default function DashboardLayout() {
           </div>
         </main>
       </div>
+
+      {/* Right Quick Access Panel — sticky, xl+ only */}
+      <QuickAccessPanel />
 
       {/* Sleeping Dorm Mascot */}
       <DormMascot />

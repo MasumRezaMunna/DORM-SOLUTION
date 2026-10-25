@@ -10,7 +10,9 @@ export const MainLayout = () => {
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <span className="text-xl font-extrabold tracking-tight text-[#526B52] dark:text-[#A3B18A]">Home</span>
           <div className="flex items-center gap-2">
-            <DigitalClock />
+            <span className="hidden sm:flex">
+              <DigitalClock />
+            </span>
             <SoundToggle />
           </div>
         </div>
