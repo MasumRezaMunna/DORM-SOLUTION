@@ -111,10 +111,15 @@ export default function ManagerDashboard() {
     },
     {
       title: 'After Deduction (Balance)',
-      value: isLoading ? '...' : formatCurrency(data?.overview?.netBalance ?? 0),
+      value: isLoading
+        ? '...'
+        : (data?.overview?.netBalance ?? 0) > 0
+          ? `+${formatCurrency(data?.overview?.netBalance)}`
+          : formatCurrency(data?.overview?.netBalance ?? 0),
       icon: ShoppingCart,
       gradient: 'from-emerald-500 to-teal-600',
       change: 'Total Paid - Total Expenses',
+      changePositive: (data?.overview?.netBalance ?? 0) >= 0,
       changeColor: (data?.overview?.netBalance ?? 0) >= 0 ? 'text-emerald-400' : 'text-red-400',
     }
   ];
