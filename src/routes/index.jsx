@@ -3,19 +3,48 @@ import { ProtectedRoute } from './ProtectedRoute';
 import { ROLES } from '../utils/constants';
 import { useAuth } from '../contexts/AuthContext';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
+import { useLampIntro } from '../contexts/LampIntroContext';
+import LampIntro from '../components/shared/LampIntro';
 
 /**
  * Smart root redirect: waits for auth to resolve, then sends authenticated
  * users straight to their dashboard instead of bouncing through /login.
+ *
+ * For authenticated desktop users, the lamp intro is shown ONCE per session
+ * before the dashboard redirect fires. The intro renders immediately without
+ * waiting for the database — data fetching starts in the background at the
+ * same time the intro is displayed.
  */
 const RootRedirect = () => {
   const { isAuthenticated, loading, user, isPending } = useAuth();
+  const { showIntro, dismissIntro } = useLampIntro();
 
   if (loading) {
     return <LoadingSpinner fullPage message="Connecting to Home…" />;
   }
 
+  // ── Unauthenticated or pending: standard routing ───────────────
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (isAuthenticated && isPending) return <Navigate to="/pending" replace />;
+
+  // ── Authenticated desktop user: show lamp intro once per session ─
+  if (showIntro) {
+    // Determine the target dashboard path so we can navigate after intro
+    const dashTarget = user?.role === 'manager' ? '/manager' : '/dashboard';
+
+    return (
+      <LampIntro
+        onComplete={() => {
+          dismissIntro();
+          // Hard navigate to dashboard — React Router Navigate can't be called
+          // imperatively, so we use window.location for a clean transition.
+          window.location.replace(dashTarget);
+        }}
+      />
+    );
+  }
+
+  // ── Already seen intro this session: redirect directly ──────────
   if (isAuthenticated && user?.role === 'manager') return <Navigate to="/manager" replace />;
   if (isAuthenticated) return <Navigate to="/dashboard" replace />;
   return <Navigate to="/login" replace />;
