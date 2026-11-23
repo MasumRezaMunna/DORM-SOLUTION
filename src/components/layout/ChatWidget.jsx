@@ -172,7 +172,7 @@ export default function ChatWidget() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 20 }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className={`fixed bottom-24 right-5 z-50 w-[360px] sm:w-[380px] flex flex-col rounded-2xl shadow-2xl overflow-hidden ${isDark
+            className={`fixed bottom-[88px] right-4 z-50 w-[360px] sm:w-[380px] flex flex-col rounded-2xl shadow-2xl overflow-hidden ${isDark
                 ? 'bg-[#202720] border border-[#394239]'
                 : 'bg-[#F5F4EE] border border-[#DDE1D8]'
               }`}
@@ -271,7 +271,7 @@ export default function ChatWidget() {
         onClick={() => setIsOpen((prev) => !prev)}
         whileTap={{ scale: 0.9 }}
         whileHover={{ scale: 1.08 }}
-        className="fixed bottom-5 right-5 z-50 w-16 h-16 rounded-full shadow-xl overflow-hidden"
+        className="fixed bottom-4 right-4 z-50 w-14 h-14 rounded-full shadow-xl overflow-hidden"
         style={{ boxShadow: isDark ? '0 4px 28px rgba(163,177,138,0.3)' : '0 4px 28px rgba(82,107,82,0.35)' }}
         aria-label="Toggle AI Chat"
       >

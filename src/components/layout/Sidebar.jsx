@@ -49,14 +49,12 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
   const dashboardRoot = isManager ? '/manager' : '/dashboard';
 
   // Theme-aware colours
-  const sideBg = isDark ? 'bg-[#202720]' : 'bg-[#FDFCFA]';
-  const borderCol = isDark ? 'border-[#394239]' : 'border-[#DDE1D8]';
-  const textCol = isDark ? 'text-[#F0F1E9]' : 'text-[#202720]';
-  const mutedCol = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
-  const dividerCol = isDark ? 'text-[#899B7A]' : 'text-[#748D6B]';
-  const hoverCls = isDark
-    ? 'text-[#B1B8AC] hover:text-[#F0F1E9] hover:bg-[#292F29]'
-    : 'text-[#687168] hover:text-[#202720] hover:bg-[#ECECE4]/70';
+  const sideBg = 'bg-black/40 backdrop-blur-xl';
+  const borderCol = 'border-[#ff3cb4]/25';
+  const textCol = 'text-[#F0F1E9]';
+  const mutedCol = 'text-[#e0b3f0]';
+  const dividerCol = 'text-[#c084f0]';
+  const hoverCls = 'text-[#e0b3f0] hover:text-white hover:bg-white/10';
 
   const logoClicksRef = useRef(0);
   const lastLogoClickTimeRef = useRef(0);
@@ -142,7 +140,7 @@ export default function Sidebar({ mobileOpen, onClose, collapsed, onToggleCollap
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 group
                 ${effectiveCollapsed ? 'justify-center' : ''}
                 ${isActive
-                  ? 'bg-[#526B52] text-white shadow-sm dark:bg-[#A3B18A] dark:text-[#171C18]'
+                  ? 'bg-[#ff3cb4]/20 text-[#ff3cb4] border border-[#ff3cb4]/40 shadow-[0_0_12px_rgba(255,60,180,0.3)]'
                   : hoverCls
                 }`
               }

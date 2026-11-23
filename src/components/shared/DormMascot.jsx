@@ -217,7 +217,7 @@ export default function DormMascot() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={handleUnSnooze}
-        className="fixed bottom-5 left-5 z-40 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#DDE1D8] dark:border-[#394239] bg-white/90 dark:bg-[#202720]/90 backdrop-blur-md shadow-md text-xs font-semibold text-[#687168] dark:text-[#B1B8AC] hover:text-[#526B52] dark:hover:text-[#A3B18A] transition-all"
+        className="fixed bottom-4 left-4 z-40 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md shadow-md text-xs font-semibold text-white/80 hover:text-white transition-all"
         title="Wake up dorm mascot"
         aria-label="Wake up dorm mascot"
       >
@@ -229,7 +229,7 @@ export default function DormMascot() {
 
   return (
     <div
-      className="fixed bottom-5 left-5 z-40 select-none flex flex-col items-start"
+      className="fixed bottom-4 left-4 z-40 select-none flex flex-col items-start"
       onMouseEnter={() => { if (!isAwake) handleWakeUp(null, false); }}
     >
       {/* ── Speech Bubble ─────────────────────────────────────────────── */}
@@ -338,14 +338,14 @@ export default function DormMascot() {
                   ? { y: [0, -4, 0], transition: { duration: 0.35 } }
                   : { scaleY: [1, 1.03, 1], transition: { duration: 3, repeat: Infinity, ease: 'easeInOut' } }
           }
-          className="relative group p-1.5 rounded-2xl border border-[#DDE1D8] dark:border-[#394239] bg-white/90 dark:bg-[#202720]/90 backdrop-blur-md shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#748D6B]"
+          className="relative group w-14 h-14 rounded-full border border-[#DDE1D8] dark:border-[#394239] bg-white/90 dark:bg-[#202720]/90 backdrop-blur-md shadow-xl hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#748D6B] overflow-hidden flex items-center justify-center"
           title="Sleeping Dorm Buddy · Click to poke & hear meow! 🐱🔊"
           aria-label="Sleeping Dorm Mascot · Click to hear meow sound"
         >
           {/* Custom SVG Illustration */}
           <svg
-            width="44"
-            height="44"
+            width="40"
+            height="40"
             viewBox="0 0 64 64"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

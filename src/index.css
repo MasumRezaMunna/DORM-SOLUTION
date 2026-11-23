@@ -116,6 +116,62 @@ body {
     linear-gradient(to bottom, rgba(163, 177, 138, 0.05) 1px, transparent 1px);
 }
 
+/* ─── GTA 6 real artwork background ─────────────────────────────────── */
+
+@keyframes gta6-neon-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 0.9; }
+}
+
+/* Root wrapper — full viewport, actual GTA 6 image */
+.gta6-bg {
+  position: relative;
+  background-image: url('/gta6-bg.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  /* NOTE: no overflow:hidden here — fixed children (mascot, chat FAB) must not be clipped */
+}
+
+/* Dark overlay so UI elements stay readable */
+.gta6-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* Gradient: darkest at left/right edges where panels sit, lighter in center */
+  background:
+    linear-gradient(to right,
+      rgba(5, 2, 20, 0.72) 0%,
+      rgba(5, 2, 20, 0.35) 20%,
+      rgba(5, 2, 20, 0.20) 50%,
+      rgba(5, 2, 20, 0.35) 80%,
+      rgba(5, 2, 20, 0.72) 100%
+    ),
+    linear-gradient(to bottom,
+      rgba(5, 2, 20, 0.55) 0%,
+      rgba(5, 2, 20, 0.10) 30%,
+      rgba(5, 2, 20, 0.10) 70%,
+      rgba(5, 2, 20, 0.50) 100%
+    );
+}
+
+/* Subtle neon pink/purple vignette glow — matches the GTA6 palette */
+.gta6-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%,  rgba(220, 80, 180, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 80% 50%,  rgba(130, 80, 220, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(240, 120, 60,  0.10) 0%, transparent 60%);
+  animation: gta6-neon-pulse 7s ease-in-out infinite;
+}
+
 /* ─── Micro-Interactions: Global Button Dynamics ─────────────────────── */
 button,
 [role="button"] {

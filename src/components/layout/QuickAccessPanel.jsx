@@ -49,19 +49,13 @@ function MarketLink({ isDark }) {
       className={({ isActive }) =>
         `group flex items-center gap-3 px-3 py-3 rounded-xl border transition-all duration-200 ${
           isActive
-            ? isDark
-              ? 'bg-[#303A30] border-[#A3B18A]/50 text-[#A3B18A]'
-              : 'bg-[#E8EDE3] border-[#526B52]/50 text-[#526B52]'
-            : isDark
-            ? 'bg-[#292F29]/50 border-[#394239] text-[#F0F1E9] hover:bg-[#292F29] hover:border-[#526B52]/60'
-            : 'bg-white border-[#DDE1D8] text-[#202720] hover:bg-[#E8EDE3]/80 hover:border-[#526B52]/40 shadow-sm'
+            ? 'bg-[#ff3cb4]/20 border-[#ff3cb4]/50 text-[#ff3cb4] shadow-[0_0_14px_rgba(255,60,180,0.3)]'
+            : 'bg-white/5 border-white/10 text-[#F0F1E9] hover:bg-white/10 hover:border-[#ff3cb4]/30'
         }`
       }
     >
       {/* Icon badge */}
-      <span className={`p-2 rounded-lg flex-shrink-0 transition-colors ${
-        isDark ? 'bg-[#303A30] text-[#A3B18A]' : 'bg-[#E8EDE3] text-[#526B52]'
-      }`}>
+      <span className="p-2 rounded-lg flex-shrink-0 transition-colors bg-[#ff3cb4]/15 text-[#ff3cb4]">
         <ShoppingCart className="w-4 h-4" />
       </span>
 
@@ -82,14 +76,14 @@ function CollapsedStrip({ isDark, onExpand }) {
   const { isManager } = useAuth();
   const marketRoute = isManager ? '/manager/market' : '/dashboard/market';
 
-  const bg       = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-[#FDFCFA] border-[#DDE1D8]';
-  const iconBase = isDark ? 'text-[#A3B18A] hover:bg-[#303A30]' : 'text-[#526B52] hover:bg-[#E8EDE3]';
-  const toggleClr = isDark ? 'text-[#B1B8AC] hover:text-[#F0F1E9] hover:bg-[#303A30]' : 'text-[#687168] hover:text-[#202720] hover:bg-[#E8EDE3]';
+  const bg       = 'bg-black/40 backdrop-blur-xl border-[#ff3cb4]/25';
+  const iconBase = 'text-[#e0b3f0] hover:bg-white/10';
+  const toggleClr = 'text-[#e0b3f0] hover:text-white hover:bg-white/10';
 
   return (
     <aside
       aria-label="Quick Access Panel (collapsed)"
-      className={`hidden xl:flex flex-col items-center w-[52px] flex-shrink-0 h-screen sticky top-0 border-l transition-all duration-300 ${bg}`}
+      className={`hidden xl:flex flex-col items-center w-[52px] flex-shrink-0 h-screen sticky top-0 border-l transition-all duration-300 bg-black/40 backdrop-blur-xl border-[#ff3cb4]/25`}
     >
       {/* Toggle button aligned with header height */}
       <div className="flex items-center justify-center flex-shrink-0" style={{ minHeight: 64 }}>
@@ -113,12 +107,8 @@ function CollapsedStrip({ isDark, onExpand }) {
           className={({ isActive }) =>
             `p-2.5 rounded-xl border transition-colors ${
               isActive
-                ? isDark
-                  ? 'bg-[#303A30] border-[#A3B18A]/50 text-[#A3B18A]'
-                  : 'bg-[#E8EDE3] border-[#526B52]/50 text-[#526B52]'
-                : isDark
-                ? 'border-[#394239] text-[#A3B18A] hover:bg-[#303A30]'
-                : 'border-[#DDE1D8] text-[#526B52] hover:bg-[#E8EDE3] shadow-sm bg-white'
+                ? 'bg-[#ff3cb4]/20 border-[#ff3cb4]/50 text-[#ff3cb4] shadow-[0_0_10px_rgba(255,60,180,0.3)]'
+                : 'border-white/10 text-[#e0b3f0] hover:bg-white/10'
             }`
           }
         >
@@ -128,11 +118,7 @@ function CollapsedStrip({ isDark, onExpand }) {
         {/* Meal Plan */}
         <div
           title="Weekly Meal Plan"
-          className={`p-2.5 rounded-xl border ${
-            isDark
-              ? 'border-[#394239] text-[#A3B18A]'
-              : 'border-[#DDE1D8] text-[#526B52] bg-white shadow-sm'
-          }`}
+          className="p-2.5 rounded-xl border border-white/10 text-[#c084f0]"
         >
           <CalendarDays className="w-4 h-4" />
         </div>
@@ -151,12 +137,12 @@ export default function QuickAccessPanel() {
     return <CollapsedStrip isDark={isDark} onExpand={() => setCollapsed(false)} />;
   }
 
-  const panelBg    = isDark ? 'bg-[#202720] border-[#394239]' : 'bg-[#FDFCFA] border-[#DDE1D8]';
-  const headerBord = isDark ? 'border-[#394239]' : 'border-[#DDE1D8]';
-  const divCol     = isDark ? 'border-[#394239]' : 'border-[#DDE1D8]';
-  const textMuted  = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
-  const textMain   = isDark ? 'text-[#F0F1E9]' : 'text-[#202720]';
-  const toggleClr  = isDark ? 'text-[#B1B8AC] hover:text-[#F0F1E9] hover:bg-[#303A30]' : 'text-[#687168] hover:text-[#202720] hover:bg-[#E8EDE3]';
+  const panelBg    = 'bg-black/40 backdrop-blur-xl border-[#ff3cb4]/25';
+  const headerBord = 'border-[#ff3cb4]/20';
+  const divCol     = 'border-white/10';
+  const textMuted  = 'text-[#e0b3f0]';
+  const textMain   = 'text-white';
+  const toggleClr  = 'text-[#e0b3f0] hover:text-white hover:bg-white/10';
 
   return (
     <aside
@@ -167,7 +153,7 @@ export default function QuickAccessPanel() {
         h-screen sticky top-0
         border-l overflow-hidden
         transition-all duration-300
-        ${panelBg}
+        bg-black/40 backdrop-blur-xl border-[#ff3cb4]/25
       `}
     >
       {/* ── Header (height mirrors the top nav bar: 64px) ───────────────────── */}
