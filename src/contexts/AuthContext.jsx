@@ -3,6 +3,8 @@ import { signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLo
 import { auth, googleProvider } from '../config/firebase';
 import api from '../config/axios';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
+import { queryClient } from '../config/queryClient';
+import { clearUserCache } from '../config/queryPersister';
 
 const AuthContext = createContext();
 
@@ -144,6 +146,11 @@ export const AuthProvider = ({ children }) => {
       if (token) await api.post('/auth/logout').catch(() => {});
     } finally {
       await signOut(auth).catch(() => {});
+      const currentUserId = user?._id || user?.id;
+      if (currentUserId) {
+        await clearUserCache(currentUserId);
+      }
+      queryClient.clear();
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('isPending');
