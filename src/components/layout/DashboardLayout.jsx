@@ -32,7 +32,7 @@ export default function DashboardLayout() {
         {/* 2nd Bar: Main content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Top header */}
-          <header className="flex items-center justify-between px-4 sm:px-6 h-16 border-b flex-shrink-0 transition-colors backdrop-blur-md bg-[#0d0220]/65 border-[#e060c0]/20">
+          <header className="relative z-40 flex items-center justify-between px-4 sm:px-6 h-16 border-b flex-shrink-0 transition-colors backdrop-blur-md bg-[#0d0220]/65 border-[#e060c0]/20">
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileOpen(true)}

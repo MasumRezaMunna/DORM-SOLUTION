@@ -17,6 +17,14 @@ const TYPE_COLORS = {
   room:      'text-[#748D6B] bg-[#E8EDE3] dark:text-[#A3B18A] dark:bg-[#303A30]',
 };
 
+const cleanNotificationMessage = (msg) => {
+  if (!msg) return '';
+  return msg.replace(/([৳$€£])\s*(\d+\.\d{3,})/g, (_match, symbol, numStr) => {
+    const n = parseFloat(numStr);
+    return `${symbol}${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  });
+};
+
 export default function NotificationsPage() {
   const { isDark } = useTheme();
   const { token, user } = useAuth();
@@ -154,7 +162,9 @@ export default function NotificationsPage() {
                     </p>
                     {!n.isRead && <span className="w-2 h-2 rounded-full bg-[#526B52] dark:bg-[#A3B18A] mt-1.5 flex-shrink-0" />}
                   </div>
-                  <p className={`text-sm mb-1 leading-relaxed ${textMuted} ${!n.isRead ? '' : 'opacity-70'}`}>{n.message}</p>
+                  <p className={`text-sm mb-1 leading-relaxed ${textMuted} ${!n.isRead ? '' : 'opacity-70'}`}>
+                    {cleanNotificationMessage(n.message)}
+                  </p>
                   <p className={`text-[11px] uppercase font-bold tracking-wider opacity-60 ${textMuted}`}>
                     {formatRelativeTime(n.createdAt)}
                   </p>

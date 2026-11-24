@@ -8,6 +8,15 @@ import { useAuth } from '../../contexts/AuthContext';
 import { formatRelativeTime } from '../../utils/helpers';
 import api from '../../config/axios';
 
+// Clean up unrounded floats in legacy notification messages (e.g. 1649.6499999999999 -> 1,649.65)
+const cleanNotificationMessage = (msg) => {
+  if (!msg) return '';
+  return msg.replace(/([৳$€£])\s*(\d+\.\d{3,})/g, (_match, symbol, numStr) => {
+    const n = parseFloat(numStr);
+    return `${symbol}${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  });
+};
+
 export default function NotificationDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -102,10 +111,12 @@ export default function NotificationDropdown() {
     }
   };
 
-  const bgClasses = isDark ? 'bg-[#202720] border-[#394239] shadow-2xl' : 'bg-white border-[#DDE1D8] shadow-xl shadow-black/5';
-  const itemHover = isDark ? 'hover:bg-[#292F29]' : 'hover:bg-[#ECECE4]/60';
-  const textPrimary = isDark ? 'text-[#F0F1E9]' : 'text-[#202720]';
-  const textSecondary = isDark ? 'text-[#B1B8AC]' : 'text-[#687168]';
+  const bgClasses = isDark
+    ? 'bg-[#151c16] border-[#2e3b2e] shadow-2xl shadow-black/80 ring-1 ring-white/10'
+    : 'bg-white border-[#DDE1D8] shadow-2xl shadow-black/10';
+  const itemHover = isDark ? 'hover:bg-[#202920]' : 'hover:bg-[#ECECE4]/70';
+  const textPrimary = isDark ? 'text-white font-semibold' : 'text-[#202720] font-semibold';
+  const textSecondary = isDark ? 'text-[#B8C2B3]' : 'text-[#687168]';
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -128,59 +139,70 @@ export default function NotificationDropdown() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className={`absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-2xl border shadow-xl z-50 overflow-hidden flex flex-col ${bgClasses}`}
+            className={`absolute right-0 top-full mt-2 w-80 sm:w-[420px] rounded-2xl border shadow-2xl z-50 overflow-hidden flex flex-col ${bgClasses}`}
             style={{ maxHeight: 'calc(100vh - 100px)' }}
           >
-            <div className={`p-4 border-b flex items-center justify-between ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'}`}>
-              <h3 className={`font-bold ${textPrimary}`}>Notifications {unreadCount > 0 && <span className="ml-1 text-xs bg-[#DC2626] text-white px-2 py-0.5 rounded-full font-bold">{unreadCount}</span>}</h3>
+            <div className={`p-4 border-b flex items-center justify-between ${isDark ? 'border-[#2e3b2e] bg-[#1a231b]' : 'border-[#DDE1D8] bg-[#F7F9F5]'}`}>
+              <h3 className={`font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-[#202720]'}`}>
+                <span>Notifications</span>
+                {unreadCount > 0 && (
+                  <span className="text-xs bg-[#DC2626] text-white px-2 py-0.5 rounded-full font-bold">
+                    {unreadCount}
+                  </span>
+                )}
+              </h3>
               {unreadCount > 0 && (
                 <button 
                   onClick={() => markAllReadMutation.mutate()}
-                  className="text-xs font-semibold text-[#526B52] hover:text-[#405640] dark:text-[#A3B18A] dark:hover:text-[#BAC7A8] flex items-center gap-1"
+                  className="text-xs font-semibold text-[#526B52] hover:text-[#405640] dark:text-[#A3B18A] dark:hover:text-[#BAC7A8] flex items-center gap-1 transition-colors"
                 >
-                  <Check className="w-3 h-3" /> Mark all read
+                  <Check className="w-3.5 h-3.5" /> Mark all read
                 </button>
               )}
             </div>
 
-            <div className="overflow-y-auto flex-1">
+            <div className="overflow-y-auto flex-1 divide-y divide-[#DDE1D8] dark:divide-[#2e3b2e]">
               {notifications.length === 0 ? (
                 <div className={`p-8 text-center ${textSecondary}`}>
                   <Bell className="w-8 h-8 mx-auto mb-2 opacity-30" />
                   <p className="text-sm font-medium">You're all caught up!</p>
                 </div>
               ) : (
-                <div className="divide-y divide-[#DDE1D8] dark:divide-[#394239]">
-                  {notifications.map((n) => (
-                    <div 
-                      key={n._id} 
-                      onClick={() => handleNotificationClick(n)}
-                      className={`p-4 transition-colors cursor-pointer flex gap-3 ${itemHover} ${!n.isRead ? (isDark ? 'bg-[#303A30]/50' : 'bg-[#E8EDE3]/50') : ''}`}
-                    >
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${getIconColor(n.type)}`}>
-                        <Bell className="w-4 h-4" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-start mb-0.5">
-                          <p className={`text-sm font-bold truncate ${textPrimary} ${!n.isRead ? '' : 'opacity-80'}`}>{n.title}</p>
-                          {!n.isRead && <span className="w-2 h-2 rounded-full bg-[#526B52] dark:bg-[#A3B18A] mt-1.5 flex-shrink-0" />}
-                        </div>
-                        <p className={`text-xs line-clamp-2 mb-1 ${textSecondary} ${!n.isRead ? '' : 'opacity-80'}`}>{n.message}</p>
-                        <p className={`text-[10px] uppercase font-semibold tracking-wider ${textSecondary} opacity-70`}>
-                          {formatRelativeTime(n.createdAt)}
-                        </p>
-                      </div>
+                notifications.map((n) => (
+                  <div 
+                    key={n._id} 
+                    onClick={() => handleNotificationClick(n)}
+                    className={`p-4 transition-colors cursor-pointer flex gap-3 ${itemHover} ${
+                      !n.isRead 
+                        ? (isDark ? 'bg-[#1b251c] border-l-4 border-l-[#A3B18A]' : 'bg-[#F2F6EF] border-l-4 border-l-[#526B52]') 
+                        : 'border-l-4 border-l-transparent opacity-85'
+                    }`}
+                  >
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${getIconColor(n.type)}`}>
+                      <Bell className="w-4 h-4" />
                     </div>
-                  ))}
-                </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start gap-2 mb-1">
+                        <p className={`text-sm truncate ${textPrimary} ${!n.isRead ? 'font-bold' : 'font-medium'}`}>{n.title}</p>
+                        {!n.isRead && <span className="w-2.5 h-2.5 rounded-full bg-[#16A34A] dark:bg-[#A3B18A] mt-1 flex-shrink-0 ring-2 ring-black/20" />}
+                      </div>
+                      <p className={`text-xs line-clamp-2 mb-1.5 leading-relaxed ${textSecondary}`}>
+                        {cleanNotificationMessage(n.message)}
+                      </p>
+                      <p className={`text-[10px] uppercase font-semibold tracking-wider ${isDark ? 'text-[#8D9B87]' : 'text-[#687168]'}`}>
+                        {formatRelativeTime(n.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                ))
               )}
             </div>
 
-            <div className={`p-3 border-t ${isDark ? 'border-[#394239]' : 'border-[#DDE1D8]'}`}>
+            <div className={`p-3 border-t text-center ${isDark ? 'border-[#2e3b2e] bg-[#1a231b]' : 'border-[#DDE1D8] bg-[#F7F9F5]'}`}>
               <Link
                 to={notifRoot}
                 onClick={() => setIsOpen(false)}
-                className="block text-center text-xs font-bold text-[#526B52] hover:text-[#405640] dark:text-[#A3B18A] dark:hover:text-[#BAC7A8] transition-colors"
+                className="inline-block text-xs font-bold text-[#526B52] hover:text-[#405640] dark:text-[#A3B18A] dark:hover:text-[#BAC7A8] transition-colors"
               >
                 View all notifications →
               </Link>
